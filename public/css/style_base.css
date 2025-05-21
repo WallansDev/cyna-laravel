@@ -1,0 +1,173 @@
+:root {
+    --primary-color: #271A3B;
+    --secondary-color: #4C05B1;
+    --dark-bg: linear-gradient(#201B2B, rgb(60, 25, 103));
+    --light-text: #ffffff;
+}
+
+body {
+    background: var(--dark-bg);
+       background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: var(--light-text);
+    font-family: Arial, sans-serif;
+}
+
+/* Header styles */
+.site-header {
+    background-color: var(--dark-bg);
+    padding: 10px 0;
+}
+
+.logo {
+    height: 30px;
+}
+
+.search-form {
+    position: relative;
+    margin-bottom: 0;
+}
+
+.search-form input {
+    border-radius: 20px;
+    padding-right: 40px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+}
+
+.search-form input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.search-form button {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    border: none;
+    background: transparent;
+    color: white;
+}
+
+.header-icons {
+    color: white;
+    font-size: 1.5rem;
+}
+
+.header-icons i {
+    color: #ffffff; /* Solid white */
+    opacity: 1; /* Remove transparency */
+}
+
+.cart-icon {
+    position: relative;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -2px;
+    right: -6px;
+    background-color: red;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+}
+
+/* Mobile menu */
+.mobile-menu-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+}
+
+/* Main content area */
+.main-content {
+    padding: 20px 0;
+    min-height: calc(100vh - 100px);
+}
+
+/* Footer styles */
+.site-footer {
+    background-color: var(--primary-color);
+    padding: 20px 0;
+    margin-top: 30px;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 10px;
+}
+
+.footer-links a {
+    color: white;
+    text-decoration: none;
+}
+
+.social-icons {
+    font-size: 1.5rem;
+}
+
+.social-icons a {
+    color: white;
+    margin-right: 15px;
+}
+
+.social-icons a i {
+    color: #ffffff;
+    opacity: 1;
+}
+
+/* Categories section */
+.card-body i {
+    color: #ffffff;
+    opacity: 1;
+}
+
+.card-body h5 {
+    color: #ffffff;
+}
+
+/* Product card prices */
+.card-body .card-text {
+    color: #ffffff;
+    opacity: 1;
+}
+
+.dropdown-toggle
+{
+    color: #aca9b1;
+    text-decoration: none;
+    border: 0px;
+}
+
+.dropdown-toggle:hover
+{
+    color: #c4c1cb;
+}
+
+
+/* For tablets and larger screens */
+@media (min-width: 768px) {
+    .logo {
+        height: 35px;
+    }
+}
+
+/* For desktop screens */
+@media (min-width: 992px) {
+    .main-content {
+        min-height: calc(100vh - 150px);
+    }
+}
+
+/* Hover effect for all icons */
+i:hover {
+    color: #c8a6f8;
+}
+
