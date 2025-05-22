@@ -18,7 +18,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::paginate(3);
+        $categories = Category::orderBy('position')->paginate(3);
         $category_first = Category::orderBy('position')->first();
         $category_last = Category::orderByDesc('position')->first();
 
