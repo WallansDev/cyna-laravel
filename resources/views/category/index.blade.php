@@ -2,11 +2,6 @@
 
 @section('title', 'Catégories - ' . $_SOCIETYNAME)
 
-@section('styles')
-    <!-- Chargement du fichier CSS externe -->
-    <link rel="stylesheet" href="{{ asset('css/purple-theme.css') }}">
-@endsection
-
 @section('content')
     <div class="container-fluid"  style="margin-top: 5em;">
         <div class="row">

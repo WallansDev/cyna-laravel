@@ -3,18 +3,22 @@
 @section('title', 'Ordre services top du moment - ' . $_SOCIETYNAME)
 
 @section('content')
-    <div class="container-fluid">
+    <div class="container-fluid" style="margin-top: 5em;">
         <div class="row">
             <div class="col-sm-12">
-                <a style="font-size: 30px; text-decoration: underline;" href="{{ route('services.index') }}">Modifier les
-                    services</a>
-
-                <div class="card">
-                    <div class="card-header">
+                <div class="card purple-theme">
+                    <div class="card-header purple-header">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <span id="card_title">
                                 {{ __('Produits top du moment') }}
                             </span>
+                            
+                            <div class="float-right">
+                                <a href="{{ route('services.index') }}" class="btn purple-btn-primary btn-sm float-right"
+                                    data-placement="left">
+                                    {{ __('Modifier les services') }}
+                                </a>
+                            </div>
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
@@ -22,9 +26,9 @@
                             <p>{{ $message }}</p>
                         </div>
                     @endif
-                    <div class="card-body bg-white">
+                    <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover">
+                            <table class="table table-dark table-striped">
                                 <thead class="thead">
                                     <tr>
                                         <th></th>
@@ -38,12 +42,12 @@
                                             <td>
                                                 @if ($service->top_position === $top_position_first->top_position)
                                                     <br>
-                                                    <a href="{{ route('service.moveDownTop', $service->id) }}">🔽</a>
+                                                    <a href="{{ route('service.moveDownTop', $service->id) }}"><i class="fa-solid fa-square-caret-down"></i></a>
                                                 @elseif ($service->top_position === $top_position_last->top_position)
-                                                    <a href="{{ route('service.moveUpTop', $service->id) }}">🔼</a>
+                                                    <a href="{{ route('service.moveUpTop', $service->id) }}"><i class="fa-solid fa-square-caret-up"></i></a>
                                                 @else
-                                                    <a href="{{ route('service.moveUpTop', $service->id) }}">🔼</a>
-                                                    <a href="{{ route('service.moveDownTop', $service->id) }}">🔽</a>
+                                                    <a href="{{ route('service.moveUpTop', $service->id) }}"><i class="fa-solid fa-square-caret-up"></i></a>
+                                                    <a href="{{ route('service.moveDownTop', $service->id) }}"><i class="fa-solid fa-square-caret-down"></i></a>
                                                 @endif
                                             </td>
                                             <td>{{ $service->top_position }}</td>
