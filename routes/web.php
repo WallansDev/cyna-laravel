@@ -61,4 +61,9 @@ Route::get('verify/resend', [TwoFactorController::class, 'resend'])->name('verif
 Route::resource('verify', TwoFactorController::class)->only(['index', 'store']);
 // });
 
+// Page CGE accessible à tous
+Route::get('/cge', function () {
+    return view('cge.cge');
+})->name('cge');
+
 require __DIR__ . '/auth.php';
