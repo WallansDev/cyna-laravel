@@ -10,13 +10,13 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('support_tickets', function (Blueprint $table) {
-            $table->id(); 
-            $table->string('subject');
-            $table->text(column: 'message');
-            $table->integer(column: 'etat');
-            $table->unsignedBigInteger('user_id');
+        Schema::create('messages_tickets', function (Blueprint $table) {
+            $table->id();
+             $table->unsignedBigInteger('ticket_id');
+            $table->foreign('ticket_id')->references('id')->on('tickets')->onDelete('cascade');
+             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->text('content');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('support_tickets');
+        Schema::dropIfExists('messages_tickets');
     }
 };

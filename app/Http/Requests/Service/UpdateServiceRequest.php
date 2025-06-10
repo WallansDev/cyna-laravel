@@ -26,7 +26,7 @@ class UpdateServiceRequest extends FormRequest
         return [
             'name' => 'required|string|max:50',
             'image_path' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'description' => 'nullable|string|max:150',
+            'description' => 'nullable|string|max:255',
             'availbility' => 'sometimes|boolean',
             'categories' => 'array',
             'categories.*' => 'exists:categories,id',

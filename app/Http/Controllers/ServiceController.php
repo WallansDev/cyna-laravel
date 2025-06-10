@@ -17,16 +17,25 @@ class ServiceController extends Controller
 {
     /**
      * Display a listing of the resource.
-     */
+    */
+
     public function index()
     {
-        $services = Service::paginate(5);
+        $services = Service::paginate(10);
+
+        return view('service.index', compact('services'));
+    }
+
+
+    public function viewAdmin()
+    {
+        $services = Service::orderBy('position')->paginate(3);
         $service_first = Service::orderBy('position')->first();
         $service_last = Service::orderByDesc('position')->first();
         $top_position_first = Service::orderBy('top_position')->first();
         $top_position_last = Service::orderByDesc('top_position')->first();
 
-        return view('service.index', compact('services', 'service_first', 'service_last', 'top_position_first', 'top_position_last'));
+        return view('service.viewAdmin', compact('services', 'service_first', 'service_last', 'top_position_first', 'top_position_last'));
     }
 
     public function topProducts()
@@ -44,9 +53,7 @@ class ServiceController extends Controller
     public function moveUp($id)
     {
         $current = Service::findOrFail($id);
-        $above = Service::where('position', '<', $current->position)
-            ->orderByDesc('position')
-            ->first();
+        $above = Service::where('position', '<', $current->position)->orderByDesc('position')->first();
 
         if ($above) {
             [$current->position, $above->position] = [$above->position, $current->position];
@@ -63,9 +70,7 @@ class ServiceController extends Controller
     public function moveDown($id)
     {
         $current = Service::findOrFail($id);
-        $below = Service::where('position', '>', $current->position)
-            ->orderBy('position')
-            ->first();
+        $below = Service::where('position', '>', $current->position)->orderBy('position')->first();
 
         if ($below) {
             [$current->position, $below->position] = [$below->position, $current->position];
@@ -83,9 +88,7 @@ class ServiceController extends Controller
     {
         $current = Service::findOrFail($id);
 
-        $above = Service::where('top_position', '<', $current->top_position)
-            ->orderBy('top_position', 'desc')
-            ->first();
+        $above = Service::where('top_position', '<', $current->top_position)->orderBy('top_position', 'desc')->first();
 
         if ($above) {
             [$current->top_position, $above->top_position] = [$above->top_position, $current->top_position];
@@ -96,8 +99,6 @@ class ServiceController extends Controller
         return redirect()->back();
     }
 
-
-
     /**
      * Move down the current Service Top product item
      */
@@ -105,9 +106,7 @@ class ServiceController extends Controller
     {
         $current = Service::findOrFail($id);
 
-        $below = Service::where('top_position', '>', $current->top_position)
-            ->orderBy('top_position', 'asc')
-            ->first();
+        $below = Service::where('top_position', '>', $current->top_position)->orderBy('top_position', 'asc')->first();
 
         if ($below) {
             [$current->top_position, $below->top_position] = [$below->top_position, $current->top_position];
@@ -164,10 +163,8 @@ class ServiceController extends Controller
         // 3. Toujours réorganiser pour être sûr
         // $this->reorderTopPositions();
 
-        return Redirect::route('services.index')
-            ->with('success', 'Service created successfully.');
+        return Redirect::route('services.index')->with('success', 'Service created successfully.');
     }
-
 
     /**
      * Display the specified resource.
@@ -187,7 +184,6 @@ class ServiceController extends Controller
         $service = Service::with('categories')->findOrFail($id);
         $allCategories = Category::all();
         $topServices = Service::where('top_position', '>', 0)->orderBy('top_position')->get();
-
 
         return view('service.edit', compact('service', 'allCategories', 'topServices'));
     }
@@ -217,24 +213,26 @@ class ServiceController extends Controller
         if ($request->boolean('is_top_product')) {
             $order = json_decode($request->input('top_order_json'), true);
 
-            foreach ($order as $item) {
-                Service::where('id', $item['id'])->update([
-                    'top_position' => $item['position'],
-                ]);
+            if (is_array($order)) {
+                foreach ($order as $item) {
+                    Service::where('id', $item['id'])->update([
+                        'top_position' => $item['position'],
+                    ]);
+                }
+            } else {
+                // Si pas d'ordre JSON valide, ajouter en fin
+                $maxPosition = Service::max('top_position') ?? 0;
+                $service->update(['top_position' => $maxPosition + 1]);
             }
         } else {
-            // Si décoché, on retire la position
             $service->update(['top_position' => 0]);
         }
 
         // Réordonner après modification
         $this->reorderTopPositions();
 
-        return Redirect::route('services.index')
-            ->with('success', 'Service updated successfully');
+        return Redirect::route('services.index')->with('success', 'Service updated successfully');
     }
-
-
 
     public function destroy($id): RedirectResponse
     {
@@ -248,8 +246,7 @@ class ServiceController extends Controller
         $this->reorderPositions();
         $this->reorderTopPositions();
 
-        return Redirect::route('services.index')
-            ->with('success', 'Category deleted successfully');
+        return Redirect::route('services.index')->with('success', 'Category deleted successfully');
     }
 
     private function reorderPositions(): void
@@ -270,11 +267,6 @@ class ServiceController extends Controller
 
         foreach ($produits_top as $index => $service) {
             $service->update(['top_position' => $index + 1]);
-
-            // if ($produit_top->top_position !== $index + 1) {
-            //     $produit_top->top_position = $index + 1;
-            //     $produit_top->save();
-            // }
         }
     }
 }

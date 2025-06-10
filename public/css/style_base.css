@@ -15,7 +15,7 @@ body {
 
 /* Header styles */
 .site-header {
-    background-color: #6e55fa;
+    background-color: var(--dark-bg);
     padding: 10px 0;
 }
 

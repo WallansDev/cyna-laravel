@@ -50,6 +50,7 @@ class UserRequest extends FormRequest
 
             'password.required' => 'Le mot de passe est obligatoire',
             'password.max' => 'Le mot de passe doit faire au minimum 14 caractères',
+            'password.min' => 'Le mot de passe doit faire au minimum 14 caractères',
 
             'phone.max' => 'Le numéro de téléphone ne doit pas dépasser 255 caractères',
         ];

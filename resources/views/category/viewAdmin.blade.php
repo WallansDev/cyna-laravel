@@ -36,7 +36,9 @@
                                         <th></th>
                                         <th>Position</th>
                                         <th>Title</th>
-                                        <th>Image</th>
+                                        <th>Image Path</th>
+                                        <th>Description</th>
+                                        <th>Services associés</th>
 
                                         <th></th>
                                     </tr>
@@ -47,12 +49,12 @@
                                             <td>
                                                 @if ($category->position === $category_first->position)
                                                     <br>
-                                                    <a href="{{ route('category.down', $category->id) }}">🔽</a>
+                                                    <a href="{{ route('categories.down', $category->id) }}">🔽</a>
                                                 @elseif ($category->position === $category_last->position)
-                                                    <a href="{{ route('category.up', $category->id) }}">🔼</a>
+                                                    <a href="{{ route('categories.up', $category->id) }}">🔼</a>
                                                 @else
-                                                    <a href="{{ route('category.up', $category->id) }}">🔼</a>
-                                                    <a href="{{ route('category.down', $category->id) }}">🔽</a>
+                                                    <a href="{{ route('categories.up', $category->id) }}">🔼</a>
+                                                    <a href="{{ route('categories.down', $category->id) }}">🔽</a>
                                                 @endif
                                             </td>
                                             <td>{{ $category->position }}</td>
@@ -60,11 +62,36 @@
                                             <td><img src="{{ asset('storage/categories/' . $category->image_path) }}"
                                                     alt="{{ $category->image_path }}" width="20%">
                                             </td>
+                                            <td>{{ $category->description }}</td>
+                                            <td>
+                                                @forelse ($category->services as $service)
+                                                    <span class="badge bg-secondary">{{ $service->name }}</span>
+
+                                                @empty
+                                                    Pas de service
+                                                @endforelse
+                                            </td>
+                                            <td>
+                                                <form action="{{ route('categories.destroy', $category->id) }}"
+                                                    method="POST">
+                                                    <a class="btn btn-sm btn-primary "
+                                                        href="{{ route('categories.show', $category->id) }}">👁️</a>
+                                                    <a class="btn btn-sm btn-success"
+                                                        href="{{ route('categories.edit', $category->id) }}">✏️</a>
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                        onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;">🗑️</button>
+                                                </form>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        {{ $categories->links() }}
                     </div>
                 </div>
             </div>

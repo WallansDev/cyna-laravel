@@ -5,60 +5,82 @@ use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\CarouselController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SupportController;
+use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Http\Middleware\TwoFactor;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return redirect('/dashboard');
+Route::view('/', 'home')->name('home');
+
+Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
+Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+
+// Authenticated User
+Route::middleware(['auth', 'verified'])->group(function () {
+    
+    // Profile
+    Route::get('/profil', [ProfileController::class, 'index'])->name('profile.index');
+    Route::get('/profil/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profil/edit', [ProfileController::class, 'update'])->name('profile.update');
+    Route::view('/profil/edit/password', 'profile.changePassword')->name('password.edit');
+    Route::put('/profil/edit', [ProfileController::class, 'update'])->name('profile.update');
+
+    // Tickets
+    Route::resource('/tickets', TicketController::class);
+    Route::post('/tickets/{ticket}/messages', [MessageController::class, 'store'])->name('messages.store');
+    Route::post('/tickets/{ticket}/update-status', [TicketController::class, 'updateStatus'])->name('tickets.updateStatus');
 });
 
+
 // Authenticated Admin
-Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'signed'])->group(function () {
 
-
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-
+    // Admin Carousel
     Route::resource('/accueil/carousel', CarouselController::class);
 
-    Route::resource('/categories', CategoryController::class)->except('moveUp', 'moveDown', 'orderIndex');
+    // Admin Categories/admin
+    Route::get('/categories/admin', [CategoryController::class, 'viewAdmin'])->name('categories.viewAdmin');
+    Route::get('/accueil/categories/admin', [CategoryController::class, 'orderIndex'])->name('categories.orderIndex');
+    Route::get('/accueil/categories/{id}/up', [CategoryController::class, 'moveUp'])->name('categories.up');
+    Route::get('/accueil/categories/{id}/down', [CategoryController::class, 'moveDown'])->name('categories.down');
+    Route::resource('/categories', CategoryController::class)->except('moveUp', 'moveDown', 'orderIndex', 'index');
 
-    Route::get('/accueil/categories', [CategoryController::class, 'orderIndex'])->name('category.orderIndex');
-    Route::get('/accueil/categories/{id}/up', [CategoryController::class, 'moveUp'])->name('category.up');
-    Route::get('/accueil/categories/{id}/down', [CategoryController::class, 'moveDown'])->name('category.down');
-    
+    // Admin Services
+    Route::get('/services/admin', [ServiceController::class, 'viewAdmin'])->name('services.viewAdmin');
+    Route::get('/services/{id}/up', [ServiceController::class, 'moveUp'])->name('services.up');
+    Route::get('/services/{id}/down', [ServiceController::class, 'moveDown'])->name('services.down');
+    Route::resource('/services', ServiceController::class)->except('moveUp', 'moveDown', 'topProducts', 'reorderTop', 'index');
 
-    Route::resource('/services', ServiceController::class)->except('moveUp', 'moveDown', 'topProducts', 'reorderTop');
-    Route::get('/services/{id}/up', [ServiceController::class, 'moveUp'])->name('service.up');
-    Route::get('/services/{id}/down', [ServiceController::class, 'moveDown'])->name('service.down');
+    // Admin Top products
+    Route::get('/accueil/top-products/admin', [ServiceController::class, 'topProducts'])->name('services.topProducts');
+    Route::get('/accueil/top-products/{id}/move-up-top', [ServiceController::class, 'moveUpTopProduct'])->name('services.moveUpTop');
+    Route::get('/accueil/top-products/{id}/move-down-top', [ServiceController::class, 'moveDownTopProduct'])->name('services.moveDownTop');
 
-    Route::get('/accueil/top-products', [ServiceController::class, 'topProducts'])->name('service.topProducts');
-    Route::get('/accueil/top-products/{id}/move-up-top', [ServiceController::class, 'moveUpTopProduct'])->name('service.moveUpTop');
-    Route::get('/accueil/top-products/{id}/move-down-top', [ServiceController::class, 'moveDownTopProduct'])->name('service.moveDownTop');
+    // Admin Users
+    Route::resource('/users/admin', UserController::class)->names([
+        'index' => 'users.index',
+        'create' => 'users.create',
+        'store' => 'users.store',
+        'show' => 'users.show',
+        'edit' => 'users.edit',
+        'update' => 'users.update',
+        'destroy' => 'users.destroy',
+    ]);
 
-    
-    Route::resource('/support', SupportController::class);
-    // Route::get('/support', [SupportController::class, 'showForm'])->name('support.form');
-    // Route::post('/support', [SupportController::class, 'submitForm'])->name('support.submit');
-
-    Route::resource('/users', UserController::class);
-
+    // Admin Accueil
     Route::get('/accueil', function () {
         return view('accueil');
     })->name('accueil');
-});
 
-// Route::middleware('auth')->group(function () {
-Route::get('verify/resend', [TwoFactorController::class, 'resend'])->name('verify.resend');
-Route::resource('verify', TwoFactorController::class)->only(['index', 'store']);
-// });
+    // 2FA
+    Route::get('verify/resend', [TwoFactorController::class, 'resend'])->name('verify.resend');
+    Route::resource('verify', TwoFactorController::class)->only(['index', 'store']);
+});
 
 require __DIR__ . '/auth.php';

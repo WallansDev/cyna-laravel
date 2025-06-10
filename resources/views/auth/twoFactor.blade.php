@@ -52,17 +52,26 @@
                 @enderror
             </div>
 
-            <div class="d-flex justify-content-center">
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button class="btn btn-secondary" type="submit">Annuler</button>
-                </form>
-                &ensp;
+            <!-- Boutons alignés -->
+            <div class="d-flex justify-content-center gap-2">
+                <!-- Bouton Annuler (déconnecte l'utilisateur) -->
+                <button class="btn btn-secondary" type="button"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    Annuler
+                </button>
+
+                <!-- Bouton Vérifier -->
                 <button style="background-color: #8535e4;" type="submit" class="btn btn-primary px-4">
                     Vérifier
                 </button>
             </div>
         </form>
+
+        <!-- Formulaire de logout (en dehors du formulaire principal) -->
+        <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display: none;">
+            @csrf
+        </form>
+
 
     </div>
 </body>
