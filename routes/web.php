@@ -77,10 +77,10 @@ Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'signed'])->group
     Route::get('/accueil', function () {
         return view('accueil');
     })->name('accueil');
+});
 
     // 2FA
     Route::get('verify/resend', [TwoFactorController::class, 'resend'])->name('verify.resend');
     Route::resource('verify', TwoFactorController::class)->only(['index', 'store']);
-});
 
 require __DIR__ . '/auth.php';
