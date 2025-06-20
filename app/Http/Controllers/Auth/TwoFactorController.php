@@ -32,7 +32,7 @@ class TwoFactorController extends Controller
             if (date('Y-m-d H:i:s') <= $user->two_factor_expires_at) {
                 $user->resetTwoFactorCode();
 
-                return redirect()->route('dashboard');
+                return redirect()->route('home');
             }
             return redirect()->back()
                 ->withErrors(['two_factor_code' =>

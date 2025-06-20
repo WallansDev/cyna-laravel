@@ -18,23 +18,9 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var list<string>
      */
 
-    protected $dates = [
-        'updated_at',
-        'created_at',
-        'two_factor_expires_at',
-    ];
+    protected $dates = ['updated_at', 'created_at', 'two_factor_expires_at'];
 
-    protected $fillable = [
-        'name',
-        'surname',
-        'email',
-        'password',
-        'phone',
-        'role',
-        'is_admin',
-        'two_factor_code',
-        'two_factor_expires_at',
-    ];
+    protected $fillable = ['name', 'surname', 'email', 'password', 'siret', 'phone', 'role', 'is_admin', 'two_factor_code', 'two_factor_expires_at'];
 
     public function generateTwoFactorCode()
     {
@@ -57,11 +43,12 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var list<string>
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $hidden = ['password', 'remember_token'];
 
+    public function isAdmin()
+    {
+        return $this->is_admin;
+    }
     /**
      * Get the attributes that should be cast.
      *

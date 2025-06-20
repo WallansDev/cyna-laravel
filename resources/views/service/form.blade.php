@@ -55,6 +55,7 @@
                         data-id="{{ $top->id }}">
                         @if (isset($service) && $service->id === $top->id)
                             <b>{{ $top->name }}</b>
+                            <span class="badge bg-primary">Ce service</span>
                             @php $alreadyInList = true; @endphp
                         @else
                             {{ $top->name }}
@@ -96,8 +97,17 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
 <script>
     $(function() {
+        function initSortable() {
+            $("#sortable-top-products").sortable({
+                update: function() {
+                    refreshOrder();
+                }
+            });
+        }
+
         function refreshOrder() {
             let order = [];
             $('.sortable-item').each(function(index) {
@@ -109,9 +119,16 @@
             $('#top_order_json').val(JSON.stringify(order));
         }
 
+        // Initialisation conditionnelle
+        if ($('#top_position_block').is(':visible')) {
+            initSortable();
+            refreshOrder();
+        }
+
         $('#is_top_product').on('change', function() {
             if (this.checked) {
                 $('#top_position_block').show();
+                initSortable();
 
                 // Ajoute dynamiquement le service dans la liste si absent
                 const serviceId = '{{ $service->id ?? 'new' }}';
@@ -123,26 +140,18 @@
 
                 if (!alreadyExists) {
                     $('#sortable-top-products').append(`
-                        <li class="list-group-item sortable-item d-flex justify-content-between align-items-center"
-                            data-id="${serviceId}">
-                            ${name}
-                            <span class="badge bg-primary">Ce service</span>
-                        </li>
-                    `);
-                    $("#sortable-top-products").sortable("refresh");
-                    refreshOrder();
+                    <li class="list-group-item sortable-item d-flex justify-content-between align-items-center"
+                        data-id="${serviceId}">
+                        ${name}
+                        <span class="badge bg-primary">Ce service</span>
+                    </li>
+                `);
                 }
+                $("#sortable-top-products").sortable("refresh");
+                refreshOrder();
             } else {
                 $('#top_position_block').hide();
             }
         });
-
-        $("#sortable-top-products").sortable({
-            update: function() {
-                refreshOrder();
-            }
-        });
-
-        refreshOrder(); // Initial order save
     });
 </script>

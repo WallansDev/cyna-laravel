@@ -3,11 +3,11 @@
 @section('title', 'Catégories - ' . $_SOCIETYNAME)
 
 @section('content')
-    <div class="container-fluid" style="margin-top: 5em;">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
-                <div class="card purple-theme">
-                    <div class="card-header purple-header">
+                <div class="card">
+                    <div class="card-header">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
 
                             <span id="card_title">
@@ -15,7 +15,7 @@
                             </span>
 
                             <div class="float-right">
-                                <a href="{{ route('categories.create') }}" class="btn purple-btn-primary btn-sm float-right"
+                                <a href="{{ route('categories.create') }}" class="btn btn-primary btn-sm float-right"
                                     data-placement="left">
                                     {{ __('Create New') }}
                                 </a>
@@ -28,9 +28,9 @@
                         </div>
                     @endif
 
-                    <div class="card-body">
+                    <div class="card-body bg-white">
                         <div class="table-responsive">
-                            <table class="table table-striped table-dark">
+                            <table class="table table-striped table-hover">
                                 <thead class="thead">
                                     <tr>
                                         <th></th>
@@ -38,7 +38,7 @@
                                         <th>Title</th>
                                         <th>Image</th>
 
-                                        {{-- <th></th> --}}
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -47,18 +47,18 @@
                                             <td>
                                                 @if ($category->position === $category_first->position)
                                                     <br>
-                                                    <a href="{{ route('category.down', $category->id) }}"><i class="fa-solid fa-square-caret-down"></i></a>
+                                                    <a href="{{ route('category.down', $category->id) }}">🔽</a>
                                                 @elseif ($category->position === $category_last->position)
-                                                    <a href="{{ route('category.up', $category->id) }}"><i class="fa-solid fa-square-caret-up"></i></a>
+                                                    <a href="{{ route('category.up', $category->id) }}">🔼</a>
                                                 @else
-                                                    <a href="{{ route('category.up', $category->id) }}"><i class="fa-solid fa-square-caret-up"></i></a>
-                                                    <a href="{{ route('category.down', $category->id) }}"><i class="fa-solid fa-square-caret-down"></i></a>
+                                                    <a href="{{ route('category.up', $category->id) }}">🔼</a>
+                                                    <a href="{{ route('category.down', $category->id) }}">🔽</a>
                                                 @endif
                                             </td>
                                             <td>{{ $category->position }}</td>
                                             <td>{{ $category->name }}</td>
                                             <td><img src="{{ asset('storage/categories/' . $category->image_path) }}"
-                                                    alt="{{ $category->image_path }}" width="20%" class="category-image">
+                                                    alt="{{ $category->image_path }}" width="20%">
                                             </td>
                                         </tr>
                                     @endforeach

@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\SupportTicket;
+use App\Models\Ticket;
 use Illuminate\Support\ServiceProvider;
 
 class ViewServiceProvider extends ServiceProvider
@@ -21,7 +21,7 @@ class ViewServiceProvider extends ServiceProvider
     public function boot(): void
     {
         view()->composer('layouts.base', function ($view) {
-            $hasNewTickets = SupportTicket::where('status', 3)->exists();
+            $hasNewTickets = Ticket::where('status', 3)->exists();
             $view->with('hasNewTickets', $hasNewTickets);
         });
     }

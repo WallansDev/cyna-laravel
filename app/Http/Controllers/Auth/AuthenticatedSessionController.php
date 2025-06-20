@@ -17,8 +17,8 @@ class AuthenticatedSessionController extends Controller
      */
     public function create()
     {
-        return redirect('/');
-        // return view('auth.login');
+        // return redirect('/');
+        return view('auth.login');
     }
 
     /**
@@ -26,18 +26,22 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
-
-        $request->session()->regenerate();
+        $request->authenticate(); // Valide email/password
 
         $user = $request->user();
 
-        if (Auth::user()->is_admin) {
+        if ($user->is_admin) {
             $user->generateTwoFactorCode();
             $user->notify(new TwoFactorCode());
+
+            // Rediriger vers la page de saisie du code 2FA
+            return redirect()->route('verify.index');
         }
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        // Sinon connexion classique pour les non-admins
+        $request->session()->regenerate();
+
+        return redirect()->intended(route('profile.index'));
     }
 
     /**

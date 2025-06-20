@@ -12,6 +12,11 @@ use Illuminate\View\View;
 class ProfileController extends Controller
 {
 
+    public function index()
+    {
+        return view("profile.dashboard");
+    }
+
     public function commands(Request $request): View
     {
         return view('profile.commands', [
@@ -24,7 +29,7 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
+        return view('profile.edit-account', [
             'user' => $request->user(),
         ]);
     }
@@ -32,18 +37,20 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
+   public function update(ProfileUpdateRequest $request): RedirectResponse
+{
+    $user = $request->user();
+    $data = $request->validated();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
-
-        $request->user()->save();
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    if ($user->email != $data['email']) {
+            $user->email_verified_at = null;
     }
+
+    $user->update($data);
+
+    return back()->with('success','Profil mis à jour.');
+}
+
 
     /**
      * Delete the user's account.
