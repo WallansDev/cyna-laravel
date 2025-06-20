@@ -1,0 +1,244 @@
+/* Fichier: public/css/purple-theme.css */
+
+/* Styles pour la card de gestion des catégories - inspiré de l'image */
+.purple-theme {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  margin-bottom: 2rem;
+  border: none;
+  overflow: hidden;
+  background-color: #2d2a3e; /* Couleur de fond foncée comme dans l'image */
+}
+
+.purple-header {
+  background: linear-gradient(#6D08FD, #4c05b1) ; /* Couleur violette comme dans l'en-tête */
+  border-bottom: none;
+  padding: 1.25rem;
+  color: white;
+}
+
+.purple-theme #card_title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: white;
+}
+
+.purple-theme .card-body {
+  background-color: #2d2a3e; /* Fond foncé pour le corps de la card */
+  padding: 0; /* Supprimer le padding pour correspondre au design */
+}
+
+/* Styles pour le tableau */
+.purple-table {
+  margin-bottom: 0;
+  color: white; /* Texte blanc pour le contraste */
+}
+
+.purple-table th {
+  background-color: #3a3649; /* Fond foncé pour les en-têtes comme dans l'image */
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  color: white;
+  border: none;
+  padding: 1rem;
+}
+
+/* Style pour les lignes de tableau */
+.purple-table tbody tr {
+  background-color: #33304a; /* Fond sombre pour les lignes */
+  border-bottom: 1px solid #3a3750;
+  transition: background-color 0.2s ease;
+}
+
+.purple-table.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: #2a2840; /* Légèrement plus foncé pour les lignes alternées */
+}
+
+.purple-table tbody tr:hover {
+  background-color: #3c3957; /* Plus clair au survol */
+}
+
+.purple-table td {
+  padding: 1rem;
+  vertical-align: middle;
+}
+
+.purple-table img.category-image {
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
+}
+
+.purple-table img.category-image:hover {
+  transform: scale(1.05);
+}
+
+/* Boutons de navigation pour le positionnement */
+.purple-theme a[href*="category.up"],
+.purple-theme a[href*="category.down"] {
+  color: #ffffff;
+  background-color: #5341d2;
+  border-radius: 4px;
+  padding: 3px 8px;
+  display: inline-block;
+  margin: 2px;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.purple-theme a[href*="category.up"]:hover,
+.purple-theme a[href*="category.down"]:hover {
+  background-color: #6a5de0;
+}
+
+/* Badges pour les services */
+.badge.bg-purple {
+  background-color: #6951f0 !important;
+  padding: 0.5em 0.75em;
+  font-weight: 500;
+  border-radius: 6px;
+  margin: 2px;
+}
+
+/* Boutons d'action */
+.action-btn {
+  margin: 0 3px;
+  border-radius: 4px;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.view-btn {
+  background-color: #6e55fa; /* Violet compatible avec le design */
+  border-color: #6e55fa;
+}
+
+.view-btn:hover {
+  background-color: #6a5de0;
+  border-color: #6a5de0;
+}
+
+.edit-btn {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.edit-btn:hover {
+  background-color: #34c558;
+  border-color: #34c558;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.delete-btn:hover {
+  background-color: #e4606d;
+  border-color: #e4606d;
+}
+
+/* Style pour le bouton "Create New" */
+.purple-btn-primary {
+  background: linear-gradient(#EBBD29 40%, #D6931E);
+  border-color: #5341d2;
+  color : #ded8d8 !important; 
+  padding: 0.5rem 1.25rem;
+  border-radius: 6px;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.purple-btn-primary:hover {
+  background: linear-gradient(#EBBD29 10%, #D6931E);
+  border-color: #6a5de0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Style pour les messages d'alerte */
+.purple-theme .alert-success {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Liens dans le thème violet */
+.purple-theme a {
+  color: #bb9af7;
+  transition: color 0.2s ease;
+}
+
+.purple-theme a:hover {
+  color: #d7c1ff;
+  text-decoration: none;
+}
+
+/* Text muted dans le thème */
+.purple-theme .text-muted {
+  color: #9ca3af !important;
+}
+
+/* FAQ accordion custom styles */
+.faq-toggle::after {
+    filter: brightness(0) invert(1);
+    opacity: 1;
+}
+.faq-toggle:not(.collapsed)::after {
+    filter: brightness(0) invert(1);
+}
+
+.faq-question {
+    background-color: #212529 !important;
+    color: #fff !important;
+}
+.faq-answer {
+    background-color: #2C3034 !important;
+    color: #fff !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .purple-table {
+    font-size: 0.9rem;
+  }
+  
+  .action-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+  }
+  
+  .purple-theme #card_title {
+    font-size: 1.3rem;
+  }
+  
+  .purple-table img.category-image {
+    width: 40% !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .purple-table th, .purple-table td {
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .badge.bg-purple {
+    padding: 0.4em 0.6em;
+    font-size: 0.75rem;
+  }
+  
+  .purple-table img.category-image {
+    width: 60% !important;
+  }
+}

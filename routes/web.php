@@ -83,4 +83,24 @@ Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'signed'])->group
     Route::get('verify/resend', [TwoFactorController::class, 'resend'])->name('verify.resend');
     Route::resource('verify', TwoFactorController::class)->only(['index', 'store']);
 
+// Page CGU accessible à tous
+Route::get('/cgu', function () {
+    return view('cgu.cgu');
+})->name('cgu');
+
+// Page Mentions légales accessible à tous
+Route::get('/mentions', function () {
+    return view('mentions');
+})->name('mentions');
+
+// Page Contact accessible à tous
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
+
+// Page FAQ accessible à tous
+Route::get('/faq', function () {
+    return view('faq');
+})->name('faq');
+
 require __DIR__ . '/auth.php';
