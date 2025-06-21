@@ -26,7 +26,7 @@ class UpdateCategoryRequest extends FormRequest
         return [
             'name' => 'required|string|max:50',
             'image_path' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'description' => 'nullable|string|max:150',
+            'description' => 'nullable|string|max:255',
             'services' => 'array',
             'services.*' => 'exists:services,id',
         ];

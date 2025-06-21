@@ -38,28 +38,21 @@ class LoginRequest extends FormRequest
      * @throws \Illuminate\Validation\ValidationException
      */
     public function authenticate(): void
-    {
+{
+    $this->ensureIsNotRateLimited();
 
-        $this->ensureIsNotRateLimited();
+    $credentials = $this->only('email', 'password');
 
-        $credentials = $this->only('email', 'password');
-
-        if (! Auth::attempt($credentials, $this->boolean('remember'))) {
-            throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
-            ]);
-        }
-
-        $user = Auth::user();
-
-        if (!$user->is_admin) {
-            Auth::logout();
-            // redirect('/home')->with('error', 'Accès réservé aux administrateurs.');
-            abort(403);
-        }
-
-        RateLimiter::clear($this->throttleKey());
+    if (! Auth::attempt($credentials, $this->boolean('remember'))) {
+        throw ValidationException::withMessages([
+            'email' => trans('auth.failed'),
+        ]);
     }
+
+    // Authentifié avec succès
+    RateLimiter::clear($this->throttleKey());
+}
+
 
     /**
      * Ensure the login request is not rate limited.

@@ -81,7 +81,9 @@
         <div class="row align-items-center">
             <div class="col-lg-2">
                 <div class="logo-container">
-                    <img src="{{ asset('images/logo-cyna blanc.png') }}" alt="Cyna Logo" class="logo">
+                    <a href="{{ route('home') }}">
+                        <img src="{{ asset('images/logo-cyna blanc.png') }}" alt="Cyna Logo" class="logo">
+                    </a>
                 </div>
             </div>
             <div class="col-lg-6">
@@ -92,15 +94,24 @@
             </div>
             <div class="col-lg-4">
                 <div class="d-flex justify-content-end header-icons">
-                    <a href="{{ route('support.index') }}" class="me-4 cart-icon">
-                        <i class="fa-solid fa-ticket"></i>
-                        @if ($hasNewTickets)
-                            <span class="cart-badge"></span>
-                        @endif
-                    </a>
-                    <a href="#">
-                        <i class="fas fa-user"></i>
-                    </a>
+                    @if (Auth::user())
+                        <a href="{{ route('tickets.index') }}" class="me-3 cart-icon">
+                            <i class="fa-solid fa-ticket"></i>
+                        </a>
+
+                        <a class="me-3 cart-icon" href="{{ route('profile.index') }}">
+                            <i class="fas fa-user"></i>
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <a id="logout-button" href="#"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                        </form>
+                    @else
+                        <a href="{{ route('login') }}">
+                            <i class="fas fa-user"></i>
+                        </a>
+                    @endif
                 </div>
             </div>
         </div>
@@ -122,9 +133,10 @@
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item" href="{{ route('carousel.index') }}">Voir
                                                 carousel</a></li>
-                                        <li><a class="dropdown-item" href="{{ route('service.topProducts') }}">Ordre
+                                        <li><a class="dropdown-item" href="{{ route('services.topProducts') }}">Ordre
                                                 Services Top</a></li>
-                                        <li> <a class="dropdown-item" href="{{ route('category.orderIndex') }}">Ordre
+                                        <li> <a class="dropdown-item"
+                                                href="{{ route('categories.orderIndex') }}">Ordre
                                                 catégories</a></li>
                                     </ul>
                                 </div>
@@ -136,8 +148,21 @@
 
                                 <li class="nav-item">
                                     <a class="nav-link {{ request()->routeIs('categories.*') ? 'active' : '' }}"
+                                        href="{{ route('categories.viewAdmin') }}">Services</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('categories.*') ? 'active' : '' }}"
                                         href="{{ route('categories.index') }}">Catégories</a>
                                 </li>
+
+                                @if (auth()->check() && auth()->user()->isAdmin())
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}"
+                                            href="{{ route('users.index') }}">Utilisateurs</a>
+                                    </li>
+                                @endif
+
                             </ul>
                         </div>
                     </div>

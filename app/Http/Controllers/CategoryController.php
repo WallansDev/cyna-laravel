@@ -16,13 +16,21 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+
+     public function index()
+     {
+        $categories = Category::orderBy('position')->paginate(10);
+
+        return view('category.index', compact('categories'));
+     }
+
+    public function viewAdmin()
     {
         $categories = Category::orderBy('position')->paginate(3);
         $category_first = Category::orderBy('position')->first();
         $category_last = Category::orderByDesc('position')->first();
 
-        return view('category.index', compact('categories', 'category_first', 'category_last'));
+        return view('category.viewAdmin', compact('categories', 'category_first', 'category_last'));
     }
 
     public function orderIndex()

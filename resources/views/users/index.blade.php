@@ -29,7 +29,6 @@
                     <td>{{ $user->phone }}</td>
                     <td>{{ $user->is_admin }}</td>
                     <td>
-                        <a href="{{ route('users.show', $user->id) }}" class="btn btn-warning">Voir</a>
                         <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning">Modifier</a>
                         <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;">
                             @csrf

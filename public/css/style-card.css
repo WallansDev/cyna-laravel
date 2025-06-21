@@ -11,7 +11,7 @@
 }
 
 .purple-header {
-  background-color: #5341d2 ; /* Couleur violette comme dans l'en-tête */
+  background: linear-gradient(#6D08FD, #4c05b1) ; /* Couleur violette comme dans l'en-tête */
   border-bottom: none;
   padding: 1.25rem;
   color: white;
@@ -146,18 +146,18 @@
 
 /* Style pour le bouton "Create New" */
 .purple-btn-primary {
-  background-color: #6e55fa;
+  background: linear-gradient(#EBBD29 40%, #D6931E);
   border-color: #5341d2;
   color : #ded8d8 !important; 
   padding: 0.5rem 1.25rem;
   border-radius: 6px;
-  font-weight: 500;
+  font-weight: bold;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
 }
 
 .purple-btn-primary:hover {
-  background-color: #6a5de0;
+  background: linear-gradient(#EBBD29 10%, #D6931E);
   border-color: #6a5de0;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -187,6 +187,24 @@
 /* Text muted dans le thème */
 .purple-theme .text-muted {
   color: #9ca3af !important;
+}
+
+/* FAQ accordion custom styles */
+.faq-toggle::after {
+    filter: brightness(0) invert(1);
+    opacity: 1;
+}
+.faq-toggle:not(.collapsed)::after {
+    filter: brightness(0) invert(1);
+}
+
+.faq-question {
+    background-color: #212529 !important;
+    color: #fff !important;
+}
+.faq-answer {
+    background-color: #2C3034 !important;
+    color: #fff !important;
 }
 
 /* Responsive adjustments */
