@@ -21,9 +21,11 @@ class ServiceController extends Controller
 
     public function index()
     {
-        $services = Service::paginate(10);
+        $services = Service::with('categories')->orderBy('position')->get();
+        $service_first = $services->first();
+        $service_last = $services->last();
 
-        return view('service.index', compact('services'));
+        return view('service.index', compact('services', 'service_first', 'service_last'));
     }
 
 
