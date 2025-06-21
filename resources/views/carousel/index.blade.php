@@ -37,4 +37,105 @@
             <p class="text-center">Aucune image trouvée.</p>
         @endif
     </div>
+    <!-- Featured products section -->
+            <section class="mb-5" style="width: 80%; display flex; justify-content: center; margin: auto;">
+                <h2 class="mb-4">Produits en vedette</h2>
+                <div class="row g-4">
+                    <!-- Product card -->
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="card h-100 purple-header" style="border: none;">
+                            <img src="/api/placeholder/300/300" class="card-img-top" alt="Product image">
+                            <div class="card-body">
+                                <h5 class="card-title">Produit 1</h5>
+                                <p class="card-text">29,99 €</p>
+                                <button class="btn btn-primary w-100" style="background-color: var(--primary-color); border: none;">Ajouter au panier</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product card -->
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="card h-100 purple-header" style="border: none;">
+                            <img src="/api/placeholder/300/300" class="card-img-top" alt="Product image">
+                            <div class="card-body">
+                                <h5 class="card-title">Produit 2</h5>
+                                <p class="card-text">39,99 €</p>
+                                <button class="btn btn-primary w-100" style="background-color: var(--primary-color); border: none;">Ajouter au panier</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product card -->
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="card h-100 purple-header" style="border: none;">
+                            <img src="/api/placeholder/300/300" class="card-img-top" alt="Product image">
+                            <div class="card-body">
+                                <h5 class="card-title">Produit 3</h5>
+                                <p class="card-text">49,99 €</p>
+                                <button class="btn btn-primary w-100" style="background-color: var(--primary-color); border: none;">Ajouter au panier</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product card -->
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="card h-100 purple-header" style="border: none;">
+                            <img src="/api/placeholder/300/300" class="card-img-top" alt="Product image">
+                            <div class="card-body">
+                                <h5 class="card-title">Produit 4</h5>
+                                <p class="card-text">19,99 €</p>
+                                <button class="btn btn-primary w-100" style="background-color: var(--primary-color); border: none;">Ajouter au panier</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Categories section -->
+            <section class="mb-5" style="width: 80%; display flex; justify-content: center; margin: auto;">
+                <h2 class="mb-4">Catégories</h2>
+                <div class="row g-4">
+                    <!-- Category card -->
+                    <div class="col-6 col-md-3">
+                        <div class="card text-center purple-header" style="border: none;">
+                            <div class="card-body py-4">
+                                <i class="fa-solid fa-laptop mb-3" style="font-size: 2.5rem;"></i>
+                                <h5 class="card-title">Matériels</h5>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Category card -->
+                    <div class="col-6 col-md-3">
+                        <div class="card text-center purple-header" style="border: none;">
+                            <div class="card-body py-4">
+                                <i class="fa-solid fa-laptop mb-3" style="font-size: 2.5rem;"></i>
+                                <h5 class="card-title">Logiciels</h5>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Category card -->
+                    <div class="col-6 col-md-3">
+                        <div class="card text-center purple-header" style="border: none;">
+                            <div class="card-body py-4">
+                                <i class="fa-solid fa-laptop mb-3" style="font-size: 2.5rem;"></i>
+                                <h5 class="card-title">Sécurité</h5>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Category card -->
+                    <div class="col-6 col-md-3">
+                        <div class="card text-center purple-header" style="border: none;">
+                            <div class="card-body py-4">
+                                <i class="fa-solid fa-laptop mb-3" style="font-size: 2.5rem;"></i>
+                                <h5 class="card-title">Caméra</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
 @endsection

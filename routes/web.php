@@ -20,6 +20,7 @@ Route::view('/', 'home')->name('home');
 
 Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+Route::get('/accueil/carousel', [CarouselController::class, 'index'])->name('carousel.index');
 
 // Authenticated User
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -42,7 +43,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'signed'])->group(function () {
 
     // Admin Carousel
-    Route::resource('/accueil/carousel', CarouselController::class);
+    Route::resource('/accueil/carousel', CarouselController::class)->except(['index']);
 
     // Admin Categories/admin
     Route::get('/categories/admin', [CategoryController::class, 'viewAdmin'])->name('categories.viewAdmin');
