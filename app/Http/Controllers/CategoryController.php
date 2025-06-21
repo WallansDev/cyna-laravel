@@ -19,9 +19,10 @@ class CategoryController extends Controller
 
      public function index()
      {
-        $categories = Category::orderBy('position')->paginate(10);
-
-        return view('category.index', compact('categories'));
+        $categories = Category::with('services')->orderBy('position')->get();
+        $category_first = $categories->first();
+        $category_last = $categories->last();
+        return view('category.index', compact('categories', 'category_first', 'category_last'));
      }
 
     public function viewAdmin()
