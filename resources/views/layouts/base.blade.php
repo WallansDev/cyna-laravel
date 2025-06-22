@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="{{ asset('css/style_base.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style-card.css') }}">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],

@@ -23,7 +23,7 @@
 </header>
 
 <!-- Mobile off-canvas menu -->
-<div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu" style="background: var(--dark-bg);">
+<div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu" style="background: linear-gradient(to right, rgba(0,0,0,0), var(--dark-bg)),#010033 ! important;">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title text-white">Menu</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
