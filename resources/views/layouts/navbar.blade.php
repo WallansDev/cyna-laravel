@@ -23,7 +23,7 @@
 </header>
 
 <!-- Mobile off-canvas menu -->
-<div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu" style="background: var(--dark-bg);">
+<div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu" style="background: linear-gradient(to right, rgba(0,0,0,0), var(--dark-bg)),#010033 ! important;">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title text-white">Menu</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
@@ -54,23 +54,31 @@
             <h6 class="text-white">Informations</h6>
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#">CGU</a>
+                    <a class="nav-link text-white" href="{{ route('cgu') }}">CGU</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Mentions légales</a>
+                    <a class="nav-link text-white" href="{{ url('/mentions') }}">Mentions légales</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Contact</a>
+                    <a class="nav-link text-white" href="{{ url('/contact') }}">Contact</a>
                 </li>
+            </ul>
+        </div>
+        <div class="mt-5">
+            <h6 class="text-white">Service client</h6>
+            <ul class="nav flex-column">
+                <li class="nav-item"><a class="nav-link text-white" href="#">Suivi de commande</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="#">Retours et remboursements</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="{{ route('faq') }}">FAQ</a></li>
             </ul>
         </div>
 
         <!-- Social media links for mobile -->
         <div class="mt-4 social-icons">
-            <a href="#"><i class="fab fa-facebook"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="https://www.facebook.com/people/Cyna-coiffure/100089800742148/"><i class="fab fa-facebook"></i></a>
+            <a href="https://x.com/SCanceill"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/cynailsartist/"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/company/cyna-it/"><i class="fab fa-linkedin"></i></a>
         </div>
     </div>
 </div>
@@ -148,7 +156,7 @@
 
                                 <li class="nav-item">
                                     <a class="nav-link {{ request()->routeIs('categories.*') ? 'active' : '' }}"
-                                        href="{{ route('categories.viewAdmin') }}">Services</a>
+                                        href="{{ route('categories.viewAdmin') }}">Catégories Admin</a>
                                 </li>
 
                                 <li class="nav-item">

@@ -20,6 +20,7 @@ Route::view('/', 'home')->name('home');
 
 Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+Route::get('/accueil/carousel', [CarouselController::class, 'index'])->name('carousel.index');
 
 // Authenticated User
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -39,10 +40,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
 // Authenticated Admin
-Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'signed'])->group(function () {
+Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'verified'])->group(function () {
 
     // Admin Carousel
-    Route::resource('/accueil/carousel', CarouselController::class);
+    Route::resource('/accueil/carousel', CarouselController::class)->except(['index']);
 
     // Admin Categories/admin
     Route::get('/categories/admin', [CategoryController::class, 'viewAdmin'])->name('categories.viewAdmin');
@@ -53,8 +54,8 @@ Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'signed'])->group
 
     // Admin Services
     Route::get('/services/admin', [ServiceController::class, 'viewAdmin'])->name('services.viewAdmin');
-    Route::get('/services/{id}/up', [ServiceController::class, 'moveUp'])->name('services.up');
-    Route::get('/services/{id}/down', [ServiceController::class, 'moveDown'])->name('services.down');
+    Route::get('/services/{id}/up', [App\Http\Controllers\ServiceController::class, 'moveUp'])->name('service.up');
+    Route::get('/services/{id}/down', [App\Http\Controllers\ServiceController::class, 'moveDown'])->name('service.down');
     Route::resource('/services', ServiceController::class)->except('moveUp', 'moveDown', 'topProducts', 'reorderTop', 'index');
 
     // Admin Top products
