@@ -40,7 +40,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
 // Authenticated Admin
-Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'signed'])->group(function () {
+Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'verified'])->group(function () {
 
     // Admin Carousel
     Route::resource('/accueil/carousel', CarouselController::class)->except(['index']);

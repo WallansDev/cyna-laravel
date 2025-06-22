@@ -47,13 +47,13 @@
                                             <td>
                                                 @if ($category->position === $category_first->position)
                                                     <br>
-                                                    <a href="{{ route('categories.down', $category->id) }}"><i class="fa-solid fa-square-caret-down"></i></a>
+                                                    <a href="{{ route('categories.down', $category->id) }}">🔽</a>
                                                 @elseif ($category->position === $category_last->position)
-                                                    <a href="{{ route('categories.up', $category->id) }}"><i class="fa-solid fa-square-caret-up"></i></a>
+                                                    <a href="{{ route('categories.up', $category->id) }}">🔼</a>
                                                 @else
-                                                    <a href="{{ route('categories.up', $category->id) }}"><i class="fa-solid fa-square-caret-up"></i></a>
-                                                    <a href="{{ route('categories.down', $category->id) }}"><i class="fa-solid fa-square-caret-down"></i></a>
-                                                @endif
+                                                    <a href="{{ route('categories.up', $category->id) }}">🔼</a>
+                                                    <a href="{{ route('categories.down', $category->id) }}">🔽</a>
+
                                             </td>
                                             <td>{{ $category->position }}</td>
                                             <td>{{ $category->name }}</td>
