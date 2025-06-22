@@ -23,7 +23,8 @@ class ServiceController extends Controller
     {
         $services = Service::orderBy('position')->paginate(10);
 
-        return view('service.index', compact('services'));
+
+        return view('service.index', compact('services', 'service_first', 'service_last'));
     }
 
 

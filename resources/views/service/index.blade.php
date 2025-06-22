@@ -1,8 +1,9 @@
 @extends('layouts.base')
 
-@section('title', 'Les services - ' . $_SOCIETYNAME)
+@section('title', 'Services - ' . $_SOCIETYNAME)
 
 @section('content')
+
     <div class="container">
         <h1>Les services</h1>
         @foreach ($services as $service)
@@ -24,6 +25,7 @@
                                     style="float: right">Temporairement
                                     indisponible</a>
                             @endif
+
                         </div>
                     </div>
                 </div>
@@ -31,3 +33,46 @@
         @endforeach
     </div>
 @endsection
+
+<script>
+    document.querySelectorAll('.toggle-top').forEach(el => {
+        el.addEventListener('change', function() {
+            const id = this.dataset.id;
+            const checked = this.checked;
+            const input = document.querySelector(`.top-position-input[data-id="${id}"]`);
+            input.disabled = !checked;
+
+            if (!checked) {
+                input.value = 0;
+            }
+
+            updateTopPosition(id, input.value);
+        });
+    });
+
+    document.querySelectorAll('.top-position-input').forEach(el => {
+        el.addEventListener('change', function() {
+            const id = this.dataset.id;
+            updateTopPosition(id, this.value);
+        });
+    });
+
+    function updateTopPosition(id, value) {
+        fetch(`/services/${id}/update-top-position`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    top_position: value
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Top position updated');
+                }
+            });
+    }
+</script>

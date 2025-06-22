@@ -20,6 +20,7 @@ Route::view('/', 'home')->name('home');
 
 Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+Route::get('/accueil/carousel', [CarouselController::class, 'index'])->name('carousel.index');
 
 // Authenticated User
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -42,7 +43,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'verified'])->group(function () {
 
     // Admin Carousel
-    Route::resource('/accueil/carousel', CarouselController::class);
+    Route::resource('/accueil/carousel', CarouselController::class)->except(['index']);
 
     // Admin Categories/admin
     Route::get('/categories/admin', [CategoryController::class, 'viewAdmin'])->name('categories.viewAdmin');
@@ -53,8 +54,8 @@ Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'verified'])->gro
 
     // Admin Services
     Route::get('/services/admin', [ServiceController::class, 'viewAdmin'])->name('services.viewAdmin');
-    Route::get('/services/{id}/up', [ServiceController::class, 'moveUp'])->name('services.up');
-    Route::get('/services/{id}/down', [ServiceController::class, 'moveDown'])->name('services.down');
+    Route::get('/services/{id}/up', [App\Http\Controllers\ServiceController::class, 'moveUp'])->name('service.up');
+    Route::get('/services/{id}/down', [App\Http\Controllers\ServiceController::class, 'moveDown'])->name('service.down');
     Route::resource('/services', ServiceController::class)->except('moveUp', 'moveDown', 'topProducts', 'reorderTop', 'index');
 
     // Admin Top products
@@ -82,5 +83,25 @@ Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'verified'])->gro
     // 2FA
     Route::get('verify/resend', [TwoFactorController::class, 'resend'])->name('verify.resend');
     Route::resource('verify', TwoFactorController::class)->only(['index', 'store']);
+
+// Page CGU accessible à tous
+Route::get('/cgu', function () {
+    return view('cgu.cgu');
+})->name('cgu');
+
+// Page Mentions légales accessible à tous
+Route::get('/mentions', function () {
+    return view('mentions');
+})->name('mentions');
+
+// Page Contact accessible à tous
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
+
+// Page FAQ accessible à tous
+Route::get('/faq', function () {
+    return view('faq');
+})->name('faq');
 
 require __DIR__ . '/auth.php';
