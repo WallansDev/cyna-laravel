@@ -20,8 +20,8 @@
                                     style="float: right">Afficher
                                     le service</a>
                             @else
-                                <a href="#" class="btn btn-danger" style="float: right"
-                                    onclick="return false;">Temporairement
+                                <a href="{{ route('services.show', $service->id) }}" class="btn btn-danger"
+                                    style="float: right">Temporairement
                                     indisponible</a>
                             @endif
                         </div>
