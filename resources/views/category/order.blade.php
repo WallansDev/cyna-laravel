@@ -53,7 +53,7 @@
                                                 @else
                                                     <a href="{{ route('categories.up', $category->id) }}">🔼</a>
                                                     <a href="{{ route('categories.down', $category->id) }}">🔽</a>
-
+                                                @endif
                                             </td>
                                             <td>{{ $category->position }}</td>
                                             <td>{{ $category->name }}</td>

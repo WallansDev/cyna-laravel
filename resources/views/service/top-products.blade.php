@@ -42,12 +42,12 @@
                                             <td>
                                                 @if ($service->top_position === $top_position_first->top_position)
                                                     <br>
-                                                    <a href="{{ route('service.moveDownTop', $service->id) }}"><i class="fa-solid fa-square-caret-down"></i></a>
+                                                    <a href="{{ route('services.moveDownTop', $service->id) }}"><i class="fa-solid fa-square-caret-down"></i></a>
                                                 @elseif ($service->top_position === $top_position_last->top_position)
-                                                    <a href="{{ route('service.moveUpTop', $service->id) }}"><i class="fa-solid fa-square-caret-up"></i></a>
+                                                    <a href="{{ route('services.moveUpTop', $service->id) }}"><i class="fa-solid fa-square-caret-up"></i></a>
                                                 @else
-                                                    <a href="{{ route('service.moveUpTop', $service->id) }}"><i class="fa-solid fa-square-caret-up"></i></a>
-                                                    <a href="{{ route('service.moveDownTop', $service->id) }}"><i class="fa-solid fa-square-caret-down"></i></a>
+                                                    <a href="{{ route('services.moveUpTop', $service->id) }}"><i class="fa-solid fa-square-caret-up"></i></a>
+                                                    <a href="{{ route('services.moveDownTop', $service->id) }}"><i class="fa-solid fa-square-caret-down"></i></a>
                                                 @endif
                                             </td>
                                             <td>{{ $service->top_position }}</td>

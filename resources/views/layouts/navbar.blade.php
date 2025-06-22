@@ -156,7 +156,7 @@
 
                                 <li class="nav-item">
                                     <a class="nav-link {{ request()->routeIs('categories.*') ? 'active' : '' }}"
-                                        href="{{ route('categories.viewAdmin') }}">Services</a>
+                                        href="{{ route('categories.viewAdmin') }}">Catégories Admin</a>
                                 </li>
 
                                 <li class="nav-item">
