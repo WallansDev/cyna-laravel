@@ -25,6 +25,18 @@
     })(window,document,'script','dataLayer','GTM-T4D4DXQK');</script>
     <!-- End Google Tag Manager -->
 
+    
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WM20HBB2ZR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-WM20HBB2ZR');
+</script>
+
+
     {{-- Additional CSS --}}
     @yield('head-content')
 </head>

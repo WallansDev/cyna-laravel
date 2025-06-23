@@ -53,10 +53,10 @@
             <!-- Product card -->
             <div class="col-6 col-md-4 col-lg-3">
                 <div class="card h-100 purple-header" style="border: none;">
-                    <img src="/api/placeholder/300/300" class="card-img-top" alt="Product image">
+                    <img src="{{ asset('images\tests-de-penetration.png') }}" class="card-img-top" alt="Product image">
                     <div class="card-body">
-                        <h5 class="card-title">Produit 1</h5>
-                        <p class="card-text">29,99 €</p>
+                        <h5 class="card-title">Pentest (Test d'intrusion)</h5>
+                        <p class="card-text">799 €</p>
                         <button class="btn btn-primary w-100"
                             style="background-color: var(--primary-color); border: none;">Ajouter au panier</button>
                     </div>
@@ -66,10 +66,10 @@
             <!-- Product card -->
             <div class="col-6 col-md-4 col-lg-3">
                 <div class="card h-100 purple-header" style="border: none;">
-                    <img src="/api/placeholder/300/300" class="card-img-top" alt="Product image">
+                    <img src="{{ asset('images\audit-de-securite.png') }}" class="card-img-top" alt="Product image">
                     <div class="card-body">
-                        <h5 class="card-title">Produit 2</h5>
-                        <p class="card-text">39,99 €</p>
+                        <h5 class="card-title">Audit de sécurité</h5>
+                        <p class="card-text">1 499 €</p>
                         <button class="btn btn-primary w-100"
                             style="background-color: var(--primary-color); border: none;">Ajouter au panier</button>
                     </div>
@@ -79,10 +79,10 @@
             <!-- Product card -->
             <div class="col-6 col-md-4 col-lg-3">
                 <div class="card h-100 purple-header" style="border: none;">
-                    <img src="/api/placeholder/300/300" class="card-img-top" alt="Product image">
+                    <img src="{{ asset('images\cctv.png') }}" class="card-img-top" alt="Product image">
                     <div class="card-body">
-                        <h5 class="card-title">Produit 3</h5>
-                        <p class="card-text">49,99 €</p>
+                        <h5 class="card-title">SOC 24/7 pour MSP</h5>
+                        <p class="card-text">2 499 €</p>
                         <button class="btn btn-primary w-100"
                             style="background-color: var(--primary-color); border: none;">Ajouter au panier</button>
                     </div>
@@ -92,10 +92,10 @@
             <!-- Product card -->
             <div class="col-6 col-md-4 col-lg-3">
                 <div class="card h-100 purple-header" style="border: none;">
-                    <img src="/api/placeholder/300/300" class="card-img-top" alt="Product image">
+                    <img src="{{ asset('images\service-client.png') }}" class="card-img-top" alt="Product image">
                     <div class="card-body">
-                        <h5 class="card-title">Produit 4</h5>
-                        <p class="card-text">19,99 €</p>
+                        <h5 class="card-title">Réponse à incident</h5>
+                        <p class="card-text">999 €</p>
                         <button class="btn btn-primary w-100"
                             style="background-color: var(--primary-color); border: none;">Ajouter au panier</button>
                     </div>
