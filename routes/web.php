@@ -54,8 +54,8 @@ Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'verified'])->gro
 
     // Admin Services
     Route::get('/services/admin', [ServiceController::class, 'viewAdmin'])->name('services.viewAdmin');
-    Route::get('/services/{id}/up', [App\Http\Controllers\ServiceController::class, 'moveUp'])->name('service.up');
-    Route::get('/services/{id}/down', [App\Http\Controllers\ServiceController::class, 'moveDown'])->name('service.down');
+    Route::get('/services/{id}/up', [App\Http\Controllers\ServiceController::class, 'moveUp'])->name('services.up');
+    Route::get('/services/{id}/down', [App\Http\Controllers\ServiceController::class, 'moveDown'])->name('services.down');
     Route::resource('/services', ServiceController::class)->except('moveUp', 'moveDown', 'topProducts', 'reorderTop', 'index');
 
     // Admin Top products
