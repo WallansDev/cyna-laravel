@@ -17,7 +17,7 @@ use App\Http\Middleware\TwoFactor;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'home')->name('home');
+// Route::view('/', 'home');
 
 // Authenticated User
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -40,7 +40,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'verified'])->group(function () {
 
     // Admin Carousel
-    Route::resource('/accueil/carousel', CarouselController::class)->except(['index']);
 
     // Admin Categories/admin
     Route::get('/categories/admin', [CategoryController::class, 'viewAdmin'])->name('categories.viewAdmin');
@@ -107,5 +106,6 @@ Route::get('/services/{id}', [ServiceController::class, 'show'])->name('services
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
 Route::get('/categories/{id}', [CategoryController::class, 'show'])->name('categories.show');
 Route::get('/accueil/carousel', [CarouselController::class, 'index'])->name('carousel.index');
+Route::get('/', [CarouselController::class, 'index'])->name('home');
 
 require __DIR__ . '/auth.php';
