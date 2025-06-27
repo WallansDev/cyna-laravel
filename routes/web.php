@@ -19,12 +19,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home')->name('home');
 
-Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
-Route::get('/services/{id}', [ServiceController::class, 'show'])->name('services.show');
-Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
-Route::get('/categories/{id}', [CategoryController::class, 'show'])->name('categories.show');
-Route::get('/accueil/carousel', [CarouselController::class, 'index'])->name('carousel.index');
-
 // Authenticated User
 Route::middleware(['auth', 'verified'])->group(function () {
     
@@ -50,6 +44,7 @@ Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'verified'])->gro
 
     // Admin Categories/admin
     Route::get('/categories/admin', [CategoryController::class, 'viewAdmin'])->name('categories.viewAdmin');
+
     Route::get('/accueil/categories/admin', [CategoryController::class, 'orderIndex'])->name('categories.orderIndex');
     Route::get('/accueil/categories/{id}/up', [CategoryController::class, 'moveUp'])->name('categories.up');
     Route::get('/accueil/categories/{id}/down', [CategoryController::class, 'moveDown'])->name('categories.down');
@@ -106,5 +101,11 @@ Route::get('/contact', function () {
 Route::get('/faq', function () {
     return view('faq');
 })->name('faq');
+
+Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
+Route::get('/services/{id}', [ServiceController::class, 'show'])->name('services.show');
+Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+Route::get('/categories/{id}', [CategoryController::class, 'show'])->name('categories.show');
+Route::get('/accueil/carousel', [CarouselController::class, 'index'])->name('carousel.index');
 
 require __DIR__ . '/auth.php';
