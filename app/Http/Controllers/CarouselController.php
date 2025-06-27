@@ -24,6 +24,6 @@ class CarouselController extends Controller
         $carousel_first = Service::where('top_position', '!=', 0)->orderBy('top_position')->first();
         $carousel_last = Service::where('top_position', '!=', 0)->orderByDesc('top_position')->first();
 
-        return view('carousel.index', compact('carousels', 'carousel_first', 'carousel_last'));
+        return view('home', compact('carousels', 'carousel_first', 'carousel_last'));
     }
 }

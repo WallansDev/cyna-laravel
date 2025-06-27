@@ -17,12 +17,7 @@ use App\Http\Middleware\TwoFactor;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'home')->name('home');
-
-Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
-Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
-Route::get('/accueil/carousel', [CarouselController::class, 'index'])->name('carousel.index');
-Route::get('/test', [TestController::class, 'index'])->name('test.index');
+// Route::view('/', 'home');
 
 // Authenticated User
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -45,20 +40,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'verified'])->group(function () {
 
     // Admin Carousel
-    Route::resource('/accueil/carousel', CarouselController::class)->except(['index']);
 
     // Admin Categories/admin
     Route::get('/categories/admin', [CategoryController::class, 'viewAdmin'])->name('categories.viewAdmin');
+
     Route::get('/accueil/categories/admin', [CategoryController::class, 'orderIndex'])->name('categories.orderIndex');
     Route::get('/accueil/categories/{id}/up', [CategoryController::class, 'moveUp'])->name('categories.up');
     Route::get('/accueil/categories/{id}/down', [CategoryController::class, 'moveDown'])->name('categories.down');
-    Route::resource('/categories', CategoryController::class)->except('moveUp', 'moveDown', 'orderIndex', 'index');
+    Route::resource('/categories', CategoryController::class)->except('moveUp', 'moveDown', 'orderIndex', 'index', 'show');
 
     // Admin Services
     Route::get('/services/admin', [ServiceController::class, 'viewAdmin'])->name('services.viewAdmin');
     Route::get('/services/{id}/up', [App\Http\Controllers\ServiceController::class, 'moveUp'])->name('services.up');
     Route::get('/services/{id}/down', [App\Http\Controllers\ServiceController::class, 'moveDown'])->name('services.down');
-    Route::resource('/services', ServiceController::class)->except('moveUp', 'moveDown', 'topProducts', 'reorderTop', 'index');
+    Route::resource('/services', ServiceController::class)->except('moveUp', 'moveDown', 'topProducts', 'reorderTop', 'index', 'show');
 
     // Admin Top products
     Route::get('/accueil/top-products/admin', [ServiceController::class, 'topProducts'])->name('services.topProducts');
@@ -105,5 +100,12 @@ Route::get('/contact', function () {
 Route::get('/faq', function () {
     return view('faq');
 })->name('faq');
+
+Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
+Route::get('/services/{id}', [ServiceController::class, 'show'])->name('services.show');
+Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+Route::get('/categories/{id}', [CategoryController::class, 'show'])->name('categories.show');
+Route::get('/accueil/carousel', [CarouselController::class, 'index'])->name('carousel.index');
+Route::get('/', [CarouselController::class, 'index'])->name('home');
 
 require __DIR__ . '/auth.php';
