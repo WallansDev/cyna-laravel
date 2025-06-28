@@ -11,7 +11,7 @@
 }
 
 .purple-header {
-  background: linear-gradient(#6D08FD, #4c05b1);
+  background: linear-gradient(135deg, #6D08FD, #4c05b1);
   border-bottom: none;
   padding: 1.25rem;
   color: white;
