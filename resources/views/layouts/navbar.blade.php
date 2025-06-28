@@ -164,43 +164,9 @@
 
                                 @if (auth()->check() && auth()->user()->isAdmin())
                                     <li class="nav-item">
-                                        <a class="nav-link">---</a>
-                                    </li>
-
-                                    <div class="dropdown">
-                                        <a class="btn dropdown-toggle" href="#" role="button"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            Page d'accueil
-                                        </a>
-
-                                        <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="{{ route('carousel.index') }}">Voir
-                                                    carousel</a></li>
-                                            <li><a class="dropdown-item"
-                                                    href="{{ route('services.topProducts') }}">Ordre
-                                                    Services Top</a></li>
-                                            <li> <a class="dropdown-item"
-                                                    href="{{ route('categories.orderIndex') }}">Ordre
-                                                    catégories</a></li>
-                                        </ul>
-                                    </div>
-
-                                    <li class="nav-item">
-                                        <a class="nav-link {{ request()->routeIs('services.viewAdmin') ? 'active' : '' }}"
-                                            href="{{ route('services.viewAdmin') }}">Services Admin</a>
-                                    </li>
-
-                                    <li class="nav-item">
-                                        <a class="nav-link {{ request()->routeIs('categories.viewAdmin') ? 'active' : '' }}"
-                                            href="{{ route('categories.viewAdmin') }}">Catégories Admin</a>
-                                    </li>
-
-                                    <li class="nav-item">
-                                        <a class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}"
-                                            href="{{ route('users.index') }}">Utilisateurs</a>
+                                        <a class="nav-link" href="{{ route('admin.dashboard') }}">Dashboard Admin</a>
                                     </li>
                                 @endif
-
                             </ul>
                         </div>
                     </div>
