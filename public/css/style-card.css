@@ -178,3 +178,21 @@
   .badge.bg-purple { padding: 0.4em 0.6em; font-size: 0.75rem; }
   .purple-table img.category-image { width: 60% !important; }
 }
+
+/* Ajoute ce bloc à ton CSS */
+.custom-dropdown-menu {
+    background-color: #2d1457; /* Couleur de fond personnalisée */
+    color: #fff;               /* Couleur du texte */
+    border: none;
+}
+
+.custom-dropdown-menu .dropdown-item {
+    color: #fff;
+}
+
+.custom-dropdown-menu .dropdown-item:hover,
+.custom-dropdown-menu .dropdown-item:focus {
+    background-color: #6c3fc5; /* Couleur au survol */
+    color: #fff;
+}
+
