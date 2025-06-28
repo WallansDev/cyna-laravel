@@ -155,6 +155,17 @@
     color: #fff !important;
 }
 
+/* Taille fixe pour les images des produits dans les cards */
+.card-img-top {
+  width: 4rem !important;
+  height: 4rem !important;
+  object-fit: cover !important;
+  object-position: center;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .purple-table { font-size: 0.9rem; }

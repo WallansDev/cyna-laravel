@@ -68,7 +68,7 @@
                             </h2>
                             <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
                                 <div class="accordion-body faq-answer">
-                                    Vous pouvez nous contacter via le formulaire de contact ou par email à support@cyna.fr.
+                                    Vous pouvez nous contacter via le formulaire de contact ou par email à contact@cyna-it.fr.
                                 </div>
                             </div>
                         </div>
