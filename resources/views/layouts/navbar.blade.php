@@ -23,7 +23,8 @@
 </header>
 
 <!-- Mobile off-canvas menu -->
-<div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu" style="background: linear-gradient(to right, rgba(0,0,0,0), var(--dark-bg)),#010033 ! important;">
+<div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu"
+    style="background: linear-gradient(to right, rgba(0,0,0,0), var(--dark-bg)),#010033 ! important;">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title text-white">Menu</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
@@ -132,41 +133,52 @@
                         <div class="collapse navbar-collapse">
                             <ul class="navbar-nav">
 
-                                <div class="dropdown">
-                                    <a class="btn dropdown-toggle" href="#" role="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        Page d'accueil
-                                    </a>
-
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="{{ route('carousel.index') }}">Voir
-                                                carousel</a></li>
-                                        <li><a class="dropdown-item" href="{{ route('services.topProducts') }}">Ordre
-                                                Services Top</a></li>
-                                        <li> <a class="dropdown-item"
-                                                href="{{ route('categories.orderIndex') }}">Ordre
-                                                catégories</a></li>
-                                    </ul>
-                                </div>
-
                                 <li class="nav-item">
-                                    <a class="nav-link {{ request()->routeIs('services.*') ? 'active' : '' }}"
+                                    <a class="nav-link {{ request()->routeIs('services.index') ? 'active' : '' }}"
                                         href="{{ route('services.index') }}">Services</a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link {{ request()->routeIs('categories.*') ? 'active' : '' }}"
-                                        href="{{ route('categories.viewAdmin') }}">Catégories Admin</a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->routeIs('categories.*') ? 'active' : '' }}"
+                                    <a class="nav-link {{ request()->routeIs('categories.index') ? 'active' : '' }}"
                                         href="{{ route('categories.index') }}">Catégories</a>
                                 </li>
 
+
                                 @if (auth()->check() && auth()->user()->isAdmin())
                                     <li class="nav-item">
-                                        <a class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}"
+                                        <a class="nav-link">---</a>
+                                    </li>
+
+                                    <div class="dropdown">
+                                        <a class="btn dropdown-toggle" href="#" role="button"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            Page d'accueil
+                                        </a>
+
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="{{ route('carousel.index') }}">Voir
+                                                    carousel</a></li>
+                                            <li><a class="dropdown-item"
+                                                    href="{{ route('services.topProducts') }}">Ordre
+                                                    Services Top</a></li>
+                                            <li> <a class="dropdown-item"
+                                                    href="{{ route('categories.orderIndex') }}">Ordre
+                                                    catégories</a></li>
+                                        </ul>
+                                    </div>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->routeIs('services.viewAdmin') ? 'active' : '' }}"
+                                            href="{{ route('services.viewAdmin') }}">Services Admin</a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->routeIs('categories.viewAdmin') ? 'active' : '' }}"
+                                            href="{{ route('categories.viewAdmin') }}">Catégories Admin</a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}"
                                             href="{{ route('users.index') }}">Utilisateurs</a>
                                     </li>
                                 @endif
