@@ -71,6 +71,11 @@ Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'verified'])->gro
         'destroy' => 'users.destroy',
     ]);
 
+    // Admin Dashboard (listing all admin pages)
+    Route::get('/admin/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
+
     // Admin Accueil
     Route::get('/accueil', function () {
         return view('accueil');

@@ -164,6 +164,9 @@
 
                                 @if (auth()->check() && auth()->user()->isAdmin())
                                     <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('admin.dashboard') }}">Dashboard Admin</a>
+                                    </li>
+                                    <li class="nav-item">
                                         <a class="nav-link">---</a>
                                     </li>
 
