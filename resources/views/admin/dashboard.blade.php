@@ -7,25 +7,49 @@
     <h1 class="mb-4">Tableau de bord administrateur</h1>
     <div class="row g-4">
         <div class="col-12 col-md-6 col-lg-4">
-            <a href="{{ route('carousel.index') }}" class="btn btn-primary w-100 mb-3">Gérer le carousel</a>
+            <a href="{{ route('categories.viewAdmin') }}" class="text-decoration-none">
+                <div class="card purple-header text-white text-center mb-3">
+                    <div class="card-body">
+                        Modifier les catégories
+                    </div>
+                </div>
+            </a>
         </div>
         <div class="col-12 col-md-6 col-lg-4">
-            <a href="{{ route('categories.viewAdmin') }}" class="btn btn-primary w-100 mb-3">Catégories (admin)</a>
+            <a href="{{ route('categories.orderIndex') }}" class="text-decoration-none">
+                <div class="card purple-header text-white text-center mb-3">
+                    <div class="card-body">
+                        Ordre des catégories
+                    </div>
+                </div>
+            </a>
         </div>
         <div class="col-12 col-md-6 col-lg-4">
-            <a href="{{ route('categories.orderIndex') }}" class="btn btn-primary w-100 mb-3">Ordre des catégories</a>
+            <a href="{{ route('services.viewAdmin') }}" class="text-decoration-none">
+                <div class="card purple-header text-white text-center mb-3">
+                    <div class="card-body">
+                        Modifier les services
+                    </div>
+                </div>
+            </a>
         </div>
         <div class="col-12 col-md-6 col-lg-4">
-            <a href="{{ route('services.viewAdmin') }}" class="btn btn-primary w-100 mb-3">Services (admin)</a>
+            <a href="{{ route('services.topProducts') }}" class="text-decoration-none">
+                <div class="card purple-header text-white text-center mb-3">
+                    <div class="card-body">
+                        Ordre des services
+                    </div>
+                </div>
+            </a>
         </div>
         <div class="col-12 col-md-6 col-lg-4">
-            <a href="{{ route('services.topProducts') }}" class="btn btn-primary w-100 mb-3">Ordre des services top</a>
-        </div>
-        <div class="col-12 col-md-6 col-lg-4">
-            <a href="{{ route('users.index') }}" class="btn btn-primary w-100 mb-3">Utilisateurs</a>
-        </div>
-        <div class="col-12 col-md-6 col-lg-4">
-            <a href="{{ route('accueil') }}" class="btn btn-secondary w-100 mb-3">Page d'accueil admin (ancienne)</a>
+            <a href="{{ route('users.index') }}" class="text-decoration-none">
+                <div class="card purple-header text-white text-center mb-3">
+                    <div class="card-body">
+                        Utilisateurs
+                    </div>
+                </div>
+            </a>
         </div>
     </div>
 </div>
