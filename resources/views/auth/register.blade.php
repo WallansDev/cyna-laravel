@@ -1,6 +1,6 @@
 @extends('layouts.base')
 
-@section('title', 'S\'enregistrer - ')
+@section('title', "S'enregistrer - " . $_SOCIETYNAME)
 
 @section('content')
     <div class="container">

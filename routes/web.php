@@ -21,18 +21,18 @@ use Illuminate\Support\Facades\Route;
 
 // Authenticated User
 Route::middleware(['auth', 'verified'])->group(function () {
-    
+
     // Profile
-    Route::get('/profil', [ProfileController::class, 'index'])->name('profile.index');
-    Route::get('/profil/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::post('/profil/edit', [ProfileController::class, 'update'])->name('profile.update');
-    Route::view('/profil/edit/password', 'profile.changePassword')->name('password.edit');
-    Route::put('/profil/edit', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/users/profil', [ProfileController::class, 'index'])->name('profile.index');
+    Route::get('/users/profil/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/users/profil/edit', [ProfileController::class, 'update'])->name('profile.update');
+    Route::view('/users/profil/edit/password', 'profile.changePassword')->name('password.edit');
+    Route::put('/users/profil/edit', [ProfileController::class, 'update'])->name('profile.update');
 
     // Tickets
-    Route::resource('/tickets', TicketController::class);
-    Route::post('/tickets/{ticket}/messages', [MessageController::class, 'store'])->name('messages.store');
-    Route::post('/tickets/{ticket}/update-status', [TicketController::class, 'updateStatus'])->name('tickets.updateStatus');
+    Route::resource('/users/tickets', TicketController::class);
+    Route::post('/users/tickets/{ticket}/messages', [MessageController::class, 'store'])->name('messages.store');
+    Route::post('/users/tickets/{ticket}/update-status', [TicketController::class, 'updateStatus'])->name('tickets.updateStatus');
 });
 
 

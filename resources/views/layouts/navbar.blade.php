@@ -167,7 +167,6 @@
                                         <a class="nav-link" href="{{ route('admin.dashboard') }}">Dashboard Admin</a>
                                     </li>
                                 @endif
-
                             </ul>
                         </div>
                     </div>

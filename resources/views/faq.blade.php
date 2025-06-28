@@ -1,6 +1,6 @@
 @extends('layouts.base')
 
-@section('title', 'FAQ')
+@section('title', 'FAQ - ' . $_SOCIETYNAME)
 
 @section('content')
 <div class="container" style="margin-top: 5em;">

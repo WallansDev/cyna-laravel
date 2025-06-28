@@ -1,6 +1,6 @@
 @extends('layouts.base')
 
-@section('title', 'Carousel services top - ' . $_SOCIETYNAME)
+@section('title', "Page d'accueil - " . $_SOCIETYNAME)
 
 @section('content')
 
