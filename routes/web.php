@@ -83,7 +83,7 @@ Route::resource('verify', TwoFactorController::class)->only(['index', 'store']);
 
 // Page CGU accessible à tous
 Route::get('/cgu', function () {
-    return view('cgu.cgu');
+    return view('cgu');
 })->name('cgu');
 
 // Page Mentions légales accessible à tous
