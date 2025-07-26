@@ -270,4 +270,10 @@ class ServiceController extends Controller
             $service->update(['top_position' => $index + 1]);
         }
     }
+
+    public function cartItems()
+    {
+        return $this->hasMany(Cart::class, 'services_id');
+    }
 }
+

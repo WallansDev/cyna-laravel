@@ -72,4 +72,9 @@ class UserController extends Controller
 
         return redirect()->route('users.index')->with('success', 'Utilisateur supprimé');
     }
+
+    public function cartItems()
+    {
+        return $this->hasMany(Cart::class);
+    }
 }
