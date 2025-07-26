@@ -1,5 +1,7 @@
 @extends('layouts.base')
 
+@section('title', 'Conditions Générales d\'Utilisation - ' . $_SOCIETYNAME)
+
 @section('content')
 <div class="container my-5">
     <h2>1. Mentions légales</h2>

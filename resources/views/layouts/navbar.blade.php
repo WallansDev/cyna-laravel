@@ -11,12 +11,39 @@
             </div>
 
             <div class="d-flex header-icons">
-                <a href="#" class="me-3">
-                    <i class="fas fa-th-large"></i>
-                </a>
-                <a href="#">
-                    <i class="fas fa-user"></i>
-                </a>
+                @if (Auth::user())
+                    <!-- Dropdown user menu -->
+                    <div class="dropdown">
+                        <a class="me-3 cart-icon" href="#" id="userDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end custom-dropdown-menu" aria-labelledby="userDropdown">
+                            <li>
+                                <a class="dropdown-item" href="{{ route('tickets.index') }}">
+                                    <i class="fa-solid fa-ticket me-2"></i>Tickets
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('profile.index') }}">
+                                    <i class="fas fa-user me-2"></i>Profil
+                                </a>
+                            </li>
+                            <li>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">
+                                        <i class="fa-solid fa-sign-out-alt me-2"></i>Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                @else
+                    <a href="{{ route('login') }}">
+                        <i class="fas fa-user"></i>
+                    </a>
+                @endif  
             </div>
         </div>
     </div>
@@ -37,17 +64,25 @@
         </form>
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link text-white" href="#">Accueil</a>
+                <a class="nav-link text-white" href="{{ route('home') }}">Accueil</a>
             </li>
+
+             <li class="nav-item">
+                <a class="nav-link text-white {{ request()->routeIs('services.index') ? 'active' : '' }}"
+                    href="{{ route('services.index') }}">Services</a>
+            </li>
+
             <li class="nav-item">
-                <a class="nav-link text-white" href="#">Catégories</a>
+                <a class="nav-link text-white {{ request()->routeIs('categories.index') ? 'active' : '' }}"
+                    href="{{ route('categories.index') }}">Catégories</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link text-white" href="#">Nouveautés</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white" href="#">Promotions</a>
-            </li>
+
+
+            @if (auth()->check() && auth()->user()->isAdmin())
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{{ route('admin.dashboard') }}">Dashboard Admin</a>
+                </li>
+            @endif
         </ul>
 
         <!-- Mobile footer links -->
@@ -164,43 +199,9 @@
 
                                 @if (auth()->check() && auth()->user()->isAdmin())
                                     <li class="nav-item">
-                                        <a class="nav-link">---</a>
-                                    </li>
-
-                                    <div class="dropdown">
-                                        <a class="btn dropdown-toggle" href="#" role="button"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            Page d'accueil
-                                        </a>
-
-                                        <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="{{ route('carousel.index') }}">Voir
-                                                    carousel</a></li>
-                                            <li><a class="dropdown-item"
-                                                    href="{{ route('services.topProducts') }}">Ordre
-                                                    Services Top</a></li>
-                                            <li> <a class="dropdown-item"
-                                                    href="{{ route('categories.orderIndex') }}">Ordre
-                                                    catégories</a></li>
-                                        </ul>
-                                    </div>
-
-                                    <li class="nav-item">
-                                        <a class="nav-link {{ request()->routeIs('services.viewAdmin') ? 'active' : '' }}"
-                                            href="{{ route('services.viewAdmin') }}">Services Admin</a>
-                                    </li>
-
-                                    <li class="nav-item">
-                                        <a class="nav-link {{ request()->routeIs('categories.viewAdmin') ? 'active' : '' }}"
-                                            href="{{ route('categories.viewAdmin') }}">Catégories Admin</a>
-                                    </li>
-
-                                    <li class="nav-item">
-                                        <a class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}"
-                                            href="{{ route('users.index') }}">Utilisateurs</a>
+                                        <a class="nav-link" href="{{ route('admin.dashboard') }}">Dashboard Admin</a>
                                     </li>
                                 @endif
-
                             </ul>
                         </div>
                     </div>

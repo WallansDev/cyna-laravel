@@ -1,5 +1,7 @@
 @extends('layouts.base')
 
+@section('title', 'Utilisateurs - ' . $_SOCIETYNAME)
+
 @section('content')
     <div class="container">
 

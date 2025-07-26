@@ -65,7 +65,7 @@
                                                     alt="{{ $service->image_path }}" width="20%">
                                             </td>
                                             <td>{{ $service->description }}</td>
-                                            @if ($service->availbility === 1)
+                                            @if ($service->availbility)
                                                 <td>✅ Disponible</td>
                                             @else
                                                 <td>❌ Indisponible</td>

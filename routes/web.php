@@ -21,47 +21,47 @@ use Illuminate\Support\Facades\Route;
 
 // Authenticated User
 Route::middleware(['auth', 'verified'])->group(function () {
-    
+
     // Profile
-    Route::get('/profil', [ProfileController::class, 'index'])->name('profile.index');
-    Route::get('/profil/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::post('/profil/edit', [ProfileController::class, 'update'])->name('profile.update');
-    Route::view('/profil/edit/password', 'profile.changePassword')->name('password.edit');
-    Route::put('/profil/edit', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/users/profil', [ProfileController::class, 'index'])->name('profile.index');
+    Route::get('/users/profil/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/users/profil/edit', [ProfileController::class, 'update'])->name('profile.update');
+    Route::view('/users/profil/edit/password', 'profile.changePassword')->name('password.edit');
+    Route::put('/users/profil/edit', [ProfileController::class, 'update'])->name('profile.update');
 
     // Tickets
-    Route::resource('/tickets', TicketController::class);
-    Route::post('/tickets/{ticket}/messages', [MessageController::class, 'store'])->name('messages.store');
-    Route::post('/tickets/{ticket}/update-status', [TicketController::class, 'updateStatus'])->name('tickets.updateStatus');
+    Route::resource('/users/tickets', TicketController::class);
+    Route::post('/users/tickets/{ticket}/messages', [MessageController::class, 'store'])->name('messages.store');
+    Route::post('/users/tickets/{ticket}/update-status', [TicketController::class, 'updateStatus'])->name('tickets.updateStatus');
 });
 
 
 // Authenticated Admin
-Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'verified'])->group(function () {
+Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'verified'])->prefix('admin')->group(function () {
 
     // Admin Carousel
 
-    // Admin Categories/admin
-    Route::get('/categories/admin', [CategoryController::class, 'viewAdmin'])->name('categories.viewAdmin');
+    // Admin Categories
+    Route::get('/categories', [CategoryController::class, 'viewAdmin'])->name('categories.viewAdmin');
 
-    Route::get('/accueil/categories/admin', [CategoryController::class, 'orderIndex'])->name('categories.orderIndex');
-    Route::get('/accueil/categories/{id}/up', [CategoryController::class, 'moveUp'])->name('categories.up');
-    Route::get('/accueil/categories/{id}/down', [CategoryController::class, 'moveDown'])->name('categories.down');
+    Route::get('/categories/order', [CategoryController::class, 'orderIndex'])->name('categories.orderIndex');
+    Route::get('/categories/{id}/up', [CategoryController::class, 'moveUp'])->name('categories.up');
+    Route::get('/categories/{id}/down', [CategoryController::class, 'moveDown'])->name('categories.down');
     Route::resource('/categories', CategoryController::class)->except('moveUp', 'moveDown', 'orderIndex', 'index', 'show');
 
     // Admin Services
-    Route::get('/services/admin', [ServiceController::class, 'viewAdmin'])->name('services.viewAdmin');
-    Route::get('/services/{id}/up', [App\Http\Controllers\ServiceController::class, 'moveUp'])->name('services.up');
-    Route::get('/services/{id}/down', [App\Http\Controllers\ServiceController::class, 'moveDown'])->name('services.down');
+    Route::get('/services', [ServiceController::class, 'viewAdmin'])->name('services.viewAdmin');
+    Route::get('/services/{id}/up', [ServiceController::class, 'moveUp'])->name('services.up');
+    Route::get('/services/{id}/down', [ServiceController::class, 'moveDown'])->name('services.down');
     Route::resource('/services', ServiceController::class)->except('moveUp', 'moveDown', 'topProducts', 'reorderTop', 'index', 'show');
 
     // Admin Top products
-    Route::get('/accueil/top-products/admin', [ServiceController::class, 'topProducts'])->name('services.topProducts');
-    Route::get('/accueil/top-products/{id}/move-up-top', [ServiceController::class, 'moveUpTopProduct'])->name('services.moveUpTop');
-    Route::get('/accueil/top-products/{id}/move-down-top', [ServiceController::class, 'moveDownTopProduct'])->name('services.moveDownTop');
+    Route::get('/services/order', [ServiceController::class, 'topProducts'])->name('services.topProducts');
+    Route::get('/top-products/{id}/move-up-top', [ServiceController::class, 'moveUpTopProduct'])->name('services.moveUpTop');
+    Route::get('/top-products/{id}/move-down-top', [ServiceController::class, 'moveDownTopProduct'])->name('services.moveDownTop');
 
     // Admin Users
-    Route::resource('/users/admin', UserController::class)->names([
+    Route::resource('/users', UserController::class)->names([
         'index' => 'users.index',
         'create' => 'users.create',
         'store' => 'users.store',
@@ -71,19 +71,19 @@ Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'verified'])->gro
         'destroy' => 'users.destroy',
     ]);
 
-    // Admin Accueil
-    Route::get('/accueil', function () {
-        return view('accueil');
-    })->name('accueil');
+    // Admin Dashboard (listing all admin pages)
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
 });
 
-    // 2FA
-    Route::get('verify/resend', [TwoFactorController::class, 'resend'])->name('verify.resend');
-    Route::resource('verify', TwoFactorController::class)->only(['index', 'store']);
+// 2FA
+Route::get('verify/resend', [TwoFactorController::class, 'resend'])->name('verify.resend');
+Route::resource('verify', TwoFactorController::class)->only(['index', 'store']);
 
 // Page CGU accessible à tous
 Route::get('/cgu', function () {
-    return view('cgu.cgu');
+    return view('cgu');
 })->name('cgu');
 
 // Page Mentions légales accessible à tous
@@ -114,7 +114,10 @@ Route::get('/services', [ServiceController::class, 'index'])->name('services.ind
 Route::get('/services/{id}', [ServiceController::class, 'show'])->name('services.show');
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
 Route::get('/categories/{id}', [CategoryController::class, 'show'])->name('categories.show');
-Route::get('/accueil/carousel', [CarouselController::class, 'index'])->name('carousel.index');
+Route::get('/', [CarouselController::class, 'index'])->name('home');
+
+require __DIR__ . '/auth.php';
+Route::get('/categories/{id}', [CategoryController::class, 'show'])->name('categories.show');
 Route::get('/', [CarouselController::class, 'index'])->name('home');
 
 require __DIR__ . '/auth.php';

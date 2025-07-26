@@ -1,6 +1,6 @@
 @extends('layouts.base')
 
-@section('title', 'Mentions légales')
+@section('title', 'Mentions légales - ' . $_SOCIETYNAME)
 
 @section('content')
 <div class="container my-5">

@@ -115,8 +115,9 @@ class CategoryController extends Controller
     public function show($id): View
     {
         $category = Category::findOrFail($id);
+        $services = $category->services();
 
-        return view('category.show', compact('category'));
+        return view('category.show', compact('category', 'services'));
     }
 
     /**

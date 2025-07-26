@@ -1,5 +1,7 @@
 @extends('layouts.base')
 
+@section('title', 'Support - ' . $_SOCIETYNAME)
+
 @section('content')
     <h2>Support</h2>
 
