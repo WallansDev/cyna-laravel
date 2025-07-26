@@ -30,6 +30,11 @@
                                 </a>
                             </li>
                             <li>
+                                <a class="dropdown-item" href="{{ route('cart.index') }}">
+                                    <i class="fas fa-shopping-cart me-2"></i>Panier
+                                </a>
+                            </li>
+                            <li>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-inline">
                                     @csrf
                                     <button type="submit" class="dropdown-item">
@@ -157,6 +162,11 @@
                                 <li>
                                     <a class="dropdown-item" href="{{ route('profile.index') }}">
                                         <i class="fas fa-user me-2"></i>Profil
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('cart.index') }}">
+                                        <i class="fas fa-shopping-cart me-2"></i>Panier
                                     </a>
                                 </li>
                                 <li>

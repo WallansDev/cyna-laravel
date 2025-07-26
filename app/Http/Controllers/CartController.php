@@ -9,9 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
-    public function __construct()
-    {
-    }
 
     /**
      * Afficher le contenu du panier
@@ -58,7 +55,7 @@ class CartController extends Controller
                 'user_id' => $userId,
                 'services_id' => $request->services_id,
                 'quantity' => $request->quantity,
-                'price' => $service->price
+                'price' => '200'
             ]);
             
             $message = 'Service ajouté au panier';
@@ -128,20 +125,20 @@ class CartController extends Controller
 
     /**
      * Vider complètement le panier
-     */
-    public function clear()
-    {
-        Cart::where('user_id', Auth::id())->delete();
+        */
+        public function clear()
+        {
+            Cart::where('user_id', Auth::id())->delete();
 
-        if (request()->expectsJson()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Panier vidé'
-            ]);
+            if (request()->expectsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Panier vidé'
+                ]);
+            }
+
+            return redirect()->route('cart.index')->with('success', 'Panier vidé');
         }
-
-        return redirect()->route('cart.index')->with('success', 'Panier vidé');
-    }
 
     /**
      * Obtenir le nombre d'articles dans le panier (pour l'affichage dans le header)

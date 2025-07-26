@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\TicketController;
