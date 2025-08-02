@@ -3,98 +3,125 @@
 @section('title', 'Mon Panier')
 
 @section('content')
-<div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-8">Mon Panier</h1>
+<div class="container py-5">
+    <div class="mb-4 rounded shadow" style="background: linear-gradient(to right, #5c1d91, #9b3bf2); padding: 1rem 2rem;">
+        <h1 class="text-white m-0">Mon Panier</h1>
+    </div>
 
     @if($cartItems->count() > 0)
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <div class="space-y-4">
+        <div class="card shadow-lg border-0 rounded-4 overflow-hidden" style="background-color: #1a0e33;">
+            <div class="card-body px-4 py-4">
                 @foreach($cartItems as $item)
-                    <div class="flex items-center justify-between border-b pb-4">
-                        <div class="flex items-center space-x-4">
+                    <div class="d-flex justify-content-between align-items-center py-3 border-bottom" style="border-color: #5c1d91;">
+                        <div class="d-flex align-items-center gap-3 flex-wrap">
                             @if($item->service->image)
-                                <img src="{{ asset('storage/' . $item->service->image) }}" 
-                                     alt="{{ $item->service->name }}" 
-                                     class="w-16 h-16 object-cover rounded">
+                                <img src="{{ asset('storage/' . $item->service->image) }}"
+                                     alt="{{ $item->service->name }}"
+                                     class="img-thumbnail rounded"
+                                     style="width: 80px; height: 80px; object-fit: cover; border: none;">
                             @endif
-                            
+
                             <div>
-                                <h3 class="font-semibold">{{ $item->service->name }}</h3>
-                                <p class="text-gray-600">{{ number_format($item->price, 2) }} €</p>
+                                <h5 class="mb-1 text-white fw-bold">{{ $item->service->name }}</h5>
+                                <p class="mb-0 text-white-50">{{ number_format($item->price, 2) }} €</p>
                             </div>
                         </div>
 
-                        <div class="flex items-center space-x-4">
-                            <!-- Formulaire de mise à jour de quantité -->
-                            <form action="{{ route('cart.update', $item->id) }}" method="POST" class="flex items-center space-x-2">
+                        <div class="d-flex align-items-center gap-3 flex-wrap">
+                            <form action="{{ route('cart.update', $item->id) }}" method="POST" class="d-flex align-items-center gap-2">
                                 @csrf
                                 @method('PATCH')
                                 <input type="number" name="quantity" value="{{ $item->quantity }}" min="1"
-                                       class="w-16 text-center border rounded">
-                                <button type="submit" class="bg-blue-500 text-white px-2 py-1 rounded">
-                                    Mettre à jour
-                                </button>
+                                       class="form-control text-center" style="width: 70px;">
+                                <button type="submit" class="btn btn-purple px-3 py-1">↻</button>
                             </form>
 
-                            <!-- Sous-total -->
-                            <div class="text-right">
-                                <p class="font-semibold">{{ number_format($item->subtotal, 2) }} €</p>
+                            <div class="text-white fw-bold">
+                                {{ number_format($item->subtotal, 2) }} €
                             </div>
 
-                            <!-- Formulaire de suppression -->
                             <form action="{{ route('cart.remove', $item->id) }}" method="POST"
                                   onsubmit="return confirm('Supprimer ce service du panier ?')">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="text-red-500 hover:text-red-700">
-                                    🗑️ Supprimer
-                                </button>
+                                <button type="submit" class="btn btn-danger btn-sm">🗑️</button>
                             </form>
                         </div>
                     </div>
                 @endforeach
-            </div>
 
-            <!-- Total et actions -->
-            <div class="mt-6 pt-6 border-t">
-                <div class="flex justify-between items-center">
-                    <!-- Formulaire de vidage complet -->
-                    <form action="{{ route('cart.clear') }}" method="POST"
-                          onsubmit="return confirm('Vider complètement le panier ?')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" 
-                                class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
-                            Vider le panier
-                        </button>
-                    </form>
+                <!-- Total & Actions -->
+                <div class="pt-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-3">
+                        <form action="{{ route('cart.clear') }}" method="POST"
+                              onsubmit="return confirm('Vider complètement le panier ?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger text-white px-4">Vider le panier</button>
+                        </form>
 
-                    <div class="text-right">
-                        <p class="text-lg">
-                            Total: <span class="font-bold">{{ number_format($total, 2) }} €</span>
-                        </p>
-                        <p class="text-sm text-gray-600">
-                            {{ $itemCount }} article(s)
-                        </p>
+                        <div class="text-end">
+                            <p class="h5 text-white">Total : <strong>{{ number_format($total, 2) }} €</strong></p>
+                            <p class="text-white-50">{{ $itemCount }} article(s)</p>
+                        </div>
                     </div>
-                </div>
 
-                <div class="mt-4 text-right">
-                    <a href="{{ route('cart.index') }}" 
-                       class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg inline-block">
-                        Passer la commande
-                    </a>
+                    <div class="text-end">
+                        <a href="{{ route('cart.index') }}" class="btn btn-gold">Passer la commande</a>
+                    </div>
                 </div>
             </div>
         </div>
     @else
-        <div class="text-center py-12">
-            <p class="text-xl text-gray-600 mb-4">Votre panier est vide</p>
-            <a href="{{ route('services.index') }}" 
-               class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg inline-block">
-                Continuer les achats
-            </a>
+        <div class="text-center py-5">
+            <p class="text-white fs-4 mb-4">Votre panier est vide</p>
+            <a href="{{ route('services.index') }}" class="btn btn-gold">Continuer les achats</a>
         </div>
     @endif
 </div>
+@endsection
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Sélectionne tous les formulaires de mise à jour de quantité
+    const updateForms = document.querySelectorAll('form[action^="{{ route("cart.update", "") }}"]');
+
+    updateForms.forEach(form => {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const url = form.action;
+            const formData = new FormData(form);
+
+            fetch(url, {
+                method: 'PATCH',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': form.querySelector('input[name="_token"]').value,
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Met à jour le sous-total
+                    const subtotalDiv = form.parentElement.querySelector('.text-white.fw-bold');
+                    if (subtotalDiv) {
+                        subtotalDiv.textContent = data.subtotal.toFixed(2) + ' €';
+                    }
+
+                    // Met à jour le total général
+                    const totalElem = document.querySelector('.text-end p.h5 strong');
+                    if (totalElem) {
+                        totalElem.textContent = data.total.toFixed(2) + ' €';
+                    }
+                } else {
+                    alert('Erreur lors de la mise à jour');
+                }
+            })
+            .catch(() => alert('Erreur réseau'));
+        });
+    });
+});
+</script>
 @endsection
