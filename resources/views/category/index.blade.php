@@ -16,7 +16,7 @@
                         <div class="card-body text-white">
                             <h5 class="service-category-title">{{ $category->name }}</h5>
                             <div class="d-flex align-items-center mb-2">
-                                <img src="{{ asset('storage/services/' . $category->image_path) }}" alt="{{ $category->name }}"
+                                <img src="{{ asset('storage/categories/' . $category->image_path) }}" alt="{{ $category->name }}"
                                     class="img-fluid rounded" style="max-width: 100px; margin-right:8px;">
                                 <div class="d-flex flex-column justify-content-center h-100">
                                     <p class="card-text mb-0" style="color:white;">{{ $category->description }}</p>
