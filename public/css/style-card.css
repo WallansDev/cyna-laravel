@@ -199,12 +199,13 @@
 /* Card background, text color, and border radius ONLY for services and categories */
 .service-category-card,
 .service-category-card .card-body {
-    background: linear-gradient(135deg, #372F48, #2A213B) !important;
+    background: linear-gradient(135deg, var(--primary-color), #1b1724) !important;
     color: #fff !important;
     border-radius: 12px !important;
 }
 
-.service-category-title {
+.service-category-title,
+.category-title-inline{
     background: linear-gradient(135deg, #6D08FD, #4c05b1);
     color: #fff !important;
     padding: 0.5rem 1rem;
@@ -223,4 +224,34 @@
     background-color: #3d4acb !important;
     border-color: #3d4acb !important;
     color: #fff !important;
+}
+
+.input-qty {
+    width: 70px !important;
+    background: linear-gradient(135deg, #372F48, #2A213B) !important;
+    color: #fff !important;
+    border: 0px solid;
+    border-radius: 6px;
+    text-align: center;
+    /* Pour enlever le fond des flèches sur Chrome/Edge */
+    accent-color: #fff;
+}
+
+/* Flèches blanches et sans fond pour Chrome, Edge, Opera */
+.input-qty::-webkit-inner-spin-button,
+.input-qty::-webkit-outer-spin-button {
+    background: transparent;
+    color: #fff;
+    border: none;
+    filter: invert(1) brightness(2);
+}
+
+/* Flèches blanches et sans fond pour Firefox */
+.input-qty[type="number"] {
+    /* accent-color ne fonctionne pas sur Firefox pour les spin buttons, mais on peut forcer le style général */
+    color-scheme: dark;
+}
+
+.category-title-inline {
+    background: linear-gradient(135deg, #372F48, #2A213B) !important;
 }
