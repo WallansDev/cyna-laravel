@@ -196,3 +196,31 @@
     color: #fff;
 }
 
+/* Card background, text color, and border radius ONLY for services and categories */
+.service-category-card,
+.service-category-card .card-body {
+    background: linear-gradient(135deg, #372F48, #2A213B) !important;
+    color: #fff !important;
+    border-radius: 12px !important;
+}
+
+.service-category-title {
+    background: linear-gradient(135deg, #6D08FD, #4c05b1);
+    color: #fff !important;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+/* Nouveau style pour le bouton "Afficher" */
+.btn-afficher {
+    background-color: #5865F2 !important;
+    border-color: #5865F2 !important;
+    color: #fff !important;
+}
+.btn-afficher:hover,
+.btn-afficher:focus {
+    background-color: #3d4acb !important;
+    border-color: #3d4acb !important;
+    color: #fff !important;
+}
