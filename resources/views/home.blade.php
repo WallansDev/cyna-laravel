@@ -21,7 +21,7 @@
                                  style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;" 
                                  alt="Background" draggable="false">
                             <!-- Image dynamique par-dessus -->
-                            <a href="{{ route('services.show', $carousel->id) }}" target="_blank" style="position: relative; z-index: 2; display: block;">
+                            <a href="{{ route('services.show', $carousel->id) }}" style="position: relative; z-index: 2; display: block;">
                                 <img src="{{ asset('storage/services/' . $carousel->image_path) }}" 
                                      class="d-block"
                                      alt="{{ $carousel->title }}" 
