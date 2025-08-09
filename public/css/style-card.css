@@ -44,7 +44,6 @@
   border-bottom: 1px solid #c0c0c0;
 }
 
-/* Style pour les lignes de tableau */
 .purple-table tbody tr {
   background-color: var(--secondary-color);
   border-bottom: 1px solid #c0c0c0;
@@ -60,7 +59,7 @@
 }
 
 .purple-table.table-striped > tbody > tr:nth-of-type(odd) {
-  background-color: var(--primary-color); /* Remplace le gris par la couleur principale */
+  background-color: var(--primary-color);
 }
 
 .purple-table tbody tr:hover {
@@ -179,48 +178,89 @@
   .purple-table img.category-image { width: 60% !important; }
 }
 
-/* Ajoute ce bloc à ton CSS */
+/* Custom dropdown */
 .custom-dropdown-menu {
-    background-color: #2d1457; /* Couleur de fond personnalisée */
-    color: #fff;               /* Couleur du texte */
+    background-color: #2d1457;
+    color: #fff;
     border: none;
 }
-
 .custom-dropdown-menu .dropdown-item {
     color: #fff;
 }
-
 .custom-dropdown-menu .dropdown-item:hover,
 .custom-dropdown-menu .dropdown-item:focus {
-    background-color: #6c3fc5; /* Couleur au survol */
+    background-color: #6c3fc5;
     color: #fff;
 }
 
+/* Card background for services and categories */
+.service-category-card,
+.service-category-card .card-body {
+    background: linear-gradient(135deg, var(--primary-color), #1b1724) !important;
+    color: #fff !important;
+    border-radius: 12px !important;
+}
+
+.service-category-title,
+.category-title-inline{
+    background: linear-gradient(135deg, #6D08FD, #4c05b1);
+    color: #fff !important;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+/* Bouton Afficher */
+.btn-afficher {
+    background-color: #5865F2 !important;
+    border-color: #5865F2 !important;
+    color: #fff !important;
+}
+.btn-afficher:hover,
+.btn-afficher:focus {
+    background-color: #3d4acb !important;
+    border-color: #3d4acb !important;
+    color: #fff !important;
+}
+
+/* Input quantité */
+.input-qty {
+    width: 70px !important;
+    background: linear-gradient(135deg, #372F48, #2A213B) !important;
+    color: #fff !important;
+    border: 0px solid;
+    border-radius: 6px;
+    text-align: center;
+    accent-color: #fff;
+}
+.input-qty::-webkit-inner-spin-button,
+.input-qty::-webkit-outer-spin-button {
+    background: transparent;
+    color: #fff;
+    border: none;
+    filter: invert(1) brightness(2);
+}
+.input-qty[type="number"] {
+    color-scheme: dark;
+}
+.category-title-inline {
+    background: linear-gradient(135deg, #372F48, #2A213B) !important;
+}
+
+/* Boutons personnalisés */
 .btn-purple {
     background-color: #7e3af2;
     color: white;
     border-radius: 6px;
     border: none;
 }
-
-.btn-purple:hover {
-    background-color: #6b2bd8;
-}
-
-.btn-purple {
-    background-color: #7e3af2;
-    color: white;
-    border-radius: 6px;
-    border: none;
-}
-
 .btn-purple:hover {
     background-color: #6b2bd8;
 }
 
 .btn-gold {
-    background-color: #facc15; /* jaune doré uni */
-    color: #1a0e33;             /* texte foncé pour le contraste */
+    background-color: #facc15;
+    color: #1a0e33;
     font-weight: bold;
     border: none;
     border-radius: 8px;
@@ -228,9 +268,7 @@
     box-shadow: 0 0 10px rgba(250, 204, 21, 0.2);
     transition: background-color 0.3s ease;
 }
-
 .btn-gold:hover {
-    background-color: #eab308; /* version plus foncée au hover */
+    background-color: #eab308;
 }
-
 

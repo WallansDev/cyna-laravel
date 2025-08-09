@@ -21,7 +21,7 @@
                                  style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;" 
                                  alt="Background" draggable="false">
                             <!-- Image dynamique par-dessus -->
-                            <a href="{{ route('services.index') }}" target="_blank" style="position: relative; z-index: 2; display: block;">
+                            <a href="{{ route('services.show', $carousel->id) }}" style="position: relative; z-index: 2; display: block;">
                                 <img src="{{ asset('storage/services/' . $carousel->image_path) }}" 
                                      class="d-block"
                                      alt="{{ $carousel->title }}" 
@@ -57,52 +57,18 @@
             <br><br><h2 class="mb-4">Produits en vedette</h2>
             <div class="row g-4">
                 <!-- Product card -->
+                @foreach ($services as $service)
                 <div class="col-6 col-md-4 col-lg-3">
                     <div class="card h-100 purple-header" style="border: none;">
-                        <img src="{{ asset('images/tests-de-penetration.png') }}" class="card-img-top" alt="Product image">
+                        <img src="{{ asset('storage/services/' . $service->image_path) }}" class="card-img-top" alt="Product image">
                         <div class="card-body">
-                            <h5 class="card-title text-center">Pentest</h5>
-                            <a href="{{ route('services.index') }}" class="btn btn-primary w-100"
+                            <h5 class="card-title text-center">{{ preg_replace('/\s*\(.*?\)/', '', $service->name) }}</h5>
+                            <a href="{{ route('services.show', $service->id) }}" class="btn btn-primary w-100"
                                 style="background-color: var(--primary-color); border: none;">Voir l'offre</a>
                         </div>
                     </div>
                 </div>
-
-                <!-- Product card -->
-                <div class="col-6 col-md-4 col-lg-3">
-                    <div class="card h-100 purple-header" style="border: none;">
-                        <img src="{{ asset('images/audit-de-securite.png') }}" class="card-img-top" alt="Product image">
-                        <div class="card-body">
-                            <h5 class="card-title text-center">Audit de sécurité</h5>
-                            <a href="{{ route('services.index') }}" class="btn btn-primary w-100"
-                                style="background-color: var(--primary-color); border: none;">Voir l'offre</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product card -->
-                <div class="col-6 col-md-4 col-lg-3">
-                    <div class="card h-100 purple-header" style="border: none;">
-                        <img src="{{ asset('images/cctv.png') }}" class="card-img-top" alt="Product image">
-                        <div class="card-body">
-                            <h5 class="card-title text-center">SOC 24/7 pour MSP</h5>
-                            <a href="{{ route('services.index') }}" class="btn btn-primary w-100"
-                                style="background-color: var(--primary-color); border: none;">Voir l'offre</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product card -->
-                <div class="col-6 col-md-4 col-lg-3">
-                    <div class="card h-100 purple-header" style="border: none;">
-                        <img src="{{ asset('images/service-client.png') }}" class="card-img-top" alt="Product image">
-                        <div class="card-body">
-                            <h5 class="card-title text-center">Réponse à incident</h5>
-                            <a href="{{ route('services.index') }}" class="btn btn-primary w-100"
-                                style="background-color: var(--primary-color); border: none;">Voir l'offre</a>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </section>
 
@@ -110,53 +76,19 @@
         <section>
             <h2 class="mb-4">Catégories</h2>
             <div class="row g-4">
+                @foreach ($categories as $category)
                 <!-- Category card -->
-                <div class="col-6 col-md-3">
-                    <a href="{{ route('categories.index') }}" style="text-decoration: none;">
-                        <div class="card text-center purple-header" style="border: none;">
-                            <div class="card-body py-4">
-                                <i class="fa-solid fa-laptop mb-3" style="font-size: 2.5rem;"></i>
-                                <h5 class="card-title">Matériels</h5>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <a href="{{ route('categories.show', $category->id) }}" style="text-decoration: none;">
+                        <div class="card h-100 purple-header" style="border: none;">
+                            <img src="{{ asset('storage/categories/' . $category->image_path) }}" class="card-img-top" alt="Category image">
+                            <div class="card-body">
+                                <h5 class="card-title text-center">{{ preg_replace('/\s*\(.*?\)/', '', $category->name) }}</h5>
                             </div>
                         </div>
                     </a>
                 </div>
-
-                <!-- Category card -->
-                <div class="col-6 col-md-3">
-                    <a href="{{ route('categories.index') }}" style="text-decoration: none;">
-                        <div class="card text-center purple-header" style="border: none;">
-                            <div class="card-body py-4">
-                                <i class="fa-brands fa-uncharted mb-3" style="font-size: 2.5rem;"></i>
-                                <h5 class="card-title">Logiciels</h5>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Category card -->
-                <div class="col-6 col-md-3">
-                    <a href="{{ route('categories.index') }}" style="text-decoration: none;">
-                        <div class="card text-center purple-header" style="border: none;">
-                            <div class="card-body py-4">
-                                <i class="fa-solid fa-camera mb-3" style="font-size: 2.5rem;"></i>
-                                <h5 class="card-title">Sécurité</h5>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Category card -->
-                <div class="col-6 col-md-3">
-                    <a href="{{ route('categories.index') }}" style="text-decoration: none;">
-                        <div class="card text-center purple-header" style="border: none;">
-                            <div class="card-body py-4">
-                                <i class="fa-solid fa-headset mb-3" style="font-size: 2.5rem;"></i>
-                                <h5 class="card-title">Conseil</h5>
-                            </div>
-                        </div>
-                    </a>
-                </div>
+                @endforeach
             </div>
             <br><br>
         </section>
