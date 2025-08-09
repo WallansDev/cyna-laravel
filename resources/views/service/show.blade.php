@@ -25,17 +25,23 @@
                         @endif
                     </div>
                 </div>
-                <form action="{{ route('cart.add') }}" method="POST" class="add-to-cart-form mt-4">
-                    @csrf
-                    <input type="hidden" name="services_id" value="{{ $service->id }}">
+                @if ($service->availbility)
+                    <form action="{{ route('cart.add') }}" method="POST" class="add-to-cart-form mt-4">
+                        @csrf
+                        <input type="hidden" name="services_id" value="{{ $service->id }}">
+                        <div class="d-flex justify-content-center align-items-center gap-2">
+                            <label for="quantity" class="form-label mb-0" style="font-weight:bold">Quantité :</label>
+                            <input type="number" name="quantity" id="quantity" value="1" min="1" class="form-control input-qty d-inline-block me-2">
+                            <button type="submit" class="btn btn-success mx-2">
+                                Ajouter au panier
+                            </button>
+                        </div>
+                    </form>
+                @else
                     <div class="d-flex justify-content-center align-items-center gap-2">
-                        <label for="quantity" class="form-label mb-0" style="font-weight:bold">Quantité :</label>
-                        <input type="number" name="quantity" id="quantity" value="1" min="1" class="form-control input-qty d-inline-block me-2">
-                        <button type="submit" class="btn btn-success mx-2">
-                            Ajouter au panier
-                        </button>
+                        <a class="btn btn-danger mx-2">Temporairement indisponible</a>
                     </div>
-                </form>
+                @endif
             </div>
         </div>
     </div>

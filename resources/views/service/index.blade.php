@@ -22,10 +22,19 @@
                                     <p class="card-text mb-0" style="color:white;">{{ $service->description }}</p>
                                 </div>
                             </div>
-                            <div class="d-flex justify-content-center mt-3">
+                            <div class="d-flex justify-content-center align-items-center">
                                 @if ($service->availbility)
-                                    <a href="{{ route('services.show', $service->id) }}" class="btn btn-afficher mx-2">Afficher
+                                    <form action="{{ route('cart.add') }}" method="POST" class="add-to-cart-form justify-content-center align-items-center mb-0">
+                                            <a href="{{ route('services.show', $service->id) }}" class="btn btn-afficher">Afficher
                                         le service</a>
+                                        @csrf
+                                        <input type="hidden" name="services_id" value="{{ $service->id }}">
+                                            
+                                            <button type="submit" class="btn btn-success mx-1">
+                                                Ajouter au panier
+                                            </button>
+                                            <input type="number" name="quantity" id="quantity" value="1" min="1" class="form-control input-qty d-inline-block">
+                                    </form>
                                 @else
                                     <a href="{{ route('services.show', $service->id) }}" class="btn btn-danger mx-2">Temporairement
                                         indisponible</a>
