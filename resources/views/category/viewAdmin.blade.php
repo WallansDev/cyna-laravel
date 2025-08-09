@@ -3,35 +3,29 @@
 @section('title', 'Catégories - ' . $_SOCIETYNAME)
 
 @section('content')
-    <div class="container-fluid">
+    <div class="container-fluid" style="margin-top: 5em;">
         <div class="row">
             <div class="col-sm-12">
-                <div class="card">
-                    <div class="card-header">
+                <div class="card purple-theme">
+                    <div class="card-header purple-header">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-
-                            <span id="card_title">
-                                {{ __('Categories') }}
-                            </span>
-
-                            <div class="float-right">
-                                <a href="{{ route('categories.create') }}" class="btn btn-primary btn-sm float-right"
-                                    data-placement="left">
-                                    {{ __('Create New') }}
-                                </a>
-                            </div>
+                            <span id="card_title">{{ __('Categories') }}</span>
+                            <a href="{{ route('categories.create') }}" class="btn btn-gold btn-sm">
+                                {{ __('Create New') }}
+                            </a>
                         </div>
                     </div>
+
                     @if ($message = Session::get('success'))
                         <div class="alert alert-success m-4">
                             <p>{{ $message }}</p>
                         </div>
                     @endif
 
-                    <div class="card-body bg-white">
+                    <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover">
-                                <thead class="thead">
+                            <table class="table table-striped table-dark">
+                                <thead>
                                     <tr>
                                         <th></th>
                                         <th>Position</th>
@@ -39,7 +33,6 @@
                                         <th>Image Path</th>
                                         <th>Description</th>
                                         <th>Services associés</th>
-
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -59,29 +52,33 @@
                                             </td>
                                             <td>{{ $category->position }}</td>
                                             <td>{{ $category->name }}</td>
-                                            <td><img src="{{ asset('storage/categories/' . $category->image_path) }}"
-                                                    alt="{{ $category->image_path }}" width="20%">
+                                            <td>
+                                                <img src="{{ asset('storage/categories/' . $category->image_path) }}"
+                                                     alt="{{ $category->image_path }}"
+                                                     width="100"
+                                                     class="category-image">
                                             </td>
                                             <td>{{ $category->description }}</td>
                                             <td>
                                                 @forelse ($category->services as $service)
-                                                    <span class="badge bg-secondary">{{ $service->name }}</span>
-
+                                                    <span class="badge bg-purple">{{ $service->name }}</span>
                                                 @empty
-                                                    Pas de service
+                                                    <span class="text-muted">Pas de service</span>
                                                 @endforelse
                                             </td>
                                             <td>
-                                                <form action="{{ route('categories.destroy', $category->id) }}"
-                                                    method="POST">
-                                                    <a class="btn btn-sm btn-primary "
-                                                        href="{{ route('categories.show', $category->id) }}">👁️</a>
-                                                    <a class="btn btn-sm btn-success"
-                                                        href="{{ route('categories.edit', $category->id) }}">✏️</a>
+                                                <form action="{{ route('categories.destroy', $category->id) }}" method="POST">
+                                                    <a class="btn btn-sm action-btn view-btn"
+                                                       href="{{ route('categories.show', $category->id) }}">👁️</a>
+                                                    <a class="btn btn-sm action-btn edit-btn"
+                                                       href="{{ route('categories.edit', $category->id) }}">✏️</a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"
-                                                        onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;">🗑️</button>
+                                                    <button type="submit"
+                                                            class="btn btn-sm action-btn delete-btn"
+                                                            onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;">
+                                                        🗑️
+                                                    </button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -90,7 +87,8 @@
                             </table>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-center">
+
+                    <div class="d-flex justify-content-center p-3">
                         {{ $categories->links() }}
                     </div>
                 </div>

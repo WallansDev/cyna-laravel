@@ -196,3 +196,41 @@
     color: #fff;
 }
 
+.btn-purple {
+    background-color: #7e3af2;
+    color: white;
+    border-radius: 6px;
+    border: none;
+}
+
+.btn-purple:hover {
+    background-color: #6b2bd8;
+}
+
+.btn-purple {
+    background-color: #7e3af2;
+    color: white;
+    border-radius: 6px;
+    border: none;
+}
+
+.btn-purple:hover {
+    background-color: #6b2bd8;
+}
+
+.btn-gold {
+    background-color: #facc15; /* jaune doré uni */
+    color: #1a0e33;             /* texte foncé pour le contraste */
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    box-shadow: 0 0 10px rgba(250, 204, 21, 0.2);
+    transition: background-color 0.3s ease;
+}
+
+.btn-gold:hover {
+    background-color: #eab308; /* version plus foncée au hover */
+}
+
+
