@@ -116,9 +116,9 @@
 
         <!-- Social media links for mobile -->
         <div class="mt-4 social-icons">
-            <a href="https://www.facebook.com/people/Cyna-coiffure/100089800742148/"><i class="fab fa-facebook"></i></a>
-            <a href="https://x.com/SCanceill"><i class="fab fa-twitter"></i></a>
-            <a href="https://www.instagram.com/cynailsartist/"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.facebook.com/Limayrac/"><i class="fab fa-facebook"></i></a>
+            <a href="https://x.com/"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/limayrac31/"><i class="fab fa-instagram"></i></a>
             <a href="https://www.linkedin.com/company/cyna-it/"><i class="fab fa-linkedin"></i></a>
         </div>
     </div>
