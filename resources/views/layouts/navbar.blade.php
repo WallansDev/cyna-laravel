@@ -136,9 +136,10 @@
                 </div>
             </div>
             <div class="col-lg-6">
-                <form class="search-form">
-                    <input type="text" class="form-control" placeholder="Rechercher...">
+                <form class="search-form position-relative" onsubmit="return false;">
+                    <input type="text" id="search-input" class="form-control" placeholder="Rechercher...">
                     <button type="submit"><i class="fas fa-search"></i></button>
+                    <ul id="search-results" class="list-group position-absolute w-100" style="top:100%; z-index:999;"></ul>
                 </form>
             </div>
             <div class="col-lg-4">
@@ -220,3 +221,44 @@
         </div>
     </div>
 </header>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    let input = document.getElementById('search-input');
+    let resultsBox = document.getElementById('search-results');
+
+    input.addEventListener('input', function () {
+        let query = this.value.trim();
+
+        if (query.length < 2) {
+            resultsBox.innerHTML = '';
+            return;
+        }
+
+        fetch(`/search?q=${encodeURIComponent(query)}`)
+            .then(res => res.json())
+            .then(data => {
+                resultsBox.innerHTML = '';
+                if (data.length > 0) {
+                    data.forEach(item => {
+                        let li = document.createElement('li');
+                        li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
+                        li.innerHTML = `
+                            <a href="${item.url}" class="text-decoration-none flex-grow-1">${item.name}</a>
+                            <span class="badge bg-primary">${item.type}</span>
+                        `;
+                        resultsBox.appendChild(li);
+                    });
+                } else {
+                    resultsBox.innerHTML = '<li class="list-group-item">Aucun résultat</li>';
+                }
+            });
+    });
+
+    // Fermer la liste quand on clique ailleurs
+    document.addEventListener('click', function (e) {
+        if (!e.target.closest('.search-form')) {
+            resultsBox.innerHTML = '';
+        }
+    });
+});
+</script>
