@@ -27,6 +27,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('/users/profil/edit/password', 'profile.changePassword')->name('password.edit');
     Route::put('/users/profil/edit', [ProfileController::class, 'update'])->name('profile.update');
 
+    // Billing Addresses
+    Route::get('/users/profil/billing-addresses', [UserController::class, 'billingAddresses'])->name('billing-addresses.index');
+    Route::post('/users/profil/billing-addresses', [UserController::class, 'storeBillingAddress'])->name('billing-addresses.store');
+    Route::put('/users/profil/billing-addresses/{id}', [UserController::class, 'updateBillingAddress'])->name('billing-addresses.update');
+    Route::delete('/users/profil/billing-addresses/{id}', [UserController::class, 'destroyBillingAddress'])->name('billing-addresses.destroy');
+
     // Tickets
     Route::resource('/users/tickets', TicketController::class);
     Route::post('/users/tickets/{ticket}/messages', [MessageController::class, 'store'])->name('messages.store');
