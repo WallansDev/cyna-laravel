@@ -14,22 +14,28 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     Ticket #{{ $ticket->id }} - {{ $ticket->subject }}
 
-                    <div class="dropdown">
-                        <button class="btn btn-sm dropdown-toggle" type="button" id="status-dropdown-btn"
-                            data-bs-toggle="dropdown">
+                    @if (auth()->check() && auth()->user()->isAdmin())
+                        <div class="dropdown">
+                            <button class="btn btn-sm dropdown-toggle" type="button" id="status-dropdown-btn"
+                                data-bs-toggle="dropdown">
+                                @include('partials.ticket-status-badge', ['ticket' => $ticket])
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#"
+                                        onclick="updateTicketStatus({{ $ticket->id }}, 0)">En cours</a></li>
+                                <li><a class="dropdown-item" href="#"
+                                        onclick="updateTicketStatus({{ $ticket->id }}, 1)">Fermé</a></li>
+                                <li><a class="dropdown-item" href="#"
+                                        onclick="updateTicketStatus({{ $ticket->id }}, 2)">Gelé</a></li>
+                                <li><a class="dropdown-item" href="#"
+                                        onclick="updateTicketStatus({{ $ticket->id }}, 3)">Nouveau</a></li>
+                            </ul>
+                        </div>
+                    @else
+                        <div>
                             @include('partials.ticket-status-badge', ['ticket' => $ticket])
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#"
-                                    onclick="updateTicketStatus({{ $ticket->id }}, 0)">En cours</a></li>
-                            <li><a class="dropdown-item" href="#"
-                                    onclick="updateTicketStatus({{ $ticket->id }}, 1)">Fermé</a></li>
-                            <li><a class="dropdown-item" href="#"
-                                    onclick="updateTicketStatus({{ $ticket->id }}, 2)">Gelé</a></li>
-                            <li><a class="dropdown-item" href="#"
-                                    onclick="updateTicketStatus({{ $ticket->id }}, 3)">Nouveau</a></li>
-                        </ul>
-                    </div>
+                        </div>
+                    @endif
                 </div>
                 <div class="card-body" id="messages">
 
@@ -54,14 +60,22 @@
                     @endforeach
                 </div>
 
-                <form action="{{ route('messages.store', $ticket) }}" method="POST">
-                    @csrf
-                    <div class="input-group mt-3">
-                        <input type="text" name="content" class="form-control" placeholder="Écrire un message..."
-                            required>
-                        <button class="btn btn-primary" type="submit">Envoyer</button>
+                @if ($ticket->status !== 1 && $ticket->status !== 2)
+                    <form action="{{ route('messages.store', $ticket) }}" method="POST" id="message-form">
+                        @csrf
+                        <div class="input-group mt-3">
+                            <input type="text" name="content" class="form-control" placeholder="Écrire un message..."
+                                required>
+                            <button class="btn btn-primary" type="submit">Envoyer</button>
+                        </div>
+                    </form>
+                @else
+                    <div class="alert alert-warning mt-3" role="alert">
+                        <i class="fas fa-lock me-2"></i>
+                        Ce ticket est {{ $ticket->status === 1 ? 'fermé' : 'gelé' }}. Aucun nouveau message ne peut être
+                        ajouté.
                     </div>
-                </form>
+                @endif
                 <br>
             </div>
         </div>
@@ -91,17 +105,68 @@
                         status
                     })
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        if (response.status === 403) {
+                            alert('Accès refusé. Seuls les administrateurs peuvent modifier le statut des tickets.');
+                        } else {
+                            throw new Error('Erreur lors de la mise à jour du statut');
+                        }
+                        return;
+                    }
+                    return response.json();
+                })
                 .then(data => {
-                    // Cibler précisément le bon bouton
-                    const dropdownButton = document.getElementById('status-dropdown-btn');
-                    if (dropdownButton) {
-                        dropdownButton.innerHTML = data.badge;
+                    if (data) {
+                        // Cibler précisément le bon bouton
+                        const dropdownButton = document.getElementById('status-dropdown-btn');
+                        if (dropdownButton) {
+                            dropdownButton.innerHTML = data.badge;
+                        }
+
+                        // Mettre à jour l'interface selon le nouveau statut
+                        updateMessageFormVisibility(status);
                     }
                 })
                 .catch(error => {
                     console.error('Erreur lors de la mise à jour du statut', error);
+                    alert('Une erreur est survenue lors de la mise à jour du statut.');
                 });
+        }
+
+        function updateMessageFormVisibility(status) {
+            const messageForm = document.getElementById('message-form');
+            const messageFormContainer = messageForm ? messageForm.parentElement : null;
+
+            if (status === 1 || status === 2) { // Fermé ou Gelé
+                // Masquer le formulaire et afficher le message d'alerte
+                if (messageForm) {
+                    messageForm.style.display = 'none';
+                }
+
+                // Créer ou mettre à jour le message d'alerte
+                let alertDiv = document.querySelector('.alert-warning');
+                if (!alertDiv) {
+                    alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-warning mt-3';
+                    alertDiv.setAttribute('role', 'alert');
+                    messageFormContainer.appendChild(alertDiv);
+                }
+
+                const statusText = status === 1 ? 'fermé' : 'gelé';
+                alertDiv.innerHTML =
+                    `<i class="fas fa-lock me-2"></i>Ce ticket est ${statusText}. Aucun nouveau message ne peut être ajouté.`;
+            } else {
+                // Afficher le formulaire et masquer le message d'alerte
+                if (messageForm) {
+                    messageForm.style.display = 'block';
+                }
+
+                const alertDiv = document.querySelector('.alert-warning');
+                if (alertDiv) {
+                    alertDiv.remove();
+                }
+            }
         }
     </script>
 @endsection
