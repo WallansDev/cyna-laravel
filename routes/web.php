@@ -1,24 +1,18 @@
 <?php
 
-use App\Http\Controllers\Admin\ServiceCrudController;
 use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\CarouselController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\SupportController;
-use App\Http\Controllers\TestController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Http\Middleware\TwoFactor;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-// Route::view('/', 'home');
 
 // Authenticated User
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -28,7 +22,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/users/profil/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/users/profil/edit', [ProfileController::class, 'update'])->name('profile.update');
     Route::view('/users/profil/edit/password', 'profile.changePassword')->name('password.edit');
+    // Route::view('/users/profil/edit/password', 'profile.changePassword')->name('password.edit');
     Route::put('/users/profil/edit', [ProfileController::class, 'update'])->name('profile.update');
+
+    // Billing Addresses
+    Route::get('/users/profil/billing-addresses', [UserController::class, 'billingAddresses'])->name('billing-addresses.index');
+    Route::post('/users/profil/billing-addresses', [UserController::class, 'storeBillingAddress'])->name('billing-addresses.store');
+    Route::put('/users/profil/billing-addresses/{id}', [UserController::class, 'updateBillingAddress'])->name('billing-addresses.update');
+    Route::delete('/users/profil/billing-addresses/{id}', [UserController::class, 'destroyBillingAddress'])->name('billing-addresses.destroy');
 
     // Tickets
     Route::resource('/users/tickets', TicketController::class);
@@ -39,8 +40,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 // Authenticated Admin
 Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'verified'])->prefix('admin')->group(function () {
-
-    // Admin Carousel
 
     // Admin Categories
     Route::get('/categories', [CategoryController::class, 'viewAdmin'])->name('categories.viewAdmin');
@@ -122,3 +121,6 @@ Route::get('/categories/{id}', [CategoryController::class, 'show'])->name('categ
 Route::get('/', [CarouselController::class, 'index'])->name('home');
 
 require __DIR__ . '/auth.php';
+
+// Route temporaire pour tester les méthodes BillingAddress
+Route::get('/test-billing-address', [App\Http\Controllers\TestController::class, 'testBillingAddress'])->name('test.billing-address');

@@ -22,6 +22,38 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected $fillable = ['name', 'surname', 'email', 'password', 'siret', 'phone', 'role', 'is_admin', 'two_factor_code', 'two_factor_expires_at'];
 
+    /**
+     * Obtenir la date de création formatée
+     */
+    public function getCreatedAtFormattedAttribute()
+    {
+        return $this->created_at ? $this->created_at->format('d/m/Y H:i') : null;
+    }
+
+    /**
+     * Obtenir la date de modification formatée
+     */
+    public function getUpdatedAtFormattedAttribute()
+    {
+        return $this->updated_at ? $this->updated_at->format('d/m/Y H:i') : null;
+    }
+
+    /**
+     * Vérifier si l'utilisateur a été créé récemment (dans les 24h)
+     */
+    public function isRecentlyCreated()
+    {
+        return $this->created_at && $this->created_at->isAfter(now()->subDay());
+    }
+
+    /**
+     * Vérifier si l'utilisateur a été modifié récemment (dans les 24h)
+     */
+    public function isRecentlyUpdated()
+    {
+        return $this->updated_at && $this->updated_at->isAfter(now()->subDay());
+    }
+
     public function generateTwoFactorCode()
     {
         $this->timestamps = false;
@@ -61,4 +93,9 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
+
+    public function billingAddresses()
+{
+    return $this->hasMany(BillingAddress::class);
+}
 }
