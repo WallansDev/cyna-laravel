@@ -57,7 +57,7 @@
             </a>
         </div>
         <div class="col-6 col-md-3">
-            <a href="https://analytics.google.com/" style="text-decoration: none;">
+            <a href="https://analytics.google.com/" target="_blank" style="text-decoration: none;">
                 <div class="card text-center purple-header" style="border: none;">
                     <div class="card-body py-4">
                         <i class="fa-solid fa-chart-simple mb-3" style="font-size: 2.5rem;"></i>

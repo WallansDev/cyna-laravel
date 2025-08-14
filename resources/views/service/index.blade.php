@@ -10,22 +10,36 @@
             <div class="row">
                 <div class="col-2"></div>
                 <div class="col-8">
-                    <div class="card mb-3">
+                    <div class="card mb-3 text-white service-category-card">
                         {{-- <img src="{{ asset('storage/services/' . $service->image_path) }}" class="card-img-top"
                             alt="{{ $service->name }}"> --}}
-                        <div class="card-body">
-                            <h5 style="color:black;">{{ $service->name }}</h5>
-                            <p class="card-text" style="color:black;">{{ $service->description }}</p>
-                            @if ($service->availbility)
-                                <a href="{{ route('services.show', $service->id) }}" class="btn btn-success"
-                                    style="float: right">Afficher
-                                    le service</a>
-                            @else
-                                <a href="{{ route('services.show', $service->id) }}" class="btn btn-danger"
-                                    style="float: right">Temporairement
-                                    indisponible</a>
-                            @endif
-
+                        <div class="card-body text-white">
+                            <h5 class="service-category-title">{{ $service->name }}</h5>
+                            <div class="d-flex align-items-center mb-2">
+                                <img src="{{ asset('storage/services/' . $service->image_path) }}" alt="{{ $service->name }}"
+                                    class="img-fluid rounded" style="max-width: 100px; margin-right:8px;">
+                                <div class="d-flex flex-column justify-content-center h-100">
+                                    <p class="card-text mb-0" style="color:white;">{{ $service->description }}</p>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-center align-items-center">
+                                @if ($service->availbility)
+                                    <form action="{{ route('cart.add') }}" method="POST" class="add-to-cart-form justify-content-center align-items-center mb-0">
+                                            <a href="{{ route('services.show', $service->id) }}" class="btn btn-afficher">Afficher
+                                        le service</a>
+                                        @csrf
+                                        <input type="hidden" name="services_id" value="{{ $service->id }}">
+                                            
+                                            <button type="submit" class="btn btn-success mx-1">
+                                                Ajouter au panier
+                                            </button>
+                                            <input type="number" name="quantity" id="quantity" value="1" min="1" class="form-control input-qty d-inline-block">
+                                    </form>
+                                @else
+                                    <a href="{{ route('services.show', $service->id) }}" class="btn btn-danger mx-2">Temporairement
+                                        indisponible</a>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>

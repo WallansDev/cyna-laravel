@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Carousel;
 use App\Models\Service;
+use App\Models\Category;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\Carousel\StoreCarouselRequest;
@@ -24,6 +25,9 @@ class CarouselController extends Controller
         $carousel_first = Service::where('top_position', '!=', 0)->orderBy('top_position')->first();
         $carousel_last = Service::where('top_position', '!=', 0)->orderByDesc('top_position')->first();
 
-        return view('home', compact('carousels', 'carousel_first', 'carousel_last'));
+        $services = Service::orderBy('position')->paginate(4);
+        $categories = Category::with('services')->orderBy('position')->get();
+
+        return view('home', compact('carousels', 'carousel_first', 'carousel_last', 'services', 'categories'));
     }
 }
