@@ -67,7 +67,9 @@
                     </div>
 
                     <div class="text-end">
-                        <a href="{{ route('cart.index') }}" class="btn btn-gold">Passer la commande</a>
+                        <a href="{{ route('order.checkout') }}" class="btn btn-gold">
+                            <i class="fas fa-credit-card me-2"></i>Finaliser la commande
+                        </a>
                     </div>
                 </div>
             </div>
