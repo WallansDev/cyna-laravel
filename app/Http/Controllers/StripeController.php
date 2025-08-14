@@ -100,6 +100,51 @@ class StripeController extends Controller
     }
 
     /**
+     * Crée une commande de test et redirige vers le paiement
+     */
+    public function createTestOrder(Request $request)
+    {
+        try {
+            // Créer une commande de test
+            $testOrder = [
+                'id' => 'TEST_ORDER_' . time(),
+                'items' => [
+                    [
+                        'name' => 'Service de test',
+                        'price' => 25.00,
+                        'quantity' => 1
+                    ],
+                    [
+                        'name' => 'Service premium',
+                        'price' => 15.00,
+                        'quantity' => 2
+                    ]
+                ],
+                'total' => 55.00, // 25 + (15 * 2)
+                'billing_info' => [
+                    'billing_name' => 'Test User',
+                    'billing_email' => 'test@example.com',
+                    'billing_address' => '123 Test Street',
+                    'billing_city' => 'Test City',
+                    'billing_postal_code' => '12345',
+                    'billing_country' => 'France'
+                ],
+                'created_at' => now(),
+            ];
+
+            // Sauvegarder la commande en session
+            session(['pending_order' => $testOrder]);
+
+            // Rediriger vers le checkout
+            return redirect()->route('stripe.checkout');
+
+        } catch (Exception $e) {
+            Log::error('Erreur lors de la création de la commande de test: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Erreur lors de la création de la commande de test.');
+        }
+    }
+
+    /**
      * Webhook pour traiter les événements Stripe
      */
     public function webhook(Request $request)

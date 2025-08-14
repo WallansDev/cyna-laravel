@@ -80,7 +80,7 @@
         });
 
         function updateTicketStatus(ticketId, status) {
-            fetch(`/tickets/${ticketId}/update-status`, {
+            fetch(`/users/tickets/${ticketId}/update-status`, {
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',

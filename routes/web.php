@@ -107,9 +107,13 @@ Route::get('/search', [SearchController::class, 'search'])->name('search');
 
 // 🔹 Stripe Paiements
 Route::get('/checkout', [StripeController::class, 'checkout'])->name('stripe.checkout');
+Route::get('/payment/create-test-order', [StripeController::class, 'createTestOrder'])->name('stripe.create-test-order');
 Route::get('/payment/success', [StripeController::class, 'success'])->name('stripe.success');
 Route::get('/payment/cancel', [StripeController::class, 'cancel'])->name('stripe.cancel');
 Route::post('/webhook/stripe', [StripeController::class, 'webhook'])->name('stripe.webhook');
+Route::get('/stripe/test', function() {
+    return view('stripe.test');
+})->name('stripe.test');
 
 // 🔹 Commandes
 Route::get('/order/checkout', [OrderController::class, 'checkout'])->name('order.checkout');
