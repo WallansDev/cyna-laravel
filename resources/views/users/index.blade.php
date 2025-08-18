@@ -24,7 +24,6 @@
                                         <th class="align-middle text-center">Prénom</th>
                                         <th class="align-middle text-center">Email</th>
                                         <th class="align-middle text-center">Rôle</th>
-                                        <th class="align-middle text-center">Admin</th>
                                         <th class="align-middle text-center">Créé le</th>
                                         <th class="align-middle text-center">Modifié le</th>
                                         <th></th>
@@ -36,7 +35,6 @@
                                             <td class="align-middle text-center">{{ $user->name }}</td>
                                             <td class="align-middle text-center">{{ $user->surname }}</td>
                                             <td class="align-middle text-center">{{ $user->email }}</td>
-                                            <td class="align-middle text-center">{{ $user->role ?? 'Utilisateur' }}</td>
                                             <td class="align-middle text-center">
                                                 @if ($user->is_admin)
                                                     <span class="badge bg-danger">Admin</span>
@@ -44,7 +42,7 @@
                                                     <span class="badge bg-success">Utilisateur</span>
                                                 @endif
                                             </td>
-                                             <td class="align-middle text-center">
+                                            <td class="align-middle text-center">
                                                 <small>{{ $user->created_at_formatted }}</small>
                                                 @if ($user->isRecentlyCreated())
                                                     <span class="badge bg-success ms-1">Nouveau</span>
@@ -57,16 +55,18 @@
                                                 @endif
                                             </td>
                                             <td class="align-middle text-center">
-                                                <form class="d-flex flex-row justify-content-center gap-2" action="{{ route('users.destroy', $user->id) }}" method="POST">
+                                                <form class="d-flex flex-row justify-content-center gap-2"
+                                                    action="{{ route('users.destroy', $user->id) }}" method="POST">
                                                     <a class="btn btn-sm action-btn view-btn"
-                                                       href="{{ route('users.show', $user->id) }}"><i class="bi bi-eye-fill"></i></a>
+                                                        href="{{ route('users.show', $user->id) }}"><i
+                                                            class="bi bi-eye-fill"></i></a>
                                                     <a class="btn btn-sm action-btn edit-btn"
-                                                       href="{{ route('users.edit', $user->id) }}"><i class="bi bi-pencil-fill"></i></a>
+                                                        href="{{ route('users.edit', $user->id) }}"><i
+                                                            class="bi bi-pencil-fill"></i></a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit"
-                                                            class="btn btn-sm action-btn delete-btn"
-                                                            onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;">
+                                                    <button type="submit" class="btn btn-sm action-btn delete-btn"
+                                                        onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;">
                                                         <i class="bi bi-trash-fill"></i>
                                                     </button>
                                                 </form>
@@ -79,8 +79,9 @@
                     </div>
                 </div>
             </div>
-             @if (session('success'))
-                <div class="alert alert-success align-middle text-center fw-bold" style="margin:auto; width: 20%; background-color: #28a745; color: white;">
+            @if (session('success'))
+                <div class="alert alert-success align-middle text-center fw-bold"
+                    style="margin:auto; width: 20%; background-color: #28a745; color: white;">
                     {{ session('success') }}
                 </div>
             @endif
