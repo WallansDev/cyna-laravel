@@ -3,11 +3,11 @@
 @section('title', 'Catégories - ' . $_SOCIETYNAME)
 
 @section('content')
-    <div class="container-fluid" style="margin-top: 5em;">
+    <div class="container-fluid" style="margin-top: 2em;">
         <div class="row">
-            <div class="col-sm-12">
-                <div class="card purple-theme">
-                    <div class="card-header purple-header">
+            <div class="col-sm-12 d-flex justify-content-center">
+                <div class="card purple-theme" style="width: 60%" data-bs-theme="dark">
+                    <div class="purple-header">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
 
                             <span id="card_title">
@@ -15,9 +15,9 @@
                             </span>
 
                             <div class="float-right">
-                                <a href="{{ route('categories.create') }}" class="btn purple-btn-primary btn-sm float-right"
+                                <a href="{{ route('categories.create') }}" class="btn btn-gold btn-sm"
                                     data-placement="left">
-                                    {{ __('Create New') }}
+                                    {{ __('Nouveau') }}
                                 </a>
                             </div>
                         </div>
@@ -34,9 +34,9 @@
                                 <thead class="thead">
                                     <tr>
                                         <th></th>
-                                        <th>Position</th>
-                                        <th>Title</th>
-                                        <th>Image</th>
+                                        <th style="text-align: center;">Position</th>
+                                        <th style="text-align: center;">Titre</th>
+                                        <th style="text-align: center;">Image</th>
 
                                         {{-- <th></th> --}}
                                     </tr>
@@ -44,21 +44,23 @@
                                 <tbody>
                                     @foreach ($categories as $category)
                                         <tr>
-                                            <td>
+                                            <td class="align-middle text-center">
                                                 @if ($category->position === $category_first->position)
-                                                    <br>
-                                                    <a href="{{ route('categories.down', $category->id) }}">🔽</a>
+                                                    <a class="btn btn-sm action-btn view-btn" href="{{ route('categories.down', $category->id) }}"><i class="bi bi-caret-down-fill"></i></a>
                                                 @elseif ($category->position === $category_last->position)
-                                                    <a href="{{ route('categories.up', $category->id) }}">🔼</a>
+                                                    <a class="btn btn-sm action-btn view-btn" href="{{ route('categories.up', $category->id) }}"><i class="bi bi-caret-up-fill"></i></a>
                                                 @else
-                                                    <a href="{{ route('categories.up', $category->id) }}">🔼</a>
-                                                    <a href="{{ route('categories.down', $category->id) }}">🔽</a>
+                                                 <div class="d-flex flex-column align-items-center">
+                                                    <a class="btn btn-sm action-btn view-btn" href="{{ route('categories.up', $category->id) }}"><i class="bi bi-caret-up-fill"></i></a>
+                                                    <br class="mb-3">
+                                                    <a class="btn btn-sm action-btn view-btn" href="{{ route('categories.down', $category->id) }}"><i class="bi bi-caret-down-fill"></i></a>
+                                                </div>
                                                 @endif
                                             </td>
-                                            <td>{{ $category->position }}</td>
-                                            <td>{{ $category->name }}</td>
-                                            <td><img src="{{ asset('storage/categories/' . $category->image_path) }}"
-                                                    alt="{{ $category->image_path }}" width="20%" class="category-image">
+                                            <td class="align-middle text-center">{{ $category->position }}</td>
+                                            <td class="align-middle text-center">{{ $category->name }}</td>
+                                            <td class="align-middle text-center"><img src="{{ asset('storage/categories/' . $category->image_path) }}"
+                                                    alt="{{ $category->image_path }}" width="100" class="category-image">
                                             </td>
                                         </tr>
                                     @endforeach
