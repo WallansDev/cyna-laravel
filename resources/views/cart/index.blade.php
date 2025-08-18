@@ -1,15 +1,13 @@
 @extends('layouts.base')
 
-@section('title', 'Mon Panier')
+@section('title', 'Mon Panier - ' . $_SOCIETYNAME)
 
 @section('content')
 <div class="container py-5">
-    <div class="mb-4 rounded shadow" style="background: linear-gradient(to right, #5c1d91, #9b3bf2); padding: 1rem 2rem;">
-        <h1 class="text-white m-0">Mon Panier</h1>
-    </div>
+    <h1 class="text-white mb-4" style="text-align: center;">Mon Panier</h1>
 
     @if($cartItems->count() > 0)
-        <div class="card shadow-lg border-0 rounded-4 overflow-hidden" style="background-color: #1a0e33;">
+        <div class="card shadow-lg border-0 rounded-4 overflow-hidden" style="background: linear-gradient(135deg, var(--primary-color), #1b1724) !important;">
             <div class="card-body px-4 py-4">
                 @foreach($cartItems as $item)
                     <div class="d-flex justify-content-between align-items-center py-3 border-bottom" style="border-color: #5c1d91;">
@@ -32,8 +30,8 @@
                                 @csrf
                                 @method('PATCH')
                                 <input type="number" name="quantity" value="{{ $item->quantity }}" min="1"
-                                       class="form-control text-center" style="width: 70px;">
-                                <button type="submit" class="btn btn-purple px-3 py-1">↻</button>
+                                    class="form-control input-qty d-inline-block me-2" style="width: 70px;">
+                                <button type="submit" class="btn btn-purple px-3 py-1"><i class="bi bi-arrow-clockwise"></i></button>
                             </form>
 
                             <div class="text-white fw-bold">
@@ -44,7 +42,7 @@
                                   onsubmit="return confirm('Supprimer ce service du panier ?')">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">🗑️</button>
+                                <button type="submit" class="btn btn-danger btn-sm px-3 py-1"><i class="bi bi-trash-fill"></i></button>
                             </form>
                         </div>
                     </div>

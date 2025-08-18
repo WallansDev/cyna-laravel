@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container mt-5">
-    <h1 class="mb-4">Tableau de bord administrateur</h1>
+    <h1 class="text-white mb-4" style="text-align: center;">Tableau de bord administrateur</h1>
     <div class="row g-4">
         <div class="col-6 col-md-3">
             <a href="{{ route('categories.viewAdmin') }}" style="text-decoration: none;">
