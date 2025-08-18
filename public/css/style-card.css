@@ -7,7 +7,7 @@
   margin-bottom: 2rem;
   border: none;
   overflow: hidden;
-  background: linear-gradient(135deg, var(--primary-color), #1b1724) !important;
+  background: linear-gradient(135deg, #2C3034, #212529) !important;
 }
 
 .purple-header {
@@ -25,7 +25,7 @@
 }
 
 .purple-theme .card-body {
-  background: linear-gradient(135deg, var(--primary-color), #1b1724) !important;
+  background: linear-gradient(135deg, #2C3034, #212529) !important;
   padding: 0;
 }
 

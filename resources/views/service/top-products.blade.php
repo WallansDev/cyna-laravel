@@ -1,20 +1,20 @@
 @extends('layouts.base')
 
-@section('title', 'Ordre services top du moment - ' . $_SOCIETYNAME)
+@section('title', 'Services en vedette - ' . $_SOCIETYNAME)
 
 @section('content')
-    <div class="container-fluid" style="margin-top: 5em;">
+    <div class="container-fluid" style="margin-top: 2em;">
         <div class="row">
-            <div class="col-sm-12">
-                <div class="card purple-theme">
-                    <div class="card-header purple-header">
+            <div class="col-sm-12 d-flex justify-content-center">
+                <div class="card purple-theme" style="width: 50%" data-bs-theme="dark">
+                    <div class="purple-header">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <span id="card_title">
-                                {{ __('Produits top du moment') }}
+                                {{ __('Services en vedette') }}
                             </span>
                             
                             <div class="float-right">
-                                <a href="{{ route('services.index') }}" class="btn purple-btn-primary btn-sm float-right"
+                                <a href="{{ route('services.viewAdmin') }}" class="btn btn-gold btn-sm"
                                     data-placement="left">
                                     {{ __('Modifier les services') }}
                                 </a>
@@ -32,26 +32,32 @@
                                 <thead class="thead">
                                     <tr>
                                         <th></th>
-                                        <th>Position</th>
-                                        <th>Service</th>
+                                        <th class="align-middle text-center">Position</th>
+                                        <th class="align-middle text-center">Service</th>
+                                        <th class="align-middle text-center">Image</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($services as $service)
                                         <tr>
-                                            <td>
+                                            <td class="align-middle text-center">
                                                 @if ($service->top_position === $top_position_first->top_position)
-                                                    <br>
-                                                    <a href="{{ route('services.moveDownTop', $service->id) }}"><i class="fa-solid fa-square-caret-down"></i></a>
+                                                    <a class="btn btn-sm action-btn view-btn" href="{{ route('services.moveDownTop', $service->id) }}"><i class="bi bi-caret-down-fill"></i></a>
                                                 @elseif ($service->top_position === $top_position_last->top_position)
-                                                    <a href="{{ route('services.moveUpTop', $service->id) }}"><i class="fa-solid fa-square-caret-up"></i></a>
+                                                    <a class="btn btn-sm action-btn view-btn" href="{{ route('services.moveUpTop', $service->id) }}"><i class="bi bi-caret-up-fill"></i></a>
                                                 @else
-                                                    <a href="{{ route('services.moveUpTop', $service->id) }}"><i class="fa-solid fa-square-caret-up"></i></a>
-                                                    <a href="{{ route('services.moveDownTop', $service->id) }}"><i class="fa-solid fa-square-caret-down"></i></a>
+                                                    <div class="d-flex flex-column align-items-center">
+                                                        <a class="btn btn-sm action-btn view-btn" href="{{ route('services.moveUpTop', $service->id) }}"><i class="bi bi-caret-up-fill"></i></a>
+                                                        <br class="mb-3">
+                                                        <a class="btn btn-sm action-btn view-btn" href="{{ route('services.moveDownTop', $service->id) }}"><i class="bi bi-caret-down-fill"></i></a>
+                                                    </div>
                                                 @endif
                                             </td>
-                                            <td>{{ $service->top_position }}</td>
-                                            <td>{{ $service->name }}</td>
+                                            <td class="align-middle text-center">{{ $service->top_position }}</td>
+                                            <td class="align-middle text-center">{{ $service->name }}</td>
+                                            <td class="align-middle text-center"><img src="{{ asset('storage/services/' . $service->image_path) }}"
+                                                    alt="{{ $service->image_path }}" width="100" class="category-image">
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

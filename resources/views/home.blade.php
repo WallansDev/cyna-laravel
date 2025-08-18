@@ -54,7 +54,7 @@
 
         <!-- Featured products section -->
         <section class="mb-5">
-            <br><br><h2 class="mb-4">Produits en vedette</h2>
+            <br><br><h2 class="mb-4">Services en vedette</h2>
             <div class="row g-4">
                 <!-- Product card -->
                 @foreach ($services as $service)

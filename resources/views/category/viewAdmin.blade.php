@@ -28,11 +28,11 @@
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th style="text-align: center;">Position</th>
-                                        <th style="text-align: center;">Titre</th>
-                                        <th style="text-align: center;">Image</th>
-                                        <th>Description</th>
-                                        <th>Services associés</th>
+                                        <th class="align-middle text-center">Position</th>
+                                        <th class="align-middle text-center">Titre</th>
+                                        <th class="align-middle text-center">Image</th>
+                                        <th class="align-middle">Description</th>
+                                        <th class="align-middle">Services associés</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -90,7 +90,7 @@
                         </div>
                     </div>
 
-                    <div class="d-flex justify-content-center">
+                    <div class="d-flex justify-content-center ">
                         {{ $categories->links() }}
                     </div>
                 </div>

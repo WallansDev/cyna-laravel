@@ -34,13 +34,13 @@
                                 <thead class="thead">
                                     <tr>
                                         <th></th>
-                                        <th style="text-align: center;">Position</th>
-                                        <th style="text-align: center;">Titre</th>
-                                        <th style="text-align: center;">Image</th>
-                                        <th>Description</th>
-                                        <th style="text-align: center;">Disponibilité</th>
-                                        <th style="text-align: center;">Position en vedette</th>
-                                        <th>Catégories</th>
+                                        <th class="align-middle text-center">Position</th>
+                                        <th class="align-middle text-center">Titre</th>
+                                        <th class="align-middle text-center">Image</th>
+                                        <th class="align-middle">Description</th>
+                                        <th class="align-middle text-center">Disponibilité</th>
+                                        <th class="align-middle text-center">Position en vedette</th>
+                                        <th class="align-middle">Catégories</th>
 
                                         <th></th>
                                     </tr>

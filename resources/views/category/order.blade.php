@@ -34,9 +34,9 @@
                                 <thead class="thead">
                                     <tr>
                                         <th></th>
-                                        <th style="text-align: center;">Position</th>
-                                        <th style="text-align: center;">Titre</th>
-                                        <th style="text-align: center;">Image</th>
+                                        <th class="align-middle text-center">Position</th>
+                                        <th class="align-middle text-center">Titre</th>
+                                        <th class="align-middle text-center">Image</th>
 
                                         {{-- <th></th> --}}
                                     </tr>
