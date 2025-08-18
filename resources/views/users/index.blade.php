@@ -15,13 +15,6 @@
                             </a>
                         </div>
                     </div>
-
-                    @if (session('success'))
-                        <div class="alert alert-success">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-striped table-dark">
@@ -86,6 +79,11 @@
                     </div>
                 </div>
             </div>
+             @if (session('success'))
+                <div class="alert alert-success align-middle text-center fw-bold" style="margin:auto; width: 20%; background-color: #28a745; color: white;">
+                    {{ session('success') }}
+                </div>
+            @endif
         </div>
     </div>
 @endsection

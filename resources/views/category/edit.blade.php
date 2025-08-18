@@ -3,15 +3,16 @@
 @section('title', 'Modifier une catégorie - ' . $_SOCIETYNAME)
 
 @section('content')
-    <section class="content container-fluid">
-        <div class="">
-            <div class="col-md-12">
-
-                <div class="card card-default">
-                    <div class="card-header">
-                        <span class="card-title">{{ __('Update') }} Category</span>
+    <div class="container-fluid" style="margin-top: 2em;">
+        <div class="row">
+            <div class="col-sm-12 d-flex justify-content-center">
+                <div class="card purple-theme" style="width: 40%" data-bs-theme="dark">
+                    <div class="purple-header">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span id="card_title">Modifier une catégorie</span>
+                        </div>
                     </div>
-                    <div class="card-body bg-white">
+                     <div class="card-body pt-3 pb-3" style="margin: auto; width: 95%; background: transparent !important;">
                         <form method="POST" action="{{ route('categories.update', $category->id) }}" role="form"
                             enctype="multipart/form-data">
                             {{ method_field('PATCH') }}
@@ -20,10 +21,9 @@
                             @include('category.form')
 
                         </form>
-                        <a href="{{ url()->previous() }}">Retour en arrière</a>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 @endsection

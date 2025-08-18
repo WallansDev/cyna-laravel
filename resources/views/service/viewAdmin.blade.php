@@ -22,12 +22,6 @@
                             </div>
                         </div>
                     </div>
-                    @if ($message = Session::get('success'))
-                        <div class="alert alert-success m-4">
-                            <p>{{ $message }}</p>
-                        </div>
-                    @endif
-
                     <div class="card-body bg-white">
                         <div class="table-responsive">
                             <table class="table table-striped table-hover">
@@ -116,6 +110,11 @@
                     </div>
                 </div>
             </div>
+            @if ($message = Session::get('success'))
+                <div class="alert alert-success align-middle text-center fw-bold" style="margin:auto; width: 20%; background-color: #28a745; color: white;">
+                    <p>{{ $message }}</p>
+                </div>
+            @endif
         </div>
     </div>
 @endsection
