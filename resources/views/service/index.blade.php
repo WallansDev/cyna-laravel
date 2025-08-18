@@ -5,7 +5,7 @@
 @section('content')
 
     <div class="container">
-        <h1>Les services</h1>
+        <h1 class="text-white mb-4" style="text-align: center;">Les services</h1>
         @foreach ($services as $service)
             <div class="row">
                 <div class="col-2"></div>

@@ -1,14 +1,18 @@
-@extends('layouts.app')
+@extends('layouts.base')
+
+@section('title', 'Détails de l\'utilisateur - ' . $_SOCIETYNAME)
 
 @section('content')
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Détails de l'utilisateur</h4>
+    <div class="container-fluid" style="margin-top: 2em;">
+        <div class="row">
+            <div class="col-sm-12 d-flex justify-content-center">
+                <div class="card purple-theme" style="width: 50%" data-bs-theme="dark">
+                    <div class="purple-header">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span id="card_title">Détails de l'utilisateur</span>
+                        </div>
                     </div>
-                    <div class="card-body">
+                     <div class="card-body pt-3 pb-3" style="margin: auto; width: 95%; background: transparent !important;">
                         <div class="row">
                             <div class="col-md-6">
                                 <h5>Informations personnelles</h5>
@@ -34,9 +38,9 @@
                             </div>
                         </div>
 
-                        <div class="mt-3">
-                            <a href="{{ route('users.edit', $user->id) }}" class="btn btn-primary">Modifier</a>
-                            <a href="{{ route('users.index') }}" class="btn btn-secondary">Retour à la liste</a>
+                        <div class="col-md-12 mt20 mt-2 text-center">
+                            <a href="{{ route('users.edit', $user->id) }}" class="btn btn-success">Modifier</a>
+                            <a href="{{ route('users.index') }}" class="ms-3 btn btn-primary">Retour à la liste</a>
                         </div>
                     </div>
                 </div>

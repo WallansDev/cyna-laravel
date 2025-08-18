@@ -5,11 +5,7 @@
 @section('content')
 
     <div class="container mt-5">
-        <div class="row">
-            <div class="col-12">
-                <h1 class="mb-4">Bienvenue chez Cyna</h1>
-            </div>
-        </div>
+        <h1 class="text-white mb-4" style="text-align: center;">Bienvenue chez Cyna</h1>
 
         @if (count($carousels) > 0)
             <div id="carouselExample" class="carousel slide slide w-80 mx-auto" data-bs-ride="carousel">
@@ -54,7 +50,7 @@
 
         <!-- Featured products section -->
         <section class="mb-5">
-            <br><br><h2 class="mb-4">Produits en vedette</h2>
+            <br><br><h2 class="mb-4">Services en vedette</h2>
             <div class="row g-4">
                 <!-- Product card -->
                 @foreach ($services as $service)

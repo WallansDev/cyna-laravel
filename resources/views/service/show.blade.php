@@ -13,6 +13,10 @@
                     <div class="ps-2">
                         <h5 class="service-category-title">{{ $service->name }}</h5>
                         <p class="mb-0">{{ $service->description }}</p>
+                        <div class="mt-3">
+                            <h5 class="category-title-inline" style="font-size: inherit;">Prix</h5>
+                            <p class="mb-0">200 €</p>
+                        </div>
                         @if($service->categories && count($service->categories))
                             <div class="mt-3">
                                 @foreach($service->categories as $category)

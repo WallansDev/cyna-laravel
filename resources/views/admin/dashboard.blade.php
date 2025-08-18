@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container mt-5">
-    <h1 class="mb-4">Tableau de bord administrateur</h1>
+    <h1 class="text-white mb-4" style="text-align: center;">Tableau de bord administrateur</h1>
     <div class="row g-4">
         <div class="col-6 col-md-3">
             <a href="{{ route('categories.viewAdmin') }}" style="text-decoration: none;">
@@ -16,7 +16,7 @@
                 </div>
             </a>
         </div>
-        <div class="col-6 col-md-3">
+        {{-- <div class="col-6 col-md-3">
             <a href="{{ route('categories.orderIndex') }}" style="text-decoration: none;">
                 <div class="card text-center purple-header" style="border: none;">
                     <div class="card-body py-4">
@@ -25,7 +25,7 @@
                     </div>
                 </div>
             </a>
-        </div>
+        </div> --}}
         <div class="col-6 col-md-3">
             <a href="{{ route('services.viewAdmin') }}" style="text-decoration: none;">
                 <div class="card text-center purple-header" style="border: none;">
@@ -41,7 +41,7 @@
                 <div class="card text-center purple-header" style="border: none;">
                     <div class="card-body py-4">
                         <i class="fa-solid fa-arrow-up-wide-short mb-3" style="font-size: 2.5rem;"></i>
-                        <h5 class="card-title">Ordre des services</h5>
+                        <h5 class="card-title">Services en vedette</h5>
                     </div>
                 </div>
             </a>
