@@ -65,7 +65,7 @@
                     </div>
 
                     <div class="text-end">
-                        <a href="{{ route('cart.index') }}" class="btn btn-gold">Passer la commande</a>
+                        <a href="{{ route('cart.index') }}" class="btn btn-gold btn-sm">Passer la commande</a>
                     </div>
                 </div>
             </div>
@@ -73,7 +73,7 @@
     @else
         <div class="text-center py-5">
             <p class="text-white fs-4 mb-4">Votre panier est vide</p>
-            <a href="{{ route('services.index') }}" class="btn btn-gold">Continuer les achats</a>
+            <a href="{{ route('services.index') }}" class="btn btn-gold btn-sm">Continuer les achats</a>
         </div>
     @endif
 </div>
