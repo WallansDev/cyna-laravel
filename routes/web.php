@@ -17,6 +17,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Http\Middleware\TwoFactor;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\UserStatsController;
 
 // 🔹 Utilisateurs authentifiés
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -74,6 +75,9 @@ Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'verified'])
 
         // Admin Dashboard
         Route::get('/dashboard', fn () => view('admin.dashboard'))->name('admin.dashboard');
+
+        // Admin User Stats
+        Route::get('/user-stats', [UserStatsController::class, 'index'])->name('admin.user-stats');
     });
 
 // 🔹 2FA
