@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -77,7 +77,7 @@ class UserStatsController extends Controller
         $usersWithPhone = User::whereNotNull('phone')->where('phone', '!=', '')->count();
         $usersWithBillingAddress = BillingAddress::distinct('user_id')->count('user_id');
 
-        return view('admin.user-stats', [
+        return view('users.stats', [
             'totalUsers' => $totalUsers,
             'newUsersThisWeek' => $newUsersThisWeek,
             'countries' => $countries,
