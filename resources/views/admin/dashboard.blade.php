@@ -66,6 +66,16 @@
                 </div>
             </a>
         </div>
+        <div class="col-6 col-md-3">
+            <a href="{{ route('users.stats') }}" style="text-decoration: none;">
+                <div class="card text-center purple-header" style="border: none;">
+                    <div class="card-body py-4">
+                        <i class="fa-solid fa-chart-pie mb-3" style="font-size: 2.5rem;"></i>
+                        <h5 class="card-title">Statistiques utilisateurs</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
     </div>
 </div>
 @endsection

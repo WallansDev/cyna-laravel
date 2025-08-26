@@ -14,9 +14,11 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\UserStatsController;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Http\Middleware\TwoFactor;
 use Illuminate\Support\Facades\Route;
+
 
 // 🔹 Utilisateurs authentifiés
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -61,6 +63,10 @@ Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'verified'])
         Route::get('/top-products/{id}/move-up-top', [ServiceController::class, 'moveUpTopProduct'])->name('services.moveUpTop');
         Route::get('/top-products/{id}/move-down-top', [ServiceController::class, 'moveDownTopProduct'])->name('services.moveDownTop');
 
+        
+        // Admin User Stats
+        Route::get('/users/stats', [UserStatsController::class, 'index'])->name('users.stats');
+
         // Admin Users
         Route::resource('/users', UserController::class)->names([
             'index' => 'users.index',
@@ -69,11 +75,12 @@ Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'verified'])
             'show' => 'users.show',
             'edit' => 'users.edit',
             'update' => 'users.update',
-            'destroy' => 'users.destroy',
+            'destroy' => 'users.destroy'
         ]);
 
         // Admin Dashboard
         Route::get('/dashboard', fn () => view('admin.dashboard'))->name('admin.dashboard');
+
     });
 
 // 🔹 2FA
