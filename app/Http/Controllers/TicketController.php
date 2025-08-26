@@ -35,9 +35,9 @@ class TicketController extends Controller
 
     public function updateStatus(Request $request, Ticket $ticket)
     {
-        // Sécurité
-        if (auth()->id() !== $ticket->user_id && !auth()->user()->is_admin) {
-            abort(403);
+        // Sécurité : Seuls les administrateurs peuvent modifier le statut
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Accès refusé. Seuls les administrateurs peuvent modifier le statut des tickets.');
         }
 
         $request->validate([

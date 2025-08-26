@@ -14,6 +14,7 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\StripeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserStatsController;
 use App\Http\Middleware\EnsureUserIsAdmin;
@@ -114,6 +115,22 @@ Route::get('/categories/{id}', [CategoryController::class, 'show'])->name('categ
 
 // 🔹 Recherche
 Route::get('/search', [SearchController::class, 'search'])->name('search');
+
+// 🔹 Stripe Paiements
+Route::get('/checkout', [StripeController::class, 'checkout'])->name('stripe.checkout');
+Route::get('/payment/create-test-order', [StripeController::class, 'createTestOrder'])->name('stripe.create-test-order');
+Route::get('/payment/success', [StripeController::class, 'success'])->name('stripe.success');
+Route::get('/payment/cancel', [StripeController::class, 'cancel'])->name('stripe.cancel');
+Route::post('/webhook/stripe', [StripeController::class, 'webhook'])->name('stripe.webhook');
+Route::get('/stripe/test', function() {
+    return view('stripe.test');
+})->name('stripe.test');
+
+// 🔹 Commandes
+Route::get('/order/checkout', [OrderController::class, 'checkout'])->name('order.checkout');
+Route::post('/order/process', [OrderController::class, 'processOrder'])->name('order.process');
+Route::get('/order/confirmation', [OrderController::class, 'confirmation'])->name('order.confirmation');
+Route::get('/order/history', [OrderController::class, 'history'])->name('order.history');
 
 // 🔹 Page d'accueil
 Route::get('/', [CarouselController::class, 'index'])->name('home');

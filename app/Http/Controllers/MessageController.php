@@ -29,16 +29,21 @@ class MessageController extends Controller
      */
     public function store(Request $request, Ticket $ticket)
     {
+        // Vérifier que le ticket n'est pas fermé ou gelé
+        if ($ticket->status === 1 || $ticket->status === 2) {
+            return redirect()->back()->with('error', 'Impossible d\'ajouter un message à un ticket fermé ou gelé.');
+        }
+
         $request->validate([
             'content' => 'required|string|max:5000',
         ]);
 
         $ticket->messages()->create([
             'user_id' => Auth::id(),
-            'content' => $request->content,
+            // 'content' => $request->content,
         ]);
 
-        return redirect()->back(); // ou redirect()->route(...);
+        return redirect()->back();
     }
 
     /**
