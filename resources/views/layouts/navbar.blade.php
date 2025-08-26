@@ -35,6 +35,11 @@
                                 </a>
                             </li>
                             <li>
+                                <a class="dropdown-item" href="{{ route('orders.index') }}">
+                                    <i class="fas fa-box me-2"></i>Commandes
+                                </a>
+                            </li>
+                            <li>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-inline">
                                     @csrf
                                     <button type="submit" class="dropdown-item">
@@ -171,6 +176,11 @@
                                     </a>
                                 </li>
                                 <li>
+                                    <a class="dropdown-item" href="{{ route('orders.index') }}">
+                                        <i class="fas fa-box me-2"></i>Commandes
+                                    </a>
+                                </li>
+                                <li>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-inline">
                                         @csrf
                                         <button type="submit" class="dropdown-item">
@@ -299,7 +309,7 @@
         if (q.length < 2) return;
 
         fetch(`/search?q=${encodeURIComponent(q)}`)
-            .then(r => r.json())
+            .then r => r.json())
             .then(data => { if (data.length) window.location.href = data[0].url; });
         });
     });

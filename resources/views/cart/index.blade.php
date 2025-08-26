@@ -65,7 +65,10 @@
                     </div>
 
                     <div class="text-end">
-                        <a href="{{ route('cart.index') }}" class="btn btn-gold btn-sm">Passer la commande</a>
+                        <form action="{{ route('cart.order') }}" method="POST" class="d-inline">
+                            @csrf
+                            <button type="submit" class="btn btn-gold btn-sm">Passer la commande</button>
+                        </form>
                     </div>
                 </div>
             </div>
