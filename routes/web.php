@@ -25,7 +25,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/users/profil/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/users/profil/edit', [ProfileController::class, 'update'])->name('profile.update');
     Route::view('/users/profil/edit/password', 'profile.changePassword')->name('password.edit');
-    Route::put('/users/profil/edit', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/users/profil/edit', [ProfileController::class, 'update']);
 
     // Billing Addresses
     Route::get('/users/profil/billing-addresses', [UserController::class, 'billingAddresses'])->name('billing-addresses.index');
