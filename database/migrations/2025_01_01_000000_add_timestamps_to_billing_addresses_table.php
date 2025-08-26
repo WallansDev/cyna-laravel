@@ -12,7 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('billing_addresses', function (Blueprint $table) {
-            $table->timestamps();
+            if (!Schema::hasColumn('billing_addresses', 'created_at')) {
+                $table->timestamp('created_at')->nullable();
+            }
+            if (!Schema::hasColumn('billing_addresses', 'updated_at')) {
+                $table->timestamp('updated_at')->nullable();
+            }
         });
     }
 
@@ -25,4 +30,4 @@ return new class extends Migration
             $table->dropTimestamps();
         });
     }
-}; 
+};
