@@ -6,6 +6,8 @@ use App\Models\Cart;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Order;
+use App\Models\OrderItem;
 
 class CartController extends Controller
 {
@@ -148,5 +150,32 @@ class CartController extends Controller
         return response()->json([
             'count' => Cart::getCartCount(Auth::id())
         ]);
+    }
+
+    /**
+     * Passer une commande
+     */
+    public function order(Request $request)
+    {
+        $cartItems = Cart::where('user_id', Auth::id())->get();
+        $total = Cart::getCartTotal(Auth::id());
+
+        $order = Order::create([
+            'user_id' => Auth::id(),
+            'total' => $total,
+        ]);
+
+        foreach ($cartItems as $cartItem) {
+            OrderItem::create([
+                'order_id' => $order->id,
+                'service_name' => $cartItem->service->name,
+                'quantity' => $cartItem->quantity,
+                'price' => $cartItem->price,
+            ]);
+        }
+
+        Cart::where('user_id', Auth::id())->delete();
+
+        return redirect()->route('orders.index')->with('success', 'Commande enregistrée !');
     }
 }

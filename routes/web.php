@@ -14,6 +14,7 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserStatsController;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Http\Middleware\TwoFactor;
@@ -39,6 +40,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('/users/tickets', TicketController::class);
     Route::post('/users/tickets/{ticket}/messages', [MessageController::class, 'store'])->name('messages.store');
     Route::post('/users/tickets/{ticket}/update-status', [TicketController::class, 'updateStatus'])->name('tickets.updateStatus');
+
+    // Orders
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 });
 
 // 🔹 Admin
@@ -100,6 +104,7 @@ Route::patch('/cart/{id}', [CartController::class, 'update'])->name('cart.update
 Route::delete('/cart/{id}', [CartController::class, 'remove'])->name('cart.remove');
 Route::delete('/cart', [CartController::class, 'clear'])->name('cart.clear');
 Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
+Route::post('/cart/order', [CartController::class, 'order'])->name('cart.order');
 
 // 🔹 Services & Catégories (publiques)
 Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
