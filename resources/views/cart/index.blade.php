@@ -1,25 +1,24 @@
 @extends('layouts.base')
 
-@section('title', 'Mon Panier')
+@section('title', 'Mon Panier - ' . $_SOCIETYNAME)
 
 @section('content')
-    <div class="container py-5">
-        <div class="mb-4 rounded shadow" style="background: linear-gradient(to right, #5c1d91, #9b3bf2); padding: 1rem 2rem;">
-            <h1 class="text-white m-0">Mon Panier</h1>
-        </div>
 
-        @if ($cartItems->count() > 0)
-            <div class="card shadow-lg border-0 rounded-4 overflow-hidden" style="background-color: #1a0e33;">
-                <div class="card-body px-4 py-4">
-                    @foreach ($cartItems as $item)
-                        <div class="d-flex justify-content-between align-items-center py-3 border-bottom"
-                            style="border-color: #5c1d91;">
-                            <div class="d-flex align-items-center gap-3 flex-wrap">
-                                @if ($item->service->image)
-                                    <img src="{{ asset('storage/' . $item->service->image) }}"
-                                        alt="{{ $item->service->name }}" class="img-thumbnail rounded"
-                                        style="width: 80px; height: 80px; object-fit: cover; border: none;">
-                                @endif
+<div class="container py-5">
+    <h1 class="text-white mb-4" style="text-align: center;">Mon Panier</h1>
+
+    @if($cartItems->count() > 0)
+        <div class="card shadow-lg border-0 rounded-4 overflow-hidden" style="background: linear-gradient(135deg, var(--primary-color), #1b1724) !important;">
+            <div class="card-body px-4 py-4">
+                @foreach($cartItems as $item)
+                    <div class="d-flex justify-content-between align-items-center py-3 border-bottom" style="border-color: #5c1d91;">
+                        <div class="d-flex align-items-center gap-3 flex-wrap">
+                            @if($item->service->image)
+                                <img src="{{ asset('storage/' . $item->service->image) }}"
+                                     alt="{{ $item->service->name }}"
+                                     class="img-thumbnail rounded"
+                                     style="width: 80px; height: 80px; object-fit: cover; border: none;">
+                            @endif
 
                                 <div>
                                     <h5 class="mb-1 text-white fw-bold">{{ $item->service->name }}</h5>
@@ -27,15 +26,14 @@
                                 </div>
                             </div>
 
-                            <div class="d-flex align-items-center gap-3 flex-wrap">
-                                <form action="{{ route('cart.update', $item->id) }}" method="POST"
-                                    class="d-flex align-items-center gap-2">
-                                    @csrf
-                                    @method('PATCH')
-                                    <input type="number" name="quantity" value="{{ $item->quantity }}" min="1"
-                                        class="form-control text-center" style="width: 70px;">
-                                    <button type="submit" class="btn btn-purple px-3 py-1">↻</button>
-                                </form>
+                        <div class="d-flex align-items-center gap-3 flex-wrap">
+                            <form action="{{ route('cart.update', $item->id) }}" method="POST" class="d-flex align-items-center gap-2">
+                                @csrf
+                                @method('PATCH')
+                                <input type="number" name="quantity" value="{{ $item->quantity }}" min="1"
+                                    class="form-control input-qty d-inline-block me-2" style="width: 70px;">
+                                <button type="submit" class="btn btn-purple px-3 py-1"><i class="bi bi-arrow-clockwise"></i></button>
+                            </form>
 
                                 <div class="text-white fw-bold">
                                     {{ number_format($item->subtotal, 2) }} €
@@ -58,7 +56,8 @@
                                 onsubmit="return confirm('Vider complètement le panier ?')">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger text-white px-4">Vider le panier</button>
+
+                                <button type="submit" class="btn btn-danger btn-sm px-3 py-1"><i class="bi bi-trash-fill"></i></button>
                             </form>
 
                             <div class="text-end">
@@ -73,15 +72,24 @@
                             </a>
                         </div>
                     </div>
+
+
+                    <div class="text-end">
+                        <form action="{{ route('cart.order') }}" method="POST" class="d-inline">
+                            @csrf
+                            <button type="submit" class="btn btn-gold btn-sm">Passer la commande</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        @else
-            <div class="text-center py-5">
-                <p class="text-white fs-4 mb-4">Votre panier est vide</p>
-                <a href="{{ route('services.index') }}" class="btn btn-gold">Continuer les achats</a>
-            </div>
-        @endif
-    </div>
+        </div>
+    @else
+        <div class="text-center py-5">
+            <p class="text-white fs-4 mb-4">Votre panier est vide</p>
+            <a href="{{ route('services.index') }}" class="btn btn-gold btn-sm">Continuer les achats</a>
+        </div>
+    @endif
+</div>
 @endsection
 @section('scripts')
     <script>

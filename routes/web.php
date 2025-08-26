@@ -16,9 +16,11 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\UserStatsController;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Http\Middleware\TwoFactor;
 use Illuminate\Support\Facades\Route;
+
 
 // 🔹 Utilisateurs authentifiés
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -39,6 +41,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('/users/tickets', TicketController::class);
     Route::post('/users/tickets/{ticket}/messages', [MessageController::class, 'store'])->name('messages.store');
     Route::post('/users/tickets/{ticket}/update-status', [TicketController::class, 'updateStatus'])->name('tickets.updateStatus');
+
+    // Orders
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 });
 
 // 🔹 Admin
@@ -59,9 +64,13 @@ Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'verified'])
         Route::resource('/services', ServiceController::class)->except('moveUp', 'moveDown', 'topProducts', 'reorderTop', 'index', 'show');
 
         // Admin Top products
-        Route::get('/services/order', [ServiceController::class, 'topProducts'])->name('services.topProducts');
+        Route::get('/services/top', [ServiceController::class, 'topProducts'])->name('services.topProducts');
         Route::get('/top-products/{id}/move-up-top', [ServiceController::class, 'moveUpTopProduct'])->name('services.moveUpTop');
         Route::get('/top-products/{id}/move-down-top', [ServiceController::class, 'moveDownTopProduct'])->name('services.moveDownTop');
+
+        
+        // Admin User Stats
+        Route::get('/users/stats', [UserStatsController::class, 'index'])->name('users.stats');
 
         // Admin Users
         Route::resource('/users', UserController::class)->names([
@@ -71,11 +80,12 @@ Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'verified'])
             'show' => 'users.show',
             'edit' => 'users.edit',
             'update' => 'users.update',
-            'destroy' => 'users.destroy',
+            'destroy' => 'users.destroy'
         ]);
 
         // Admin Dashboard
         Route::get('/dashboard', fn () => view('admin.dashboard'))->name('admin.dashboard');
+
     });
 
 // 🔹 2FA
@@ -95,6 +105,7 @@ Route::patch('/cart/{id}', [CartController::class, 'update'])->name('cart.update
 Route::delete('/cart/{id}', [CartController::class, 'remove'])->name('cart.remove');
 Route::delete('/cart', [CartController::class, 'clear'])->name('cart.clear');
 Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
+Route::post('/cart/order', [CartController::class, 'order'])->name('cart.order');
 
 // 🔹 Services & Catégories (publiques)
 Route::get('/services', [ServiceController::class, 'index'])->name('services.index');

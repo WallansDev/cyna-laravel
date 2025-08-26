@@ -20,10 +20,10 @@
             <div class="col-lg-4">
                 <h5>Suivez-nous</h5>
                 <div class="social-icons">
-                    <a href="https://www.facebook.com/people/Cyna-coiffure/100089800742148/"><i class="fab fa-facebook"></i></a>
-                    <a href="https://x.com/SCanceill"><i class="fab fa-twitter"></i></a>
-                    <a href="https://www.instagram.com/cynailsartist/"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.linkedin.com/company/cyna-it/"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://www.facebook.com/Limayrac/" target="_blank"><i class="fab fa-facebook"></i></a>
+                    <a href="https://x.com/" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/limayrac31/" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/company/cyna-it/" target="_blank"><i class="fab fa-linkedin"></i></a>
                 </div>
             </div>
         </div>

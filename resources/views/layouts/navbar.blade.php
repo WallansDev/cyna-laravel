@@ -35,6 +35,11 @@
                                 </a>
                             </li>
                             <li>
+                                <a class="dropdown-item" href="{{ route('orders.index') }}">
+                                    <i class="fas fa-box me-2"></i>Commandes
+                                </a>
+                            </li>
+                            <li>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-inline">
                                     @csrf
                                     <button type="submit" class="dropdown-item">
@@ -116,9 +121,9 @@
 
         <!-- Social media links for mobile -->
         <div class="mt-4 social-icons">
-            <a href="https://www.facebook.com/people/Cyna-coiffure/100089800742148/"><i class="fab fa-facebook"></i></a>
-            <a href="https://x.com/SCanceill"><i class="fab fa-twitter"></i></a>
-            <a href="https://www.instagram.com/cynailsartist/"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.facebook.com/Limayrac/"><i class="fab fa-facebook"></i></a>
+            <a href="https://x.com/"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/limayrac31/"><i class="fab fa-instagram"></i></a>
             <a href="https://www.linkedin.com/company/cyna-it/"><i class="fab fa-linkedin"></i></a>
         </div>
     </div>
@@ -136,7 +141,7 @@
                 </div>
             </div>
             <div class="col-lg-6">
-                <form class="search-form position-relative" onsubmit="return false;">
+                <form class="search-form position-relative">
                     <input type="text" id="search-input" class="form-control" placeholder="Rechercher...">
                     <button type="submit"><i class="fas fa-search"></i></button>
                     <ul id="search-results" class="list-group position-absolute w-100" style="top:100%; z-index:999;"></ul>
@@ -168,6 +173,11 @@
                                 <li>
                                     <a class="dropdown-item" href="{{ route('cart.index') }}">
                                         <i class="fas fa-shopping-cart me-2"></i>Panier
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('orders.index') }}">
+                                        <i class="fas fa-box me-2"></i>Commandes
                                     </a>
                                 </li>
                                 <li>
@@ -222,43 +232,87 @@
     </div>
 </header>
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    let input = document.getElementById('search-input');
-    let resultsBox = document.getElementById('search-results');
+    document.addEventListener('DOMContentLoaded', function () {
+    // ===== DESKTOP =====
+    const dInput = document.getElementById('search-input');
+    const resultsBox = document.getElementById('search-results');
+    let firstResultUrl = null;
 
-    input.addEventListener('input', function () {
-        let query = this.value.trim();
+    if (dInput) {
+        const dForm = dInput.closest('form');
 
-        if (query.length < 2) {
+        const doFetch = (q) =>
+        fetch(`/search?q=${encodeURIComponent(q)}`).then(r => r.json());
+
+        const renderResults = (data) => {
+        resultsBox.innerHTML = '';
+        firstResultUrl = null;
+
+        if (Array.isArray(data) && data.length) {
+            data.forEach((item, idx) => {
+            const li = document.createElement('li');
+            li.className = 'list-group-item d-flex justify-content-between align-items-center';
+            li.innerHTML = `
+                <a href="${item.url}" class="text-decoration-none flex-grow-1">${item.name}</a>
+                <span class="badge bg-primary">${item.type}</span>
+            `;
+            resultsBox.appendChild(li);
+            if (idx === 0) firstResultUrl = item.url;
+            });
+        } else {
+            resultsBox.innerHTML = '<li class="list-group-item">Aucun résultat</li>';
+        }
+        };
+
+        dInput.addEventListener('input', function () {
+        const q = this.value.trim();
+        if (q.length < 2) {
             resultsBox.innerHTML = '';
+            firstResultUrl = null;
+            return;
+        }
+        doFetch(q).then(renderResults);
+        });
+
+        // Entrée ou clic loupe
+        dForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const q = dInput.value.trim();
+
+        if (firstResultUrl) {
+            window.location.href = firstResultUrl;
             return;
         }
 
-        fetch(`/search?q=${encodeURIComponent(query)}`)
-            .then(res => res.json())
-            .then(data => {
-                resultsBox.innerHTML = '';
-                if (data.length > 0) {
-                    data.forEach(item => {
-                        let li = document.createElement('li');
-                        li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
-                        li.innerHTML = `
-                            <a href="${item.url}" class="text-decoration-none flex-grow-1">${item.name}</a>
-                            <span class="badge bg-primary">${item.type}</span>
-                        `;
-                        resultsBox.appendChild(li);
-                    });
-                } else {
-                    resultsBox.innerHTML = '<li class="list-group-item">Aucun résultat</li>';
-                }
+        if (q.length >= 2) {
+            doFetch(q).then(data => {
+            if (data.length) window.location.href = data[0].url;
+            else resultsBox.innerHTML = '<li class="list-group-item">Aucun résultat</li>';
             });
-    });
+        }
+        });
 
-    // Fermer la liste quand on clique ailleurs
-    document.addEventListener('click', function (e) {
+        // Fermer les suggestions si clic ailleurs
+        document.addEventListener('click', function (e) {
         if (!e.target.closest('.search-form')) {
             resultsBox.innerHTML = '';
         }
+        });
+    }
+
+    // ===== MOBILE (offcanvas) =====
+    document.querySelectorAll('.offcanvas .search-form').forEach(mForm => {
+        mForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const mInput = this.querySelector('input[type="text"]');
+        const q = (mInput && mInput.value || '').trim();
+        if (q.length < 2) return;
+
+        fetch(`/search?q=${encodeURIComponent(q)}`)
+            .then r => r.json())
+            .then(data => { if (data.length) window.location.href = data[0].url; });
+        });
     });
-});
+    });
 </script>
+

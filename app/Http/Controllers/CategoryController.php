@@ -106,7 +106,7 @@ class CategoryController extends Controller
 
         $category->services()->attach($request->input('services', []));
 
-        return Redirect::route('categories.index')->with('success', 'Category created successfully.');
+        return Redirect::route('categories.viewAdmin')->with('success', 'Catégorie créée avec succès');
     }
 
     /**
@@ -157,7 +157,7 @@ class CategoryController extends Controller
 
         $category->services()->sync($data['services'] ?? []);
 
-        return Redirect::route('categories.index')->with('success', 'Category updated successfully');
+        return Redirect::route('categories.viewAdmin')->with('success', 'Catégorie mise à jour avec succès');
     }
 
     public function destroy($id): RedirectResponse
@@ -171,7 +171,7 @@ class CategoryController extends Controller
 
         $this->reorderPositions();
 
-        return Redirect::route('categories.index')->with('success', 'Category deleted successfully');
+        return Redirect::route('categories.viewAdmin')->with('success', 'Catégorie supprimée avec succès');
     }
 
     private function reorderPositions()

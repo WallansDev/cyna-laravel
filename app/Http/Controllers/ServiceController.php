@@ -164,7 +164,7 @@ class ServiceController extends Controller
         // 3. Toujours réorganiser pour être sûr
         // $this->reorderTopPositions();
 
-        return Redirect::route('services.index')->with('success', 'Service created successfully.');
+        return Redirect::route('services.viewAdmin')->with('success', 'Service créé avec succès');
     }
 
     /**
@@ -232,7 +232,7 @@ class ServiceController extends Controller
         // Réordonner après modification
         $this->reorderTopPositions();
 
-        return Redirect::route('services.index')->with('success', 'Service updated successfully');
+        return Redirect::route('services.viewAdmin')->with('success', 'Service mis à jour avec succès');
     }
 
     public function destroy($id): RedirectResponse
@@ -247,7 +247,7 @@ class ServiceController extends Controller
         $this->reorderPositions();
         $this->reorderTopPositions();
 
-        return Redirect::route('services.index')->with('success', 'Category deleted successfully');
+        return Redirect::route('services.viewAdmin')->with('success', 'Service supprimé avec succès');
     }
 
     private function reorderPositions(): void

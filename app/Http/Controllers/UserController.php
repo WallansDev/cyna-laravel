@@ -81,7 +81,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
 
-        return redirect()->route('users.index')->with('success', 'Utilisateur supprimé');
+        return redirect()->route('users.index')->with('success', 'Utilisateur supprimé avec succès');
     }
 
     public function cartItems()

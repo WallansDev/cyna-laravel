@@ -7,7 +7,7 @@
   margin-bottom: 2rem;
   border: none;
   overflow: hidden;
-  background-color: var(--secondary-color);
+  background: linear-gradient(135deg, #2C3034, #212529) !important;
 }
 
 .purple-header {
@@ -20,12 +20,11 @@
 .purple-theme #card_title {
   font-size: 1.5rem;
   font-weight: 600;
-  text-transform: capitalize;
   color: white;
 }
 
 .purple-theme .card-body {
-  background-color: var(--secondary-color);
+  background: linear-gradient(135deg, #2C3034, #212529) !important;
   padding: 0;
 }
 
@@ -270,5 +269,6 @@
 }
 .btn-gold:hover {
     background-color: #eab308;
+    color : white;
 }
 

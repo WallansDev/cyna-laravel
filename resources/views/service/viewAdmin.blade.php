@@ -3,11 +3,11 @@
 @section('title', 'Services - ' . $_SOCIETYNAME)
 
 @section('content')
-    <div class="container-fluid">
+    <div class="container-fluid" style="margin-top: 2em;">
         <div class="row">
-            <div class="col-sm-12">
-                <div class="card">
-                    <div class="card-header">
+            <div class="col-sm-12 d-flex justify-content-center">
+                <div class="card purple-theme" style="width: 85%" data-bs-theme="dark">
+                    <div class="purple-header">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
 
                             <span id="card_title">
@@ -15,32 +15,26 @@
                             </span>
 
                             <div class="float-right">
-                                <a href="{{ route('services.create') }}" class="btn btn-primary btn-sm float-right"
+                                <a href="{{ route('services.create') }}" class="btn btn-gold btn-sm"
                                     data-placement="left">
-                                    {{ __('Create New') }}
+                                    {{ __('Nouveau') }}
                                 </a>
                             </div>
                         </div>
                     </div>
-                    @if ($message = Session::get('success'))
-                        <div class="alert alert-success m-4">
-                            <p>{{ $message }}</p>
-                        </div>
-                    @endif
-
                     <div class="card-body bg-white">
                         <div class="table-responsive">
                             <table class="table table-striped table-hover">
                                 <thead class="thead">
                                     <tr>
                                         <th></th>
-                                        <th>Position</th>
-                                        <th>Title</th>
-                                        <th>Image Path</th>
-                                        <th>Description</th>
-                                        <th>Availbility</th>
-                                        <th>Position Top produit</th>
-                                        <th>Catégories</th>
+                                        <th class="align-middle text-center">Position</th>
+                                        <th class="align-middle text-center">Titre</th>
+                                        <th class="align-middle text-center">Image</th>
+                                        <th class="align-middle">Description</th>
+                                        <th class="align-middle text-center">Disponibilité</th>
+                                        <th class="align-middle text-center">Position en vedette</th>
+                                        <th class="align-middle">Catégories</th>
 
                                         <th></th>
                                     </tr>
@@ -48,51 +42,61 @@
                                 <tbody>
                                     @foreach ($services as $service)
                                         <tr>
-                                            <td>
+                                            <td class="align-middle text-center">
                                                 @if ($service->position === $service_first->position)
-                                                    <br>
-                                                    <a href="{{ route('services.down', $service->id) }}">🔽</a>
+                                                    <a class="btn btn-sm action-btn view-btn" href="{{ route('services.down', $service->id) }}"><i class="bi bi-caret-down-fill"></i></a>
                                                 @elseif ($service->position === $service_last->position)
-                                                    <a href="{{ route('services.up', $service->id) }}">🔼</a>
+                                                    <a class="btn btn-sm action-btn view-btn" href="{{ route('services.up', $service->id) }}"><i class="bi bi-caret-up-fill"></i></a>
                                                 @else
-                                                    <a href="{{ route('services.up', $service->id) }}">🔼</a>
-                                                    <a href="{{ route('services.down', $service->id) }}">🔽</a>
+                                                <div class="d-flex flex-column align-items-center">
+                                                    <a class="btn btn-sm action-btn view-btn" href="{{ route('services.up', $service->id) }}"><i class="bi bi-caret-up-fill"></i></a>
+                                                    <br class="mb-3">
+                                                    <a class="btn btn-sm action-btn view-btn" href="{{ route('services.down', $service->id) }}"><i class="bi bi-caret-down-fill"></i></a>
+                                                </div>
                                                 @endif
                                             </td>
-                                            <td>{{ $service->position }}</td>
-                                            <td>{{ $service->name }}</td>
-                                            <td><img src="{{ asset('storage/services/' . $service->image_path) }}"
-                                                    alt="{{ $service->image_path }}" width="20%">
+                                            <td class="align-middle text-center">{{ $service->position }}</td>
+                                            <td class="align-middle text-center">{{ $service->name }}</td>
+                                            <td class="align-middle text-center"><img src="{{ asset('storage/services/' . $service->image_path) }}"
+                                                    alt="{{ $service->image_path }}" width="100" class="category-image">
                                             </td>
-                                            <td>{{ $service->description }}</td>
+                                            <td class="align-middle">{{ $service->description }}</td>
                                             @if ($service->availbility)
-                                                <td>✅ Disponible</td>
+                                                <td class="align-middle text-center">
+                                                    <span class="badge bg-success">Disponible</span>
+                                                </td>
                                             @else
-                                                <td>❌ Indisponible</td>
+                                                <td class="align-middle text-center">
+                                                    <span class="badge bg-danger">Indisponible</span>
+                                                </td>
                                             @endif
-                                            <td>
+                                            <td class="align-middle text-center">
                                                 @if ($service->top_position != 0)
                                                     {{ $service->top_position }}
                                                 @else
-                                                    ❌ Non
+                                                    <span class="badge bg-danger">Pas en vedette</span>
                                                 @endif
                                             </td>
-                                            <td>
+                                            <td class="align-middle">
                                                 @forelse ($service->categories as $category)
-                                                    <span class="badge bg-secondary">{{ $category->name }}</span>
+                                                    <span class="badge bg-purple">{{ $category->name }}</span>
                                                 @empty
-                                                    Pas de catégorie
+                                                    <span class="badge bg-purple">Pas de catégorie</span>
                                                 @endforelse
                                             </td>
-                                            <td>
-                                                <form action="{{ route('services.destroy', $service->id) }}"
+                                            <td class="align-middle text-center">
+                                                <form class="d-flex flex-column align-items-center gap-2" action="{{ route('services.destroy', $service->id) }}"
                                                     method="POST">
-                                                    <a class="btn btn-sm btn-success"
-                                                        href="{{ route('services.edit', $service->id) }}">✏️</a>
+                                                    <a class="btn btn-sm action-btn view-btn"
+                                                       href="{{ route('services.show', $service->id) }}"><i class="bi bi-eye-fill"></i></a>
+                                                    <a class="btn btn-sm action-btn edit-btn"
+                                                        href="{{ route('services.edit', $service->id) }}"><i class="bi bi-pencil-fill"></i></a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"
-                                                        onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;">🗑️</button>
+                                                    <button type="submit" class="btn btn-sm action-btn delete-btn"
+                                                        onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;">
+                                                        <i class="bi bi-trash-fill"></i>
+                                                    </button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -106,6 +110,11 @@
                     </div>
                 </div>
             </div>
+            @if ($message = Session::get('success'))
+                <div class="alert alert-success align-middle text-center fw-bold" style="margin:auto; width: 20%; background-color: #28a745; color: white;">
+                    <p>{{ $message }}</p>
+                </div>
+            @endif
         </div>
     </div>
 @endsection

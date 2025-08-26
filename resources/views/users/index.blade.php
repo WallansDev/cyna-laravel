@@ -1,79 +1,75 @@
-@extends('layouts.app')
+@extends('layouts.base')
+
+@section('title', 'Liste des utilisateurs - ' . $_SOCIETYNAME)
 
 @section('content')
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h4>Liste des utilisateurs</h4>
-                        <a href="{{ route('users.create') }}" class="btn btn-primary">Nouvel utilisateur</a>
+    <div class="container-fluid" style="margin-top: 2em;">
+        <div class="row">
+            <div class="col-sm-12 d-flex justify-content-center">
+                <div class="card purple-theme" style="width: 65%" data-bs-theme="dark">
+                    <div class="purple-header">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span id="card_title">{{ __('Liste des utilisateurs') }}</span>
+                            <a href="{{ route('users.create') }}" class="btn btn-gold btn-sm">
+                                {{ __('Nouveau') }}
+                            </a>
+                        </div>
                     </div>
                     <div class="card-body">
-                        @if (session('success'))
-                            <div class="alert alert-success">
-                                {{ session('success') }}
-                            </div>
-                        @endif
-
                         <div class="table-responsive">
-                            <table class="table table-striped">
+                            <table class="table table-striped table-dark">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Nom</th>
-                                        <th>Prénom</th>
-                                        <th>Email</th>
-                                        <th>Rôle</th>
-                                        <th>Admin</th>
-                                        <th>Créé le</th>
-                                        <th>Modifié le</th>
-                                        <th>Actions</th>
+                                        <th class="align-middle text-center">Nom</th>
+                                        <th class="align-middle text-center">Prénom</th>
+                                        <th class="align-middle text-center">Email</th>
+                                        <th class="align-middle text-center">Rôle</th>
+                                        <th class="align-middle text-center">Créé le</th>
+                                        <th class="align-middle text-center">Modifié le</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($users as $user)
                                         <tr>
-                                            <td>{{ $user->id }}</td>
-                                            <td>{{ $user->name }}</td>
-                                            <td>{{ $user->surname }}</td>
-                                            <td>{{ $user->email }}</td>
-                                            <td>{{ $user->role ?? 'Utilisateur' }}</td>
-                                            <td>
+                                            <td class="align-middle text-center">{{ $user->name }}</td>
+                                            <td class="align-middle text-center">{{ $user->surname }}</td>
+                                            <td class="align-middle text-center">{{ $user->email }}</td>
+                                            <td class="align-middle text-center">
                                                 @if ($user->is_admin)
                                                     <span class="badge bg-danger">Admin</span>
                                                 @else
-                                                    <span class="badge bg-secondary">Utilisateur</span>
+                                                    <span class="badge bg-success">Utilisateur</span>
                                                 @endif
                                             </td>
-                                            <td>
+                                            <td class="align-middle text-center">
                                                 <small>{{ $user->created_at_formatted }}</small>
                                                 @if ($user->isRecentlyCreated())
                                                     <span class="badge bg-success ms-1">Nouveau</span>
                                                 @endif
                                             </td>
-                                            <td>
+                                            <td class="align-middle text-center">
                                                 <small>{{ $user->updated_at_formatted }}</small>
                                                 @if ($user->isRecentlyUpdated())
                                                     <span class="badge bg-info ms-1">Modifié</span>
                                                 @endif
                                             </td>
-                                            <td>
-                                                <div class="btn-group" role="group">
-                                                    <a href="{{ route('users.show', $user->id) }}"
-                                                        class="btn btn-sm btn-outline-primary">Voir</a>
-                                                    <a href="{{ route('users.edit', $user->id) }}"
-                                                        class="btn btn-sm btn-outline-warning">Modifier</a>
-                                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST"
-                                                        class="d-inline">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-sm btn-outline-danger"
-                                                            onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">
-                                                            Supprimer
-                                                        </button>
-                                                    </form>
-                                                </div>
+                                            <td class="align-middle text-center">
+                                                <form class="d-flex flex-row justify-content-center gap-2"
+                                                    action="{{ route('users.destroy', $user->id) }}" method="POST">
+                                                    <a class="btn btn-sm action-btn view-btn"
+                                                        href="{{ route('users.show', $user->id) }}"><i
+                                                            class="bi bi-eye-fill"></i></a>
+                                                    <a class="btn btn-sm action-btn edit-btn"
+                                                        href="{{ route('users.edit', $user->id) }}"><i
+                                                            class="bi bi-pencil-fill"></i></a>
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm action-btn delete-btn"
+                                                        onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;">
+                                                        <i class="bi bi-trash-fill"></i>
+                                                    </button>
+                                                </form>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -83,6 +79,12 @@
                     </div>
                 </div>
             </div>
+            @if (session('success'))
+                <div class="alert alert-success align-middle text-center fw-bold"
+                    style="margin:auto; width: 20%; background-color: #28a745; color: white;">
+                    {{ session('success') }}
+                </div>
+            @endif
         </div>
     </div>
 @endsection
