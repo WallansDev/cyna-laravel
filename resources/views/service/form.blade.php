@@ -96,8 +96,6 @@
 
             <!-- Upload de nouvelles images -->
             <input type="file" name="gallery[]" multiple class="form-control">
-
-            <button type="submit" class="btn btn-primary">Enregistrer</button>
         </form>
 
         <hr>
