@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\Cart;
 use Stripe\StripeClient;
 
 class StripeController extends Controller
@@ -71,13 +76,32 @@ class StripeController extends Controller
                 $paymentIntent = $this->stripe->paymentIntents->retrieve($paymentIntentId);
                 
                 if ($paymentIntent->status === 'succeeded') {
-                    // Ici vous pouvez ajouter votre logique métier
-                    // Par exemple: mettre à jour le statut de la commande
-                    
-                    return view('stripe.success', [
-                        'paymentIntent' => $paymentIntent,
-                        'amount' => $paymentIntent->amount / 100
-                    ]);
+                    // Paiement validé : créer la commande en BDD, vider le panier et la session
+                    $pendingOrder = Session::get('pending_order');
+
+                    if ($pendingOrder && Auth::check()) {
+                        $order = Order::create([
+                            'user_id' => Auth::id(),
+                            'total' => (float)($pendingOrder['total'] ?? 0),
+                        ]);
+
+                        $items = $pendingOrder['items'] ?? [];
+                        foreach ($items as $item) {
+                            OrderItem::create([
+                                'order_id' => $order->id,
+                                'service_name' => $item['name'] ?? 'Service',
+                                'quantity' => (int)($item['quantity'] ?? 1),
+                                'price' => (float)($item['price'] ?? 0),
+                            ]);
+                        }
+
+                        // Vider le panier en BDD et la session
+                        Cart::where('user_id', Auth::id())->delete();
+                        Session::forget('pending_order');
+                        Session::forget('billing_info');
+                    }
+
+                    return redirect()->route('orders.index')->with('success', 'Paiement validé, commande créée.');
                 }
             }
 

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
 use App\Models\OrderItem;
+use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
@@ -177,5 +178,43 @@ class CartController extends Controller
         Cart::where('user_id', Auth::id())->delete();
 
         return redirect()->route('orders.index')->with('success', 'Commande enregistrée !');
+    }
+
+    /**
+     * Préparer la commande et rediriger vers Stripe Checkout
+     */
+    public function checkoutToStripe(Request $request)
+    {
+        $userId = Auth::id();
+        $cartItems = Cart::where('user_id', $userId)->with('service')->get();
+
+        if ($cartItems->isEmpty()) {
+            return redirect()->route('cart.index')->with('error', 'Votre panier est vide.');
+        }
+
+        $total = Cart::getCartTotal($userId);
+
+        $items = $cartItems->map(function ($item) {
+            return [
+                'name' => $item->service ? $item->service->name : 'Service',
+                'price' => (float) $item->price,
+                'quantity' => (int) $item->quantity,
+            ];
+        })->toArray();
+
+        $orderData = [
+            'id' => 'ORDER_' . time(),
+            'items' => $items,
+            'total' => (float) $total,
+            'billing_info' => [
+                'billing_name' => auth()->user()->name ?? 'Client',
+                'billing_email' => auth()->user()->email ?? null,
+            ],
+            'created_at' => now(),
+        ];
+
+        Session::put('pending_order', $orderData);
+
+        return redirect()->route('stripe.checkout');
     }
 }

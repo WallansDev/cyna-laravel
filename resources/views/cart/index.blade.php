@@ -71,21 +71,17 @@
                         </div>
 
                         <div class="text-end">
-                            <a href="{{ route('order.checkout') }}" class="btn btn-gold">
-                                <i class="fas fa-credit-card me-2"></i>Finaliser la commande
-                            </a>
+                            <form action="{{ route('cart.checkout') }}" method="POST" class="d-inline">
+                                @csrf
+                                <button type="submit" class="btn btn-gold">
+                                    <i class="fas fa-credit-card me-2"></i>Passer la commande
+                                </button>
+                            </form>
                         </div>
                     </div>
 
 
-                    <div class="text-end">
-                        {{-- <form action="{{ route('cart.order') }}" method="POST" class="d-inline"> --}}
-                        {{-- <a href="{{ route('order.process') }}" class="btn btn-gold btn-sm">Passer la commande</a> --}}
-                        <form action="{{ route('order.process') }}" method="GET" class="d-inline">
-                            @csrf
-                            <button type="submit" class="btn btn-gold btn-sm">Passer la commande</button>
-                        </form>
-                    </div>
+
                 </div>
             </div>
     </div>

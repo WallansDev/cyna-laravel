@@ -129,10 +129,13 @@ Route::get('/stripe/test', function() {
     return view('stripe.test');
 })->name('stripe.test');
 
+// 🔹 Panier -> Stripe Checkout
+Route::post('/cart/checkout', [CartController::class, 'checkoutToStripe'])->middleware('auth')->name('cart.checkout');
+
 // 🔹 Commandes
 Route::get('/order/checkout', [OrderController::class, 'checkout'])->name('order.checkout');
 Route::get('/order/process', [OrderController::class, 'processOrder'])->name('order.process');
-Route::get('/order/confirmation', [OrderController::class, 'confirmation'])->name('order.confirmation');
+// Route::get('/order/confirmation', [OrderController::class, 'confirmation'])->name('order.confirmation');
 Route::get('/order/history', [OrderController::class, 'history'])->name('order.history');
 
 // 🔹 Page d'accueil
