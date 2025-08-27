@@ -64,9 +64,40 @@
                                         class="bi bi-trash-fill"></i></button>
                             </form>
 
-                            <div class="text-end">
-                                <p class="h5 text-white">Total : <strong>{{ number_format($total, 2) }} €</strong></p>
-                                <p class="text-white-50">{{ $itemCount }} article(s)</p>
+                            <div class="ms-auto" style="max-width: 420px; width:100%;">
+                                <form action="{{ route('cart.coupon.apply') }}" method="POST" class="d-flex gap-2 mb-2">
+                                    @csrf
+                                    <input type="text" name="code" class="form-control" placeholder="Code promo"
+                                        value="{{ session('selected_coupon.code') }}" />
+                                    <button type="submit" class="btn btn-purple">Appliquer</button>
+                                </form>
+                                @if (session('selected_coupon'))
+                                    <form action="{{ route('cart.coupon.remove') }}" method="POST" class="mb-2">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-outline-light btn-sm">Retirer le code
+                                            promo</button>
+                                    </form>
+                                @endif
+
+                                <div class="text-end">
+                                    <p class="h6 text-white-50 mb-1">Sous-total : <strong>{{ number_format($total, 2) }}
+                                            €</strong></p>
+                                    @if (session('selected_coupon'))
+                                        <p class="h6 text-white-50 mb-1">Remise ({{ session('selected_coupon.code') }}):
+                                            <strong>-{{ number_format(session('selected_coupon.discount_amount', 0), 2) }}
+                                                €</strong>
+                                        </p>
+                                        <p class="h5 text-white">Total après remise :
+                                            <strong>{{ number_format(max(0, $total - session('selected_coupon.discount_amount', 0)), 2) }}
+                                                €</strong>
+                                        </p>
+                                    @else
+                                        <p class="h5 text-white">Total : <strong>{{ number_format($total, 2) }} €</strong>
+                                        </p>
+                                    @endif
+                                    <p class="text-white-50">{{ $itemCount }} article(s)</p>
+                                </div>
                             </div>
                         </div>
 

@@ -1,17 +1,13 @@
 <?php
 
-use App\Http\Controllers\Admin\ServiceCrudController;
 use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\CarouselController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ImagesServicesController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\SupportController;
-use App\Http\Controllers\TestController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SearchController;
@@ -45,6 +41,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Orders
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+
+    // 🔹 Stripe Paiements
+Route::get('/checkout', [StripeController::class, 'checkout'])->name('stripe.checkout');
+Route::get('/payment/create-test-order', [StripeController::class, 'createTestOrder'])->name('stripe.create-test-order');
+Route::get('/payment/success', [StripeController::class, 'success'])->name('stripe.success');
+Route::get('/payment/cancel', [StripeController::class, 'cancel'])->name('stripe.cancel');
+Route::post('/webhook/stripe', [StripeController::class, 'webhook'])->name('stripe.webhook');
+
+// 🔹 Panier -> Stripe Checkout
+Route::middleware('auth')->group(function () {
+    Route::get('/order/billing-address', [OrderController::class, 'selectBillingAddress'])->name('order.select-billing-address');
+    Route::post('/order/billing-address', [OrderController::class, 'storeSelectedBillingAddress'])->name('order.store-billing-address');
+    Route::match(['GET','POST'], '/cart/checkout', [CartController::class, 'checkoutToStripe'])->name('cart.checkout');
+});
+
+// 🔹 Commandes
+Route::get('/order/history', [OrderController::class, 'history'])->name('order.history');
 });
 
 // 🔹 Admin
@@ -89,6 +102,9 @@ Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'verified'])
         // Admin Dashboard
         Route::get('/dashboard', fn () => view('admin.dashboard'))->name('admin.dashboard');
 
+        Route::get('/stripe/test', function() {
+            return view('stripe.test');
+        })->name('stripe.test');
     });
 
 // 🔹 2FA
@@ -101,15 +117,6 @@ Route::view('/mentions', 'mentions')->name('mentions');
 Route::view('/contact', 'contact')->name('contact');
 Route::view('/faq', 'faq')->name('faq');
 
-// 🔹 Panier
-Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
-Route::patch('/cart/{id}', [CartController::class, 'update'])->name('cart.update');
-Route::delete('/cart/{id}', [CartController::class, 'remove'])->name('cart.remove');
-Route::delete('/cart', [CartController::class, 'clear'])->name('cart.clear');
-Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
-Route::post('/cart/order', [CartController::class, 'order'])->name('cart.order');
-
 // 🔹 Services & Catégories (publiques)
 Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
 Route::get('/services/{id}', [ServiceController::class, 'show'])->name('services.show');
@@ -119,24 +126,16 @@ Route::get('/categories/{id}', [CategoryController::class, 'show'])->name('categ
 // 🔹 Recherche
 Route::get('/search', [SearchController::class, 'search'])->name('search');
 
-// 🔹 Stripe Paiements
-Route::get('/checkout', [StripeController::class, 'checkout'])->name('stripe.checkout');
-Route::get('/payment/create-test-order', [StripeController::class, 'createTestOrder'])->name('stripe.create-test-order');
-Route::get('/payment/success', [StripeController::class, 'success'])->name('stripe.success');
-Route::get('/payment/cancel', [StripeController::class, 'cancel'])->name('stripe.cancel');
-Route::post('/webhook/stripe', [StripeController::class, 'webhook'])->name('stripe.webhook');
-Route::get('/stripe/test', function() {
-    return view('stripe.test');
-})->name('stripe.test');
-
-// 🔹 Panier -> Stripe Checkout
-Route::post('/cart/checkout', [CartController::class, 'checkoutToStripe'])->middleware('auth')->name('cart.checkout');
-
-// 🔹 Commandes
-Route::get('/order/checkout', [OrderController::class, 'checkout'])->name('order.checkout');
-Route::get('/order/process', [OrderController::class, 'processOrder'])->name('order.process');
-// Route::get('/order/confirmation', [OrderController::class, 'confirmation'])->name('order.confirmation');
-Route::get('/order/history', [OrderController::class, 'history'])->name('order.history');
+// 🔹 Panier
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+Route::patch('/cart/{id}', [CartController::class, 'update'])->whereNumber('id')->name('cart.update');
+Route::delete('/cart/{id}', [CartController::class, 'remove'])->whereNumber('id')->name('cart.remove');
+Route::delete('/cart', [CartController::class, 'clear'])->name('cart.clear');
+Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
+Route::post('/cart/order', [CartController::class, 'order'])->name('cart.order');
+Route::post('/cart/coupon/apply', [CartController::class, 'applyCoupon'])->middleware('auth')->name('cart.coupon.apply');
+Route::match(['POST','DELETE'], '/cart/coupon', [CartController::class, 'removeCoupon'])->middleware('auth')->name('cart.coupon.remove');
 
 // 🔹 Page d'accueil
 Route::get('/', [CarouselController::class, 'index'])->name('home');

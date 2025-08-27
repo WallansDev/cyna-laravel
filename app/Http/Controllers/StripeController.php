@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Session;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Cart;
+use App\Models\StripePayment;
 use Stripe\StripeClient;
 
 class StripeController extends Controller
@@ -39,15 +40,23 @@ class StripeController extends Controller
             $currency = 'eur';
 
             // Créer l'intention de paiement
+            $metadata = [
+                'order_id' => $orderData['id'],
+                'user_id' => auth()->id() ?? 'guest',
+                'items_count' => count($orderData['items'])
+            ];
+            if (!empty($orderData['coupon'])) {
+                $metadata['coupon_code'] = $orderData['coupon']['code'] ?? null;
+                $metadata['promotion_code_id'] = $orderData['coupon']['promotion_code_id'] ?? null;
+                $metadata['coupon_id'] = $orderData['coupon']['coupon_id'] ?? null;
+                $metadata['discount_amount'] = $orderData['coupon']['discount_amount'] ?? null;
+            }
+
             $paymentIntent = $this->stripe->paymentIntents->create([
                 'amount' => $amount,
                 'currency' => $currency,
                 'automatic_payment_methods' => ['enabled' => true],
-                'metadata' => [
-                    'order_id' => $orderData['id'],
-                    'user_id' => auth()->id() ?? 'guest',
-                    'items_count' => count($orderData['items'])
-                ]
+                'metadata' => $metadata
             ]);
 
             return view('stripe.checkout', [
@@ -80,9 +89,26 @@ class StripeController extends Controller
                     $pendingOrder = Session::get('pending_order');
 
                     if ($pendingOrder && Auth::check()) {
+                        // Persister StripePayment
+                        $stripePayment = StripePayment::updateOrCreate(
+                            ['payment_intent_id' => $paymentIntent->id],
+                            [
+                                'status' => $paymentIntent->status,
+                                'amount' => $paymentIntent->amount,
+                                'currency' => $paymentIntent->currency,
+                                'metadata' => $paymentIntent->metadata ? $paymentIntent->metadata->toArray() : null,
+                                'applied_promotion_code' => $pendingOrder['coupon']['promotion_code_id'] ?? null,
+                                'applied_coupon_id' => $pendingOrder['coupon']['coupon_id'] ?? null,
+                                'applied_coupon_code' => $pendingOrder['coupon']['code'] ?? null,
+                                'discount_amount' => isset($pendingOrder['coupon']['discount_amount']) ? (float)$pendingOrder['coupon']['discount_amount'] : null,
+                            ]
+                        );
+                        $selectedBillingAddressId = Session::get('selected_billing_address_id');
                         $order = Order::create([
                             'user_id' => Auth::id(),
                             'total' => (float)($pendingOrder['total'] ?? 0),
+                            'billing_address_id' => $selectedBillingAddressId,
+                            'stripe_payment_id' => $stripePayment->id,
                         ]);
 
                         $items = $pendingOrder['items'] ?? [];
@@ -99,6 +125,8 @@ class StripeController extends Controller
                         Cart::where('user_id', Auth::id())->delete();
                         Session::forget('pending_order');
                         Session::forget('billing_info');
+                        Session::forget('selected_billing_address_id');
+                        Session::forget('selected_coupon');
                     }
 
                     return redirect()->route('orders.index')->with('success', 'Paiement validé, commande créée.');

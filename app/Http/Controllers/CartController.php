@@ -9,9 +9,17 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Support\Facades\Session;
+use App\Models\BillingAddress;
+use Stripe\StripeClient;
 
 class CartController extends Controller
 {
+    protected $stripe;
+
+    public function __construct()
+    {
+        $this->stripe = new StripeClient(config('stripe.secret_key'));
+    }
 
     /**
      * Afficher le contenu du panier
@@ -154,6 +162,74 @@ class CartController extends Controller
     }
 
     /**
+     * Appliquer un code promo Stripe (Promotion Code)
+     */
+    public function applyCoupon(Request $request)
+    {
+        $request->validate([
+            'code' => 'required|string',
+        ]);
+
+        $code = strtoupper(trim($request->input('code')));
+
+        try {
+            $promoCodes = $this->stripe->promotionCodes->all([
+                'code' => $code,
+                'active' => true,
+                'limit' => 1,
+            ]);
+
+            if (empty($promoCodes->data)) {
+                return back()->with('error', 'Code promo invalide ou inactif.');
+            }
+
+            $promotion = $promoCodes->data[0];
+            $coupon = $promotion->coupon;
+
+            // Vérifications basiques: expiration (Stripe gère côté coupon/promotion), currency via amount_off
+            $total = (float) Cart::getCartTotal(Auth::id());
+            if ($total <= 0) {
+                return back()->with('error', 'Panier vide.');
+            }
+
+            $discountAmount = 0.0;
+            if (!empty($coupon->percent_off)) {
+                $discountAmount = round($total * ((float)$coupon->percent_off / 100), 2);
+            } elseif (!empty($coupon->amount_off)) {
+                // amount_off est en centimes dans la devise du coupon
+                $discountAmount = round(((int)$coupon->amount_off) / 100, 2);
+                $discountAmount = min($discountAmount, $total);
+            }
+
+            $selectedCoupon = [
+                'promotion_code_id' => $promotion->id,
+                'coupon_id' => $coupon->id,
+                'code' => $code,
+                'percent_off' => $coupon->percent_off ?? null,
+                'amount_off' => $coupon->amount_off ?? null, // centimes
+                'currency' => $coupon->currency ?? 'eur',
+                'discount_amount' => $discountAmount,
+                'discounted_total' => max(0, $total - $discountAmount),
+            ];
+
+            Session::put('selected_coupon', $selectedCoupon);
+
+            return back()->with('success', 'Code promo appliqué.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Erreur lors de la vérification du code promo.');
+        }
+    }
+
+    /**
+     * Retirer le code promo
+     */
+    public function removeCoupon()
+    {
+        Session::forget('selected_coupon');
+        return back()->with('success', 'Code promo retiré.');
+    }
+
+    /**
      * Passer une commande
      */
     public function order(Request $request)
@@ -194,6 +270,22 @@ class CartController extends Controller
 
         $total = Cart::getCartTotal($userId);
 
+        // Adresse de facturation requise
+        $billingAddressId = Session::get('selected_billing_address_id');
+        if (!$billingAddressId) {
+            return redirect()->route('order.select-billing-address')->with('error', 'Sélectionnez une adresse de facturation.');
+        }
+        $billingAddress = BillingAddress::where('user_id', $userId)->findOrFail($billingAddressId);
+
+        // Coupon Stripe en session
+        $selectedCoupon = Session::get('selected_coupon');
+        $discountAmount = 0.0;
+        $discountedTotal = (float) $total;
+        if ($selectedCoupon) {
+            $discountAmount = (float) ($selectedCoupon['discount_amount'] ?? 0);
+            $discountedTotal = max(0, (float) $total - $discountAmount);
+        }
+
         $items = $cartItems->map(function ($item) {
             return [
                 'name' => $item->service ? $item->service->name : 'Service',
@@ -205,11 +297,16 @@ class CartController extends Controller
         $orderData = [
             'id' => 'ORDER_' . time(),
             'items' => $items,
-            'total' => (float) $total,
+            'total' => (float) $discountedTotal,
             'billing_info' => [
-                'billing_name' => auth()->user()->name ?? 'Client',
-                'billing_email' => auth()->user()->email ?? null,
+                'address_line1' => $billingAddress->address_line1,
+                'address_line2' => $billingAddress->address_line2,
+                'city' => $billingAddress->city,
+                'postal_code' => $billingAddress->postal_code,
+                'country' => $billingAddress->country,
+                'phone' => $billingAddress->phone,
             ],
+            'coupon' => $selectedCoupon,
             'created_at' => now(),
         ];
 
