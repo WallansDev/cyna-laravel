@@ -3,6 +3,7 @@
 @section('title', 'Mon Panier - ' . $_SOCIETYNAME)
 
 @section('content')
+
 <div class="container py-5">
     <h1 class="text-white mb-4" style="text-align: center;">Mon Panier</h1>
 
@@ -19,11 +20,11 @@
                                      style="width: 80px; height: 80px; object-fit: cover; border: none;">
                             @endif
 
-                            <div>
-                                <h5 class="mb-1 text-white fw-bold">{{ $item->service->name }}</h5>
-                                <p class="mb-0 text-white-50">{{ number_format($item->price, 2) }} €</p>
+                                <div>
+                                    <h5 class="mb-1 text-white fw-bold">{{ $item->service->name }}</h5>
+                                    <p class="mb-0 text-white-50">{{ number_format($item->price, 2) }} €</p>
+                                </div>
                             </div>
-                        </div>
 
                         <div class="d-flex align-items-center gap-3 flex-wrap">
                             <form action="{{ route('cart.update', $item->id) }}" method="POST" class="d-flex align-items-center gap-2">
@@ -34,35 +35,44 @@
                                 <button type="submit" class="btn btn-purple px-3 py-1"><i class="bi bi-arrow-clockwise"></i></button>
                             </form>
 
-                            <div class="text-white fw-bold">
-                                {{ number_format($item->subtotal, 2) }} €
-                            </div>
+                                <div class="text-white fw-bold">
+                                    {{ number_format($item->subtotal, 2) }} €
+                                </div>
 
-                            <form action="{{ route('cart.remove', $item->id) }}" method="POST"
-                                  onsubmit="return confirm('Supprimer ce service du panier ?')">
+                                <form action="{{ route('cart.remove', $item->id) }}" method="POST"
+                                    onsubmit="return confirm('Supprimer ce service du panier ?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">🗑️</button>
+                                </form>
+                            </div>
+                        </div>
+                    @endforeach
+
+                    <!-- Total & Actions -->
+                    <div class="pt-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-3">
+                            <form action="{{ route('cart.clear') }}" method="POST"
+                                onsubmit="return confirm('Vider complètement le panier ?')">
                                 @csrf
                                 @method('DELETE')
+
                                 <button type="submit" class="btn btn-danger btn-sm px-3 py-1"><i class="bi bi-trash-fill"></i></button>
                             </form>
-                        </div>
-                    </div>
-                @endforeach
 
-                <!-- Total & Actions -->
-                <div class="pt-4">
-                    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-3">
-                        <form action="{{ route('cart.clear') }}" method="POST"
-                              onsubmit="return confirm('Vider complètement le panier ?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger text-white px-4">Vider le panier</button>
-                        </form>
+                            <div class="text-end">
+                                <p class="h5 text-white">Total : <strong>{{ number_format($total, 2) }} €</strong></p>
+                                <p class="text-white-50">{{ $itemCount }} article(s)</p>
+                            </div>
+                        </div>
 
                         <div class="text-end">
-                            <p class="h5 text-white">Total : <strong>{{ number_format($total, 2) }} €</strong></p>
-                            <p class="text-white-50">{{ $itemCount }} article(s)</p>
+                            <a href="{{ route('order.checkout') }}" class="btn btn-gold">
+                                <i class="fas fa-credit-card me-2"></i>Finaliser la commande
+                            </a>
                         </div>
                     </div>
+
 
                     <div class="text-end">
                         <form action="{{ route('cart.order') }}" method="POST" class="d-inline">
@@ -82,47 +92,50 @@
 </div>
 @endsection
 @section('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    // Sélectionne tous les formulaires de mise à jour de quantité
-    const updateForms = document.querySelectorAll('form[action^="{{ route("cart.update", "") }}"]');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sélectionne tous les formulaires de mise à jour de quantité
+            const updateForms = document.querySelectorAll('form[action^="{{ route('cart.update', '') }}"]');
 
-    updateForms.forEach(form => {
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
+            updateForms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
 
-            const url = form.action;
-            const formData = new FormData(form);
+                    const url = form.action;
+                    const formData = new FormData(form);
 
-            fetch(url, {
-                method: 'PATCH',
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': form.querySelector('input[name="_token"]').value,
-                },
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Met à jour le sous-total
-                    const subtotalDiv = form.parentElement.querySelector('.text-white.fw-bold');
-                    if (subtotalDiv) {
-                        subtotalDiv.textContent = data.subtotal.toFixed(2) + ' €';
-                    }
+                    fetch(url, {
+                            method: 'PATCH',
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'X-CSRF-TOKEN': form.querySelector('input[name="_token"]')
+                                    .value,
+                            },
+                            body: formData
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Met à jour le sous-total
+                                const subtotalDiv = form.parentElement.querySelector(
+                                    '.text-white.fw-bold');
+                                if (subtotalDiv) {
+                                    subtotalDiv.textContent = data.subtotal.toFixed(2) + ' €';
+                                }
 
-                    // Met à jour le total général
-                    const totalElem = document.querySelector('.text-end p.h5 strong');
-                    if (totalElem) {
-                        totalElem.textContent = data.total.toFixed(2) + ' €';
-                    }
-                } else {
-                    alert('Erreur lors de la mise à jour');
-                }
-            })
-            .catch(() => alert('Erreur réseau'));
+                                // Met à jour le total général
+                                const totalElem = document.querySelector(
+                                    '.text-end p.h5 strong');
+                                if (totalElem) {
+                                    totalElem.textContent = data.total.toFixed(2) + ' €';
+                                }
+                            } else {
+                                alert('Erreur lors de la mise à jour');
+                            }
+                        })
+                        .catch(() => alert('Erreur réseau'));
+                });
+            });
         });
-    });
-});
-</script>
+    </script>
 @endsection

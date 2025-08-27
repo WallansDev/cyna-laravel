@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\CarouselController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ImagesServicesController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\StripeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserStatsController;
 use App\Http\Middleware\EnsureUserIsAdmin;
@@ -28,7 +30,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/users/profil/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/users/profil/edit', [ProfileController::class, 'update'])->name('profile.update');
     Route::view('/users/profil/edit/password', 'profile.changePassword')->name('password.edit');
-    Route::put('/users/profil/edit', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/users/profil/edit', [ProfileController::class, 'update']);
 
     // Billing Addresses
     Route::get('/users/profil/billing-addresses', [UserController::class, 'billingAddresses'])->name('billing-addresses.index');
@@ -60,8 +62,10 @@ Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'verified'])
         Route::get('/services', [ServiceController::class, 'viewAdmin'])->name('services.viewAdmin');
         Route::get('/services/{id}/up', [ServiceController::class, 'moveUp'])->name('services.up');
         Route::get('/services/{id}/down', [ServiceController::class, 'moveDown'])->name('services.down');
-        Route::resource('/services', ServiceController::class)->except('moveUp', 'moveDown', 'topProducts', 'reorderTop', 'index', 'show');
-
+        Route::resource('/services', ServiceController::class)->except('moveUp', 'moveDown', 'topProducts', 'upadte', 'reorderTop', 'index', 'show');
+        Route::put('/services/{service}', [ServiceController::class, 'update'])->name('services.update');
+        Route::delete('/service-images/{image}', [ImagesServicesController::class, 'destroy'])->name('service-images.destroy');
+        
         // Admin Top products
         Route::get('/services/top', [ServiceController::class, 'topProducts'])->name('services.topProducts');
         Route::get('/top-products/{id}/move-up-top', [ServiceController::class, 'moveUpTopProduct'])->name('services.moveUpTop');
@@ -114,6 +118,22 @@ Route::get('/categories/{id}', [CategoryController::class, 'show'])->name('categ
 
 // 🔹 Recherche
 Route::get('/search', [SearchController::class, 'search'])->name('search');
+
+// 🔹 Stripe Paiements
+Route::get('/checkout', [StripeController::class, 'checkout'])->name('stripe.checkout');
+Route::get('/payment/create-test-order', [StripeController::class, 'createTestOrder'])->name('stripe.create-test-order');
+Route::get('/payment/success', [StripeController::class, 'success'])->name('stripe.success');
+Route::get('/payment/cancel', [StripeController::class, 'cancel'])->name('stripe.cancel');
+Route::post('/webhook/stripe', [StripeController::class, 'webhook'])->name('stripe.webhook');
+Route::get('/stripe/test', function() {
+    return view('stripe.test');
+})->name('stripe.test');
+
+// 🔹 Commandes
+Route::get('/order/checkout', [OrderController::class, 'checkout'])->name('order.checkout');
+Route::post('/order/process', [OrderController::class, 'processOrder'])->name('order.process');
+Route::get('/order/confirmation', [OrderController::class, 'confirmation'])->name('order.confirmation');
+Route::get('/order/history', [OrderController::class, 'history'])->name('order.history');
 
 // 🔹 Page d'accueil
 Route::get('/', [CarouselController::class, 'index'])->name('home');
