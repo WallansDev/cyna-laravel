@@ -17,16 +17,14 @@ class ServiceController extends Controller
 {
     /**
      * Display a listing of the resource.
-    */
+     */
 
     public function index()
     {
         $services = Service::orderBy('position')->paginate(10);
 
-
         return view('service.index', compact('services'));
     }
-
 
     public function viewAdmin()
     {
@@ -138,7 +136,7 @@ class ServiceController extends Controller
         $lastPosition = Service::max('position') ?? 0;
         $path = $request->file('image_path')->store('services', 'public');
 
-        // 1. On crée d'abord le service sans top_position
+        // 1. Création du service
         $service = Service::create([
             'name' => $request->name,
             'image_path' => basename($path),
@@ -148,22 +146,36 @@ class ServiceController extends Controller
             'availbility' => $request->boolean('availbility'),
         ]);
 
+        // Lien avec catégories
         $service->categories()->attach($request->input('categories', []));
 
-        // 2. Si c’est un top produit, mettre à jour les positions selon ordre
+        // 2. Gestion du top produit
         if ($request->boolean('is_top_product')) {
             $order = json_decode($request->input('top_order_json'), true);
 
-            // ❗ Ici on gère le cas où l'élément est `"new"` (remplacé par $service->id)
-            foreach ($order as $item) {
-                $id = $item['id'] === 'new' ? $service->id : $item['id'];
-                Service::where('id', $id)->update(['top_position' => $item['position']]);
+            // foreach ($order as $item) {
+            //     $id = $item['id'] === 'new' ? $service->id : $item['id'];
+            //     Service::where('id', $id)->update(['top_position' => $item['position']]);
+            // }
+        }
+
+        // 3. Gestion de la galerie d’images
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $image) {
+                // On prend le nom original ou un nom unique
+                $filename = uniqid() . '.' . $image->getClientOriginalExtension();
+
+                // On déplace l'image dans storage/app/public/services/gallery
+                $image->storeAs('services/gallery', $filename, 'public');
+
+                // En BDD on ne stocke que le nom
+                $service->gallery()->create([
+                    'image_path' => $filename,
+                ]);
             }
         }
 
-        // 3. Toujours réorganiser pour être sûr
-        // $this->reorderTopPositions();
-
+        // 4. Redirection
         return Redirect::route('services.viewAdmin')->with('success', 'Service créé avec succès');
     }
 
@@ -197,6 +209,7 @@ class ServiceController extends Controller
         $data = $request->validated();
         $data['availbility'] = $request->boolean('availbility');
 
+        // 🔹 Gestion de l'image principale
         if ($request->hasFile('image_path')) {
             if ($service->image_path) {
                 $oldImagePath = public_path('storage/services/' . $service->image_path);
@@ -208,9 +221,13 @@ class ServiceController extends Controller
             $data['image_path'] = basename($path);
         }
 
+        // 🔹 Mise à jour des infos du service
         $service->update($data);
+
+        // 🔹 Mise à jour des catégories
         $service->categories()->sync($data['categories'] ?? []);
 
+        // 🔹 Gestion du top produit
         if ($request->boolean('is_top_product')) {
             $order = json_decode($request->input('top_order_json'), true);
 
@@ -221,7 +238,6 @@ class ServiceController extends Controller
                     ]);
                 }
             } else {
-                // Si pas d'ordre JSON valide, ajouter en fin
                 $maxPosition = Service::max('top_position') ?? 0;
                 $service->update(['top_position' => $maxPosition + 1]);
             }
@@ -229,8 +245,23 @@ class ServiceController extends Controller
             $service->update(['top_position' => 0]);
         }
 
-        // Réordonner après modification
         $this->reorderTopPositions();
+
+        // 🔹 Ajout de nouvelles images dans la galerie
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $image) {
+                // On prend le nom original ou un nom unique
+                $filename = uniqid() . '.' . $image->getClientOriginalExtension();
+
+                // On déplace l'image dans storage/app/public/services/gallery
+                $image->storeAs('services/gallery', $filename, 'public');
+
+                // En BDD on ne stocke que le nom
+                $service->gallery()->create([
+                    'image_path' => $filename,
+                ]);
+            }
+        }
 
         return Redirect::route('services.viewAdmin')->with('success', 'Service mis à jour avec succès');
     }
@@ -276,4 +307,3 @@ class ServiceController extends Controller
         return $this->hasMany(Cart::class, 'services_id');
     }
 }
-

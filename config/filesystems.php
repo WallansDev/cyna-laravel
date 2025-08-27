@@ -36,21 +36,21 @@ return [
             'report' => false,
         ],
 
-        'public' => [
-            'driver' => 'local',
-            'root' => '/home/cynasaaslimbmc/public_html/storage',
-            'url' => env('APP_URL') . '/storage',
-            'visibility' => 'public',
-        ],
-
         // 'public' => [
         //     'driver' => 'local',
-        //     'root' => storage_path('app/public'),
+        //     'root' => '/home/cynasaaslimbmc/public_html/storage',
         //     'url' => env('APP_URL') . '/storage',
         //     'visibility' => 'public',
-        //     'throw' => false,
-        //     'report' => false,
         // ],
+
+        'public' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public'),
+            'url' => env('APP_URL') . '/storage',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
 
         's3' => [
             'driver' => 's3',

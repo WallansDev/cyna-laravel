@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\CarouselController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ImagesServicesController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
@@ -61,8 +62,11 @@ Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'verified'])
         Route::get('/services', [ServiceController::class, 'viewAdmin'])->name('services.viewAdmin');
         Route::get('/services/{id}/up', [ServiceController::class, 'moveUp'])->name('services.up');
         Route::get('/services/{id}/down', [ServiceController::class, 'moveDown'])->name('services.down');
-        Route::resource('/services', ServiceController::class)->except('moveUp', 'moveDown', 'topProducts', 'reorderTop', 'index', 'show');
-
+        Route::resource('/services', ServiceController::class)->except('moveUp', 'moveDown', 'topProducts', 'upadte', 'reorderTop', 'index', 'show');
+        // Route::delete('/service-images/{image}', [ImagesServicesController::class, 'destroy'])->name('service-images.destroy');
+        Route::put('/services/{service}', [ServiceController::class, 'update'])->name('services.update');
+        Route::delete('/service-images/{image}', [ImagesServicesController::class, 'destroy'])->name('service-images.destroy');
+        
         // Admin Top products
         Route::get('/services/top', [ServiceController::class, 'topProducts'])->name('services.topProducts');
         Route::get('/top-products/{id}/move-up-top', [ServiceController::class, 'moveUpTopProduct'])->name('services.moveUpTop');

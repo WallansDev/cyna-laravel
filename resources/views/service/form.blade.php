@@ -87,6 +87,40 @@
             </select>
         </div>
         <br>
+        <!-- Formulaire principal pour mettre à jour le service -->
+        <form action="{{ route('services.update', $service->id) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+
+            <!-- Champs du service ... -->
+
+            <!-- Upload de nouvelles images -->
+            <input type="file" name="gallery[]" multiple class="form-control">
+
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </form>
+
+        <hr>
+
+        <!-- Galerie existante avec suppression individuelle -->
+        <div class="row">
+            @foreach ($service->gallery as $img)
+                <div class="col-md-3 text-center mb-2">
+                    <img src="{{ asset('storage/services/gallery/' . $img->image_path) }}"
+                        class="img-fluid rounded shadow mb-1" alt="">
+
+                    <!-- Formulaire indépendant pour supprimer l'image -->
+                    <form action="{{ route('service-images.destroy', $img->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
+                    </form>
+                </div>
+            @endforeach
+        </div>
+
+
+        <br>
 
     </div>
     <div class="col-md-12 mt20 mt-2 text-center">
