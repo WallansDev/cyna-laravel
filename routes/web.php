@@ -131,7 +131,7 @@ Route::get('/stripe/test', function() {
 
 // 🔹 Commandes
 Route::get('/order/checkout', [OrderController::class, 'checkout'])->name('order.checkout');
-Route::post('/order/process', [OrderController::class, 'processOrder'])->name('order.process');
+Route::get('/order/process', [OrderController::class, 'processOrder'])->name('order.process');
 Route::get('/order/confirmation', [OrderController::class, 'confirmation'])->name('order.confirmation');
 Route::get('/order/history', [OrderController::class, 'history'])->name('order.history');
 

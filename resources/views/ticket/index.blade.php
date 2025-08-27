@@ -30,13 +30,13 @@
                             <td>{{ $ticket->user->surname . ' ' . $ticket->user->name . ' (' . preg_replace("/^(\d{3})(\d{3})(\d{3})(\d{5})$/", "$1 $2 $3 $4", $ticket->user->siret) . ')' }}
                             </td>
                             <td>
-                                @if ($ticket->status === 0)
+                                @if ($ticket->status == 0)
                                     <span class="badge bg-primary">En cours</span>
-                                @elseif ($ticket->status === 1)
+                                @elseif ($ticket->status == 1)
                                     <span class="badge bg-danger">Fermé</span>
-                                @elseif ($ticket->status === 2)
+                                @elseif ($ticket->status == 2)
                                     <span class="badge bg-info">Gelé</span>
-                                @elseif ($ticket->status === 3)
+                                @elseif ($ticket->status == 3)
                                     <span class="badge bg-success">Nouveau</span>
                                 @else
                                     Pas d'état trouvé

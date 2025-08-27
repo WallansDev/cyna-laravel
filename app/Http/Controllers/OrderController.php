@@ -20,16 +20,11 @@ class OrderController extends Controller
      */
     public function checkout(Request $request)
     {
-        // Récupérer le panier depuis la session
         $cart = Session::get('cart', []);
-        
         if (empty($cart)) {
             return redirect()->route('cart.index')->with('error', 'Votre panier est vide.');
         }
-
-        // Calculer le total du panier
         $total = $this->calculateCartTotal($cart);
-
         return view('orders.checkout', [
             'cart' => $cart,
             'total' => $total,
@@ -50,24 +45,15 @@ class OrderController extends Controller
             'billing_postal_code' => 'required|string',
             'billing_country' => 'required|string',
         ]);
-
-        // Récupérer le panier
         $cart = Session::get('cart', []);
-        
         if (empty($cart)) {
             return redirect()->route('cart.index')->with('error', 'Votre panier est vide.');
         }
-
-        // Calculer le total
         $total = $this->calculateCartTotal($cart);
-
-        // Sauvegarder les informations de facturation en session
         Session::put('billing_info', $request->only([
             'billing_name', 'billing_email', 'billing_address', 
             'billing_city', 'billing_postal_code', 'billing_country'
         ]));
-
-        // Créer une commande temporaire
         $orderData = [
             'id' => 'ORDER_' . time(),
             'items' => $cart,
@@ -75,10 +61,7 @@ class OrderController extends Controller
             'billing_info' => Session::get('billing_info'),
             'created_at' => now(),
         ];
-
         Session::put('pending_order', $orderData);
-
-        // Rediriger vers le paiement Stripe
         return redirect()->route('stripe.checkout');
     }
 
@@ -88,16 +71,12 @@ class OrderController extends Controller
     public function confirmation(Request $request)
     {
         $orderData = Session::get('pending_order');
-        
         if (!$orderData) {
             return redirect()->route('home')->with('error', 'Aucune commande en attente.');
         }
-
-        // Vider le panier après confirmation
         Session::forget('cart');
         Session::forget('pending_order');
         Session::forget('billing_info');
-
         return view('orders.confirmation', [
             'order' => $orderData
         ]);
@@ -109,11 +88,9 @@ class OrderController extends Controller
     private function calculateCartTotal($cart)
     {
         $total = 0;
-        
         foreach ($cart as $item) {
             $total += ($item['price'] ?? 0) * ($item['quantity'] ?? 1);
         }
-        
         return $total;
     }
 
@@ -122,23 +99,19 @@ class OrderController extends Controller
      */
     public function history()
     {
-        // Ici vous pouvez récupérer les commandes depuis la base de données
-        // Pour l'instant, on retourne une vue vide
+        // À adapter selon ta logique d'enregistrement des commandes
         return view('orders.history', [
             'orders' => []
         ]);
-/*
-use Illuminate\Http\Request;
-use App\Models\Order;
-use Illuminate\Support\Facades\Auth;
+    }
 
-class OrderController extends Controller
-{
-   public function index()
+    /**
+     * Affiche la liste des commandes pour un utilisateur
+     */
+    public function index()
     {
-        $orders = Order::where('user_id', Auth::id())->get();
+        // Exemple : récupère les commandes de l'utilisateur connecté
+        $orders = \App\Models\Order::where('user_id', auth()->id())->get();
         return view('orders.index', compact('orders'));
     }
-*/
-}
 }
