@@ -13,6 +13,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Admin\StripeCouponController;
 use App\Http\Controllers\UserStatsController;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Http\Middleware\TwoFactor;
@@ -96,6 +97,11 @@ Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'verified'])
         Route::put('/services/{service}', [ServiceController::class, 'update'])->name('services.update');
         Route::delete('/service-images/{image}', [ImagesServicesController::class, 'destroy'])->name('service-images.destroy');
         Route::resource('/services', ServiceController::class)->except('moveUp', 'moveDown', 'topProducts', 'upadte', 'reorderTop', 'index', 'show');
+
+        // Admin Coupons (Stripe)
+        Route::get('/coupons', [StripeCouponController::class, 'index'])->name('admin.coupons.index');
+        Route::post('/coupons', [StripeCouponController::class, 'store'])->name('admin.coupons.store');
+        Route::delete('/coupons/{coupon}', [StripeCouponController::class, 'destroy'])->name('admin.coupons.destroy');
 
         // Admin Top products
         Route::get('/services/top', [ServiceController::class, 'topProducts'])->name('services.topProducts');

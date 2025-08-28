@@ -67,11 +67,21 @@
                 </a>
             </div>
             <div class="col-6 col-md-3">
+                <a href="{{ route('admin.coupons.index') }}" style="text-decoration: none;">
+                    <div class="card text-center purple-header" style="border: none;">
+                        <div class="card-body py-4">
+                            <i class="fa-solid fa-money-bill mb-3" style="font-size: 2.5rem;"></i>
+                            <h5 class="card-title">Gérer les coupons</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
                 <a href="{{ route('orders.admin') }}" style="text-decoration: none;">
                     <div class="card text-center purple-header" style="border: none;">
                         <div class="card-body py-4">
                             <i class="fa-solid fa-box-archive mb-3" style="font-size: 2.5rem;"></i>
-                            <h5 class="card-title">Voir toutes les commandes</h5>
+                            <h5 class="card-title">Commandes passées</h5>
                         </div>
                     </div>
                 </a>
