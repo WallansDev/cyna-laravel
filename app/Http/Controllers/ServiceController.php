@@ -140,6 +140,7 @@ class ServiceController extends Controller
         $service = Service::create([
             'name' => $request->name,
             'image_path' => basename($path),
+            'technical_specifications' => $request->technical_specifications,
             'description' => $request->description,
             'position' => $lastPosition + 1,
             'top_position' => 0,
@@ -152,11 +153,6 @@ class ServiceController extends Controller
         // 2. Gestion du top produit
         if ($request->boolean('is_top_product')) {
             $order = json_decode($request->input('top_order_json'), true);
-
-            // foreach ($order as $item) {
-            //     $id = $item['id'] === 'new' ? $service->id : $item['id'];
-            //     Service::where('id', $id)->update(['top_position' => $item['position']]);
-            // }
         }
 
         // 3. Gestion de la galerie d’images

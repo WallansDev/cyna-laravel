@@ -136,7 +136,7 @@ class StripeController extends Controller
             return redirect()->route('stripe.checkout')->with('error', 'Paiement non trouvé ou échoué.');
 
         } catch (Exception $e) {
-            Log::error('Erreur lors de la vérification du paiement: ' . $e->getMessage());
+            dd('Erreur lors de la vérification du paiement: ' . $e->getMessage());
             return redirect()->route('stripe.checkout')->with('error', 'Erreur lors de la vérification du paiement.');
         }
     }

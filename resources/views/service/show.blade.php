@@ -15,6 +15,10 @@
                         <h5 class="service-category-title">{{ $service->name }}</h5>
                         <p class="mb-0">{{ $service->description }}</p>
                         <div class="mt-3">
+                            <h5 class="category-title-inline" style="font-size: inherit;">Caractéristiques techniques</h5>
+                            <p class="mb-0">{{ $service->technical_specifications }}</p>
+                        </div>
+                        <div class="mt-3">
                             <h5 class="category-title-inline" style="font-size: inherit;">Prix</h5>
                             <p class="mb-0">200 €</p>
                         </div>

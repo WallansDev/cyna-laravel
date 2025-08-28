@@ -26,6 +26,7 @@ class UpdateServiceRequest extends FormRequest
         return [
             'name' => 'required|string|max:50',
             'image_path' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'technical_specifications' => 'nullable|string|max:150',
             'description' => 'nullable|string|max:255',
             'availbility' => 'sometimes|boolean',
             'categories' => 'array',
@@ -41,6 +42,8 @@ class UpdateServiceRequest extends FormRequest
 
             'image_path.max' => "L'image ne peut pas dépasser 2048.",
             'image_path.mimes' => "L'image doit être du format jpeg, png, jpg",
+
+            'technical_specifications.max' => 'les caractéristiques spécifiques ne peut faire que maximum 150 caractères.',
 
             'description.max' => 'La description ne peut pas dépasser 150 caractères.',
         ];

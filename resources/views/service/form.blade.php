@@ -3,7 +3,7 @@
 
         <div class="form-group mb-2 mb20">
             <label for="name" class="form-label fw-bold">{{ __('Nom') }}</label>
-            <input type="text" name="name" class="form-control @error('title') is-invalid @enderror"
+            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
                 value="{{ old('name', $service?->name) }}" id="name" placeholder="Nom">
             {!! $errors->first('name', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
@@ -28,6 +28,19 @@
             {!! $errors->first('description', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
         <br>
+        <div class="form-group mb-2 mb20">
+            <label for="technical_specifications"
+                class="form-label fw-bold">{{ __('Caractéristiques technique') }}</label>
+            <input type="text" name="technical_specifications"
+                class="form-control @error('technical_specifications') is-invalid @enderror"
+                value="{{ old('technical_specifications', $service?->technical_specifications) }}"
+                id="technical_specifications" placeholder="24h/24 7j/7 - Protection multi-terminaux ...">
+            {!! $errors->first(
+                'technical_specifications',
+                '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>',
+            ) !!}
+        </div>
+        <br>
         <div class="form-group">
             <input type="hidden" name="availbility" value="0">
             <input type="checkbox" name="availbility" id="availbility" value="1"
@@ -43,38 +56,6 @@
             </label>
         </div>
         <br>
-        {{-- <div id="top_position_block"
-            style="{{ old('is_top_product', ($service->top_position ?? 0) > 0) ? '' : 'display:none;' }}">
-            <p class="mb-2">Organisez la position dans les produits en vedette :</p>
-            <ul id="sortable-top-products" class="list-group" style="border: 1px solid black">
-                @php
-                    $alreadyInList = false;
-                @endphp
-                @foreach ($topServices as $top)
-                    <li class="list-group-item sortable-item d-flex justify-content-between align-items-center"
-                        data-id="{{ $top->id }}">
-                        @if (isset($service) && $service->id === $top->id)
-                            <b>{{ $top->name }}</b>
-                            @php $alreadyInList = true; @endphp
-                        @else
-                            {{ $top->name }}
-                        @endif
-                    </li>
-                @endforeach
-
-                Si ce service devient top mais n'est pas encore dans la liste
-                @if (!$alreadyInList && old('is_top_product'))
-                    <li class="list-group-item sortable-item d-flex justify-content-between align-items-center"
-                        data-id="{{ $service->id ?? 'new' }}">
-                        {{ old('name', $service->name ?? 'Ce nouveau service') }}
-                        <span class="badge bg-primary">Ce service</span>
-                    </li>
-                @endif
-            </ul>
-
-            <input type="hidden" name="top_order_json" id="top_order_json">
-        </div> --}}
-
 
         <div class="form-group">
             <label for="categories" class="fw-bold">Catégories associés</label>
@@ -88,15 +69,10 @@
         </div>
         <br>
         <!-- Formulaire principal pour mettre à jour le service -->
-        <form action="{{ route('services.update', $service->id) }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            @method('PUT')
-
-            <!-- Champs du service ... -->
-
-            <!-- Upload de nouvelles images -->
+        <div class="form-group">
+            <label class="form-label fw-bold">Images de la galerie</label>
             <input type="file" name="gallery[]" multiple class="form-control">
-        </form>
+        </div>
 
         <hr>
 

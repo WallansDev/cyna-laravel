@@ -4,19 +4,31 @@
 
 @section('content')
     <div class="container-fluid" style="margin-top: 2em;">
+        @if (session('success'))
+            <div class="col-12">
+                <div class="alert alert-primary" role="alert">
+                    {{ session('success') }}
+                </div>
+            </div>
+        @endif
+        @if (session('error'))
+            <div class="col-12">
+                <div class="alert alert-primary" role="alert">
+                    {{ session('error') }}
+                </div>
+            </div>
+        @endif
         <div class="row">
             <div class="col-sm-12 d-flex justify-content-center">
                 <div class="card purple-theme" style="width: 85%" data-bs-theme="dark">
                     <div class="purple-header">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-
                             <span id="card_title">
                                 {{ __('Services') }}
                             </span>
 
                             <div class="float-right">
-                                <a href="{{ route('services.create') }}" class="btn btn-gold btn-sm"
-                                    data-placement="left">
+                                <a href="{{ route('services.create') }}" class="btn btn-gold btn-sm" data-placement="left">
                                     {{ __('Nouveau') }}
                                 </a>
                             </div>
@@ -32,6 +44,7 @@
                                         <th class="align-middle text-center">Titre</th>
                                         <th class="align-middle text-center">Image</th>
                                         <th class="align-middle">Description</th>
+                                        <th class="align-middle text-center">Caractéristiques techniques</th>
                                         <th class="align-middle text-center">Disponibilité</th>
                                         <th class="align-middle text-center">Position en vedette</th>
                                         <th class="align-middle">Catégories</th>
@@ -44,23 +57,33 @@
                                         <tr>
                                             <td class="align-middle text-center">
                                                 @if ($service->position === $service_first->position)
-                                                    <a class="btn btn-sm action-btn view-btn" href="{{ route('services.down', $service->id) }}"><i class="bi bi-caret-down-fill"></i></a>
+                                                    <a class="btn btn-sm action-btn view-btn"
+                                                        href="{{ route('services.down', $service->id) }}"><i
+                                                            class="bi bi-caret-down-fill"></i></a>
                                                 @elseif ($service->position === $service_last->position)
-                                                    <a class="btn btn-sm action-btn view-btn" href="{{ route('services.up', $service->id) }}"><i class="bi bi-caret-up-fill"></i></a>
+                                                    <a class="btn btn-sm action-btn view-btn"
+                                                        href="{{ route('services.up', $service->id) }}"><i
+                                                            class="bi bi-caret-up-fill"></i></a>
                                                 @else
-                                                <div class="d-flex flex-column align-items-center">
-                                                    <a class="btn btn-sm action-btn view-btn" href="{{ route('services.up', $service->id) }}"><i class="bi bi-caret-up-fill"></i></a>
-                                                    <br class="mb-3">
-                                                    <a class="btn btn-sm action-btn view-btn" href="{{ route('services.down', $service->id) }}"><i class="bi bi-caret-down-fill"></i></a>
-                                                </div>
+                                                    <div class="d-flex flex-column align-items-center">
+                                                        <a class="btn btn-sm action-btn view-btn"
+                                                            href="{{ route('services.up', $service->id) }}"><i
+                                                                class="bi bi-caret-up-fill"></i></a>
+                                                        <br class="mb-3">
+                                                        <a class="btn btn-sm action-btn view-btn"
+                                                            href="{{ route('services.down', $service->id) }}"><i
+                                                                class="bi bi-caret-down-fill"></i></a>
+                                                    </div>
                                                 @endif
                                             </td>
                                             <td class="align-middle text-center">{{ $service->position }}</td>
                                             <td class="align-middle text-center">{{ $service->name }}</td>
-                                            <td class="align-middle text-center"><img src="{{ asset('storage/services/' . $service->image_path) }}"
+                                            <td class="align-middle text-center"><img
+                                                    src="{{ asset('storage/services/' . $service->image_path) }}"
                                                     alt="{{ $service->image_path }}" width="100" class="category-image">
                                             </td>
                                             <td class="align-middle">{{ $service->description }}</td>
+                                            <td class="align-middle">{{ $service->technical_specifications }}</td>
                                             @if ($service->availbility)
                                                 <td class="align-middle text-center">
                                                     <span class="badge bg-success">Disponible</span>
@@ -85,12 +108,14 @@
                                                 @endforelse
                                             </td>
                                             <td class="align-middle text-center">
-                                                <form class="d-flex flex-column align-items-center gap-2" action="{{ route('services.destroy', $service->id) }}"
-                                                    method="POST">
+                                                <form class="d-flex flex-column align-items-center gap-2"
+                                                    action="{{ route('services.destroy', $service->id) }}" method="POST">
                                                     <a class="btn btn-sm action-btn view-btn"
-                                                       href="{{ route('services.show', $service->id) }}"><i class="bi bi-eye-fill"></i></a>
+                                                        href="{{ route('services.show', $service->id) }}"><i
+                                                            class="bi bi-eye-fill"></i></a>
                                                     <a class="btn btn-sm action-btn edit-btn"
-                                                        href="{{ route('services.edit', $service->id) }}"><i class="bi bi-pencil-fill"></i></a>
+                                                        href="{{ route('services.edit', $service->id) }}"><i
+                                                            class="bi bi-pencil-fill"></i></a>
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-sm action-btn delete-btn"
@@ -110,11 +135,6 @@
                     </div>
                 </div>
             </div>
-            @if ($message = Session::get('success'))
-                <div class="alert alert-success align-middle text-center fw-bold" style="margin:auto; width: 20%; background-color: #28a745; color: white;">
-                    <p>{{ $message }}</p>
-                </div>
-            @endif
         </div>
     </div>
 @endsection
