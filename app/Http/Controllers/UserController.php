@@ -135,10 +135,6 @@ class UserController extends Controller
      */
     public function billingAddresses()
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-
         // Récupérer les adresses avec les timestamps
         $addresses = BillingAddress::where('user_id', Auth::id())
             ->orderBy('created_at', 'desc') // Plus récentes en premier

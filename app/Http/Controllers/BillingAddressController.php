@@ -11,7 +11,7 @@ class BillingAddressController extends Controller
         $user = auth()->user();
 
         if ($user->billingAddresses()->count() >= 5) {
-            return back()->withErrors(['max' => 'Vous ne pouvez enregistrer que 5 adresses.']);
+            return back()->with('error', 'Vous ne pouvez enregistrer que 5 adresses.');
         }
 
         $validated = $request->validate([

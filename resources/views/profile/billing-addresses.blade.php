@@ -5,6 +5,22 @@
 @section('content')
     <div class="container py-5">
         <h1 class="text-white mb-4" style="text-align: center;">Mes adresses de facturation</h1>
+        @if (session('success'))
+            <br>
+            <div class="alert alert-success align-middle text-center fw-bold"
+                style="margin:auto; width: 30%; background-color: #28a745; color: white;">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <br>
+            <div class="alert alert-danger align-middle text-center fw-bold"
+                style="margin:auto; width: 30%; background-color: #dc3545; color: white;">
+                {{ session('error') }}
+            </div>
+        @endif
+        <br>
         <div class="card shadow-lg border-0 rounded-4 overflow-hidden"
             style="background: linear-gradient(135deg, var(--primary-color), #1b1724) !important;">
             <div class="card-body px-4 py-4">
@@ -127,21 +143,6 @@
                 </div>
             </div>
         </div>
-        @if (session('success'))
-            <br>
-            <div class="alert alert-success align-middle text-center fw-bold"
-                style="margin:auto; width: 30%; background-color: #28a745; color: white;">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if (session('error'))
-            <br>
-            <div class="alert alert-danger align-middle text-center fw-bold"
-                style="margin:auto; width: 30%; background-color: #dc3545; color: white;">
-                {{ session('error') }}
-            </div>
-        @endif
     </div>
 
     <!-- Modal d'ajout -->

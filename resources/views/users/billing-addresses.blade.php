@@ -11,7 +11,7 @@
                 </a>
             </div>
 
-            @if (session('success'))
+            {{-- @if (session('success'))
                 <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
                     {{ session('success') }}
                 </div>
@@ -21,7 +21,7 @@
                 <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
                     {{ session('error') }}
                 </div>
-            @endif
+            @endif --}}
 
             <!-- Formulaire d'ajout d'adresse -->
             @if ($addresses->count() < 5)
@@ -112,11 +112,6 @@
                             </button>
                         </div>
                     </form>
-                </div>
-            @else
-                <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-6">
-                    <strong>Limite atteinte :</strong> Vous avez déjà 5 adresses de facturation. Supprimez une adresse
-                    existante pour en ajouter une nouvelle.
                 </div>
             @endif
 
