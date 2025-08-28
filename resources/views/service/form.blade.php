@@ -76,19 +76,18 @@
 
         <hr>
 
-        <!-- Galerie existante avec suppression individuelle -->
+        <!-- Galerie existante avec suppression individuelle (sans formulaires imbriqués) -->
         <div class="row">
             @foreach ($service->gallery as $img)
                 <div class="col-md-3 text-center mb-2">
                     <img src="{{ asset('storage/services/gallery/' . $img->image_path) }}"
                         class="img-fluid rounded shadow mb-1" alt="">
 
-                    <!-- Formulaire indépendant pour supprimer l'image -->
-                    <form action="{{ route('service-images.destroy', $img->id) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
-                    </form>
+                    <!-- Bouton de suppression via AJAX pour éviter les formulaires imbriqués -->
+                    <button type="button" class="btn btn-sm btn-danger delete-image" data-id="{{ $img->id }}"
+                        data-url="{{ route('service-images.destroy', $img->id) }}">
+                        Supprimer
+                    </button>
                 </div>
             @endforeach
         </div>
@@ -108,6 +107,33 @@
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 <script>
     $(function() {
+        // Suppression d'image de galerie via AJAX pour éviter les formulaires imbriqués
+        $(document).on('click', '.delete-image', function(e) {
+            e.preventDefault();
+            const button = $(this);
+            const url = button.data('url');
+
+            if (!confirm('Supprimer cette image ?')) {
+                return;
+            }
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: {
+                    _method: 'DELETE',
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function() {
+                    // Retire la tuile qui contient l'image et le bouton
+                    button.closest('.col-md-3').remove();
+                },
+                error: function(xhr) {
+                    alert('Échec de suppression (' + xhr.status + ').');
+                }
+            });
+        });
+
         function refreshOrder() {
             let order = [];
             $('.sortable-item').each(function(index) {
