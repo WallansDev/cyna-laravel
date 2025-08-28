@@ -116,6 +116,9 @@ Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'verified'])
             'destroy' => 'users.destroy',
         ]);
 
+        Route::get('/orders', [OrderController::class, 'viewAdmin'])->name('orders.admin');
+
+
         // Admin Dashboard
         Route::get('/dashboard', fn() => view('admin.dashboard'))->name('admin.dashboard');
 

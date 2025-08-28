@@ -41,16 +41,12 @@ class CartController extends Controller
      */
     public function add(Request $request)
     {
-        // if (!Auth::user())
-        // {
-        //     return redirect()->route('login')->with('info','Connectez-vous pour ajouter au panier.');
-        // }
         $request->validate([
             'services_id' => 'required|exists:services,id',
             'quantity' => 'required|integer|min:1'
         ]);
 
-        $service = Service::findOrFail($request->services_id);
+        // $service = Service::findOrFail($request->services_id);
         $userId = Auth::id();
 
         // Vérifier si le service est déjà dans le panier

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\StripeController;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
@@ -16,73 +17,6 @@ class OrderController extends Controller
     {
         $this->stripeController = $stripeController;
     }
-
-    /**
-     * Affiche la page de finalisation de commande
-     */
-    // public function checkout(Request $request)
-    // {
-    //     $cart = Session::get('cart', []);
-    //     if (empty($cart)) {
-    //         return redirect()->route('cart.index')->with('error', 'Votre panier est vide.');
-    //     }
-    //     $total = $this->calculateCartTotal($cart);
-    //     return view('orders.checkout', [
-    //         'cart' => $cart,
-    //         'total' => $total,
-    //         'items_count' => count($cart)
-    //     ]);
-    // }
-
-    /**
-     * Traite la commande et redirige vers Stripe
-     */
-    // public function processOrder(Request $request)
-    // {
-    //     $request->validate([
-    //         'billing_name' => 'required|string|max:255',
-    //         'billing_email' => 'required|email',
-    //         'billing_address' => 'required|string',
-    //         'billing_city' => 'required|string',
-    //         'billing_postal_code' => 'required|string',
-    //         'billing_country' => 'required|string',
-    //     ]);
-    //     $cart = Session::get('cart', []);
-    //     if (empty($cart)) {
-    //         return redirect()->route('cart.index')->with('error', 'Votre panier est vide.');
-    //     }
-    //     $total = $this->calculateCartTotal($cart);
-    //     Session::put('billing_info', $request->only([
-    //         'billing_name', 'billing_email', 'billing_address', 
-    //         'billing_city', 'billing_postal_code', 'billing_country'
-    //     ]));
-    //     $orderData = [
-    //         'id' => 'ORDER_' . time(),
-    //         'items' => $cart,
-    //         'total' => $total,
-    //         'billing_info' => Session::get('billing_info'),
-    //         'created_at' => now(),
-    //     ];
-    //     Session::put('pending_order', $orderData);
-    //     return redirect()->route('stripe.checkout');
-    // }
-
-    /**
-     * Affiche la confirmation de commande
-     */
-    // public function confirmation(Request $request)
-    // {
-    //     $orderData = Session::get('pending_order');
-    //     if (!$orderData) {
-    //         return redirect()->route('home')->with('error', 'Aucune commande en attente.');
-    //     }
-    //     Session::forget('cart');
-    //     Session::forget('pending_order');
-    //     Session::forget('billing_info');
-    //     return view('orders.confirmation', [
-    //         'order' => $orderData
-    //     ]);
-    // }
 
     /**
      * Calcule le total du panier
@@ -113,8 +47,37 @@ class OrderController extends Controller
     public function index()
     {
         // Exemple : récupère les commandes de l'utilisateur connecté
-        $orders = \App\Models\Order::where('user_id', auth()->id())->get();
+        $orders = Order::where('user_id', auth()->id())->get();
         return view('orders.index', compact('orders'));
+    }
+
+    public function viewAdmin(Request $request)
+    {
+        $query = Order::query()->with(['user', 'items', 'billingAddress', 'stripePayment'])->orderByDesc('created_at');
+
+        // Filtres simples
+        if ($request->filled('q')) {
+            $q = $request->string('q')->toString();
+            $query->where(function ($sub) use ($q) {
+                $sub->where('id', $q)
+                    ->orWhere('total', 'like', "%$q%");
+            });
+        }
+        if ($request->filled('status')) {
+            $status = $request->string('status')->toString();
+            $query->whereHas('stripePayment', function ($sp) use ($status) {
+                $sp->where('status', $status);
+            });
+        }
+        if ($request->boolean('has_coupon')) {
+            $query->whereHas('stripePayment', function ($sp) {
+                $sp->whereNotNull('applied_coupon_code');
+            });
+        }
+
+        $orders = $query->paginate(25)->appends($request->query());
+
+        return view('orders.indexAdmin', compact('orders'));
     }
 
     /**
