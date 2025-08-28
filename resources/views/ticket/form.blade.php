@@ -9,7 +9,7 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <form method="POST" action="{{ route('support.submit') }}">
+    <form method="POST" action="{{ route('tickets.store') }}">
         @csrf
         <div>
             <label for="subject">Objet</label>

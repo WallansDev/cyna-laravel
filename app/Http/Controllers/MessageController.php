@@ -40,7 +40,7 @@ class MessageController extends Controller
 
         $ticket->messages()->create([
             'user_id' => Auth::id(),
-            // 'content' => $request->content,
+            'content' => $request->input('content'),
         ]);
 
         return redirect()->back();

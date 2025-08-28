@@ -28,7 +28,7 @@ class TicketController extends Controller
     }
 
     // SupportController.php
-    public function showForm()
+    public function create()
     {
         return view('ticket.form');
     }
@@ -86,19 +86,31 @@ class TicketController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string|max:5000',
+        ]);
+
+        // Création du ticket
+        $ticket = Ticket::create([
+            'user_id' => Auth::user()->id,
+            'subject' => $request->input('subject'),
+        ]);
+
+        // Ajout du premier message lié au ticket
+        $ticket->messages()->create([
+            'user_id' => Auth::id(),
+            'content' => $request->input('message'),
+        ]);
+
+        // Optionnel : notification/email
+        // Mail::to('support@tonsite.com')->send(new SupportTicketSubmitted($ticket));
+
+        return redirect()->route('tickets.index')->with('success', 'Votre ticket a été créé et votre message ajouté.');
     }
 
     /**

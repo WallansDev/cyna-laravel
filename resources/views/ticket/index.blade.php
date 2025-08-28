@@ -8,6 +8,9 @@
 
 @section('content')
     <div class="container">
+        <div class="col-2 mb-2" style="float: right">
+            <a class="btn btn-primary" href="{{ route('tickets.create') }}">Créer un ticket</a>
+        </div>
         @if ($tickets->isEmpty())
             <h4>Vous n'avez aucun ticket.</h4>
         @else
@@ -22,8 +25,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        @foreach ($tickets as $ticket)
+                    @foreach ($tickets as $ticket)
+                        <tr>
                             <td scope="row"><a href="{{ route('tickets.show', $ticket->id) }}">{{ $ticket->id }}</a>
                             </td>
                             <td><a href="{{ route('tickets.show', $ticket->id) }}">{{ $ticket->subject }}</a></td>
@@ -44,8 +47,8 @@
                             </td>
 
                             <td>{{ $ticket->created_at->format('d/m/Y à H:h') }}</td>
-                        @endforeach
-                    </tr>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         @endif
