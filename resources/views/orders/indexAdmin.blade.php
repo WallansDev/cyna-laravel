@@ -2,7 +2,10 @@
 @section('title', 'Toutes les commandes - ' . $_SOCIETYNAME)
 @section('content')
     <div class="container py-5">
-        <h1 class="text-white mb-4">Toutes les commandes</h1>
+        <h1 class="text-white">Toutes les commandes</h1>
+        <div class="mt-3 mb-3">
+            <a href="{{ route('orders.ordersGraph') }}" class="btn btn-info">Afficher en graphique</a>
+        </div>
 
         <form method="GET" class="card p-3 mb-3" style="background:#1b1724; border-color:#5c1d91;">
             <div class="row g-2 align-items-end">

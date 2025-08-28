@@ -51,6 +51,51 @@ class OrderController extends Controller
         return view('orders.index', compact('orders'));
     }
 
+    public function ordersGraph()
+    {
+        // Agrégations de base
+        $last30 = now()->subDays(30);
+        $ordersLast30 = Order::where('created_at', '>=', $last30)->get();
+
+        $revenueByDay = $ordersLast30
+            ->groupBy(fn($o) => $o->created_at->format('Y-m-d'))
+            ->map(fn($g) => (float) $g->sum('total'))
+            ->toArray();
+
+        $ordersCountByDay = $ordersLast30
+            ->groupBy(fn($o) => $o->created_at->format('Y-m-d'))
+            ->map(fn($g) => $g->count())
+            ->toArray();
+
+        $last12Months = now()->subMonths(12);
+        $ordersLast12 = Order::where('created_at', '>=', $last12Months)->get();
+        $revenueByMonth = $ordersLast12
+            ->groupBy(fn($o) => $o->created_at->format('Y-m'))
+            ->map(fn($g) => (float) $g->sum('total'))
+            ->toArray();
+
+        $totalRevenue = (float) Order::sum('total');
+        $totalOrders = (int) Order::count();
+        $avgOrderValue = $totalOrders > 0 ? round($totalRevenue / $totalOrders, 2) : 0.0;
+
+        // Normaliser les axes (30 jours)
+        $days = collect(range(0, 29))
+            ->map(fn($i) => now()->subDays(29 - $i)->format('Y-m-d'))
+            ->values();
+        $chartRevenueData = $days->map(fn($d) => $revenueByDay[$d] ?? 0)->values();
+        $chartOrdersData = $days->map(fn($d) => $ordersCountByDay[$d] ?? 0)->values();
+
+        return view('admin.order.graph', [
+            'days' => $days,
+            'chartRevenueData' => $chartRevenueData,
+            'chartOrdersData' => $chartOrdersData,
+            'revenueByMonth' => $revenueByMonth,
+            'totalRevenue' => $totalRevenue,
+            'totalOrders' => $totalOrders,
+            'avgOrderValue' => $avgOrderValue,
+        ]);
+    }
+
     public function viewAdmin(Request $request)
     {
         $query = Order::query()->with(['user', 'items', 'billingAddress', 'stripePayment'])->orderByDesc('created_at');

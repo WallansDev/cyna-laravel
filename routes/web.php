@@ -103,6 +103,10 @@ Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'verified'])
         Route::post('/coupons', [StripeCouponController::class, 'store'])->name('admin.coupons.store');
         Route::delete('/coupons/{coupon}', [StripeCouponController::class, 'destroy'])->name('admin.coupons.destroy');
 
+        // Admin Orders
+        Route::get('/orders', [OrderController::class, 'viewAdmin'])->name('orders.admin');
+        Route::get('/orders/graph', [OrderController::class, 'ordersGraph'])->name('orders.ordersGraph');
+
         // Admin Top products
         Route::get('/services/top', [ServiceController::class, 'topProducts'])->name('services.topProducts');
         Route::get('/top-products/{id}/move-up-top', [ServiceController::class, 'moveUpTopProduct'])->name('services.moveUpTop');
@@ -121,9 +125,6 @@ Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'verified'])
             'update' => 'users.update',
             'destroy' => 'users.destroy',
         ]);
-
-        Route::get('/orders', [OrderController::class, 'viewAdmin'])->name('orders.admin');
-
 
         // Admin Dashboard
         Route::get('/dashboard', fn() => view('admin.dashboard'))->name('admin.dashboard');
