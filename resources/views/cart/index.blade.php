@@ -15,7 +15,7 @@
                         <div style="max-width: 420px; width:100%;">
                             <form action="{{ route('cart.coupon.apply') }}" method="POST" class="d-flex gap-2 mb-2">
                                 @csrf
-                                <input type="text" name="code" class="form-control" placeholder="Code promo"
+                                <input type="text" name="code" class="form-control" data-bs-theme="dark" placeholder="Code promo"
                                     value="{{ session('selected_coupon.code') }}" />
                                 <button type="submit" class="btn btn-purple">Appliquer</button>
                             </form>
