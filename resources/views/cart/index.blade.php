@@ -11,6 +11,24 @@
             <div class="card shadow-lg border-0 rounded-4 overflow-hidden"
                 style="background: linear-gradient(135deg, var(--primary-color), #1b1724) !important;">
                 <div class="card-body px-4 py-4">
+                    <div class="d-flex justify-content-end mb-3">
+                        <div style="max-width: 420px; width:100%;">
+                            <form action="{{ route('cart.coupon.apply') }}" method="POST" class="d-flex gap-2 mb-2">
+                                @csrf
+                                <input type="text" name="code" class="form-control" placeholder="Code promo"
+                                    value="{{ session('selected_coupon.code') }}" />
+                                <button type="submit" class="btn btn-purple">Appliquer</button>
+                            </form>
+                            @if (session('selected_coupon'))
+                                <form action="{{ route('cart.coupon.remove') }}" method="POST" class="mb-2">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-outline-light btn-sm">Retirer le code
+                                        promo</button>
+                                </form>
+                            @endif
+                        </div>
+                    </div>
                     @foreach ($cartItems as $item)
                         <div class="d-flex justify-content-between align-items-center py-3 border-bottom"
                             style="border-color: #5c1d91;">
@@ -51,7 +69,7 @@
                                     onsubmit="return confirm('Supprimer ce service du panier ?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm">🗑️</button>
+                                    <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash-fill"></i></button>
                                 </form>
                             </div>
                         </div>
@@ -60,31 +78,7 @@
                     <!-- Total & Actions -->
                     <div class="pt-4">
                         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-3">
-                            <form action="{{ route('cart.clear') }}" method="POST"
-                                onsubmit="return confirm('Vider complètement le panier ?')">
-                                @csrf
-                                @method('DELETE')
-
-                                <button type="submit" class="btn btn-danger btn-sm px-3 py-1"><i
-                                        class="bi bi-trash-fill"></i></button>
-                            </form>
-
                             <div class="ms-auto" style="max-width: 420px; width:100%;">
-                                <form action="{{ route('cart.coupon.apply') }}" method="POST" class="d-flex gap-2 mb-2">
-                                    @csrf
-                                    <input type="text" name="code" class="form-control" placeholder="Code promo"
-                                        value="{{ session('selected_coupon.code') }}" />
-                                    <button type="submit" class="btn btn-purple">Appliquer</button>
-                                </form>
-                                @if (session('selected_coupon'))
-                                    <form action="{{ route('cart.coupon.remove') }}" method="POST" class="mb-2">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-outline-light btn-sm">Retirer le code
-                                            promo</button>
-                                    </form>
-                                @endif
-
                                 <div class="text-end">
                                     <p class="h6 text-white-50 mb-1">Sous-total : <strong>{{ number_format($total, 2) }}
                                             €</strong></p>
@@ -106,13 +100,23 @@
                             </div>
                         </div>
 
-                        <div class="text-end">
-                            <form action="{{ route('cart.checkout') }}" method="POST" class="d-inline">
+                        <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap gap-3">
+                            <form action="{{ route('cart.clear') }}" method="POST"
+                                onsubmit="return confirm('Vider complètement le panier ?')">
                                 @csrf
-                                <button type="submit" class="btn btn-gold">
-                                    <i class="fas fa-credit-card me-2"></i>Passer la commande
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger ">
+                                    <i class="bi bi-trash-fill"></i> Supprimer tout le panier
                                 </button>
                             </form>
+                            <div class="d-flex gap-2">
+                                <form action="{{ route('cart.checkout') }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="btn btn-gold">
+                                        <i class="fas fa-credit-card me-2"></i>Passer la commande
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
 
