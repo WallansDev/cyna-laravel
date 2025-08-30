@@ -31,6 +31,8 @@ class UpdateServiceRequest extends FormRequest
             'availbility' => 'sometimes|boolean',
             'categories' => 'array',
             'categories.*' => 'exists:categories,id',
+            'price_monthly' => 'required|numeric|min:0',
+            'price_yearly' => 'nullable|numeric|min:0',
         ];
     }
 

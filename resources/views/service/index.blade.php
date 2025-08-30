@@ -19,6 +19,8 @@
                                     style="max-width: 100px; margin-right:8px;">
                                 <div class="d-flex flex-column justify-content-center h-100">
                                     <p class="card-text mb-0" style="color:white;">{{ $service->description }}</p>
+                                    <p class="mb-0">Prix mensuel : {{ $service->price_monthly }} €</p>
+                                    <p class="mb-0">Prix annuel : {{ $service->price_yearly }} €</p>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-center align-items-center">

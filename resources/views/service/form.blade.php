@@ -94,6 +94,27 @@
 
 
         <br>
+        <div class="mb-3">
+            <label for="price_monthly" class="form-label">Prix mensuel (€)</label>
+            <input type="number" step="0.01" min="0" name="price_monthly" id="price_monthly"
+                class="form-control" value="{{ old('price_monthly', $service->price_monthly) }}">
+        </div>
+        <div class="mb-3">
+            <label for="price_yearly" class="form-label">Prix annuel (€)</label>
+            <input type="number" step="0.01" min="0" name="price_yearly" id="price_yearly"
+                class="form-control" value="{{ old('price_yearly', $service->price_yearly) }}">
+        </div>
+        <div class="mb-3">
+            <label for="price_type" class="form-label">Type de prix</label>
+            <select name="price_type" id="price_type" class="form-control">
+                <option value="monthly" @if (old('price_type', $service->price_type) == 'monthly') selected @endif>
+                    Mensuel
+                </option>
+                <option value="yearly" @if (old('price_type', $service->price_type) == 'yearly') selected @endif>
+                    Annuel
+                </option>
+            </select>
+        </div>
 
     </div>
     <div class="col-md-12 mt20 mt-2 text-center">

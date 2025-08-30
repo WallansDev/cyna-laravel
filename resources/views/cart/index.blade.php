@@ -23,7 +23,12 @@
 
                                 <div>
                                     <h5 class="mb-1 text-white fw-bold">{{ $item->service->name }}</h5>
-                                    <p class="mb-0 text-white-50">{{ number_format($item->price, 2) }} €</p>
+                                    <p class="mb-0 text-white-50">
+                                        {{ number_format($item->price, 2) }} €
+                                        <span class="badge bg-secondary ms-2">
+                                            {{ $item->price_type === 'yearly' ? 'Annuel' : 'Mensuel' }}
+                                        </span>
+                                    </p>
                                 </div>
                             </div>
 

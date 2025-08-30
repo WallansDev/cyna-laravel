@@ -35,7 +35,7 @@
                                 @foreach ($order->items as $item)
                                     <li class="list-group-item bg-dark text-white">
                                         {{ $item->service_name ?? $item->name }} - {{ $item->quantity }} x
-                                        {{ number_format($item->price, 2) }} €
+                                        {{ number_format($item->price, 2) }} €  
                                     </li>
                                 @endforeach
                             </ul>

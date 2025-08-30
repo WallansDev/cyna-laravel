@@ -43,8 +43,9 @@
                                         <th class="align-middle text-center">Position</th>
                                         <th class="align-middle text-center">Titre</th>
                                         <th class="align-middle text-center">Image</th>
-                                        <th class="align-middle">Description</th>
-                                        <th class="align-middle text-center">Caractéristiques techniques</th>
+                                        <th class="align-middle text-center">Prix (€)</th>
+                                        {{-- <th class="align-middle">Description</th>
+                                        <th class="align-middle text-center">Caractéristiques techniques</th> --}}
                                         <th class="align-middle text-center">Disponibilité</th>
                                         <th class="align-middle text-center">Position en vedette</th>
                                         <th class="align-middle">Catégories</th>
@@ -82,8 +83,14 @@
                                                     src="{{ asset('storage/services/' . $service->image_path) }}"
                                                     alt="{{ $service->image_path }}" width="100" class="category-image">
                                             </td>
-                                            <td class="align-middle">{{ $service->description }}</td>
-                                            <td class="align-middle">{{ $service->technical_specifications }}</td>
+                                            <td class="align-middle text-center">
+                                                <span>
+                                                    {{ number_format($service->price_monthly, 2, ',', ' ') }} €/mois<br>
+                                                    {{ number_format($service->price_yearly, 2, ',', ' ') }} €/an
+                                                </span>
+                                            </td>
+                                            {{-- <td class="align-middle">{{ $service->description }}</td>
+                                            <td class="align-middle">{{ $service->technical_specifications }}</td> --}}
                                             @if ($service->availbility)
                                                 <td class="align-middle text-center">
                                                     <span class="badge bg-success">Disponible</span>
