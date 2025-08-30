@@ -23,6 +23,11 @@
                                     (−{{ number_format($order->stripePayment->discount_amount ?? 0, 2) }} €)
                                 </div>
                             @endif
+                            <div class="mt-2">
+                                <a href="{{ route('orders.downloadInvoice', $order->id) }}" class="btn btn-success btn-sm" target="_blank">
+                                    Télécharger la facture PDF
+                                </a>
+                            </div>
                         </span>
                         <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="collapse"
                             data-bs-target="#orderDetails{{ $order->id }}">

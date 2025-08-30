@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 
 // 🔹 Utilisateurs authentifiés
 Route::middleware(['auth', 'verified'])->group(function () {
+    // Facture PDF
+    Route::get('/orders/{order}/invoice', [OrderController::class, 'downloadInvoice'])->name('orders.downloadInvoice');
     // Profil
     Route::get('/users/profil', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('/users/profil/edit', [ProfileController::class, 'edit'])->name('profile.edit');

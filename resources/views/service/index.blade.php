@@ -19,8 +19,6 @@
                                     style="max-width: 100px; margin-right:8px;">
                                 <div class="d-flex flex-column justify-content-center h-100">
                                     <p class="card-text mb-0" style="color:white;">{{ $service->description }}</p>
-                                    <p class="mb-0">Prix mensuel : {{ $service->price_monthly }} €</p>
-                                    <p class="mb-0">Prix annuel : {{ $service->price_yearly }} €</p>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-center align-items-center">
@@ -32,12 +30,6 @@
                                             le service</a>
                                         @csrf
                                         <input type="hidden" name="services_id" value="{{ $service->id }}">
-
-                                        <button type="submit" class="btn btn-success mx-1">
-                                            Ajouter au panier
-                                        </button>
-                                        <input type="number" name="quantity" id="quantity" value="1" min="1"
-                                            class="form-control input-qty d-inline-block">
                                     </form>
                                 @else
                                     <a href="{{ route('services.show', $service->id) }}"

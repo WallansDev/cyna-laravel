@@ -11,6 +11,15 @@ use App\Models\BillingAddress;
 
 class OrderController extends Controller
 {
+
+    public function downloadInvoice($orderId)
+    {
+        $order = Order::with(['items', 'billingAddress', 'user'])->findOrFail($orderId);
+        $pdf = \PDF::loadView('orders.invoice', compact('order'));
+        $filename = 'facture-commande-' . $order->id . '.pdf';
+        return $pdf->download($filename);
+    }
+    
     protected $stripeController;
 
     public function __construct(StripeController $stripeController)
