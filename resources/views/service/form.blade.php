@@ -23,18 +23,17 @@
         <br>
         <div class="form-group mb-2 mb20">
             <label for="description" class="form-label fw-bold">{{ __('Description') }}</label>
-            <input type="text" name="description" class="form-control @error('description') is-invalid @enderror"
-                value="{{ old('description', $service?->description) }}" id="description" placeholder="Description">
+            <textarea name="description" class="form-control" rows="4" @error('description') is-invalid @enderror"
+                id="description" placeholder="Description">{{ old('description', $service?->description) }}</textarea>
             {!! $errors->first('description', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
         <br>
         <div class="form-group mb-2 mb20">
             <label for="technical_specifications"
                 class="form-label fw-bold">{{ __('Caractéristiques technique') }}</label>
-            <input type="text" name="technical_specifications"
-                class="form-control @error('technical_specifications') is-invalid @enderror"
-                value="{{ old('technical_specifications', $service?->technical_specifications) }}"
-                id="technical_specifications" placeholder="24h/24 7j/7 - Protection multi-terminaux ...">
+            <textarea type="text" name="technical_specifications"
+                class="form-control" rows="3" @error('technical_specifications') is-invalid @enderror"
+                id="technical_specifications" placeholder="24h/24 7j/7 - Protection multi-terminaux ...">{{ old('technical_specifications', $service?->technical_specifications) }}</textarea>
             {!! $errors->first(
                 'technical_specifications',
                 '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>',
