@@ -9,7 +9,7 @@
         @forelse($orders as $order)
             <div class="d-flex justify-content-center">
                 <div class="row pb-3 pt-3 justify-content-center service-category-card"
-                    style="width: 70%; background: linear-gradient(135deg, #372F48, #2A213B) !important;">
+                    style="width: 70%;">
                     <div class="col-md-12">
                         <div class="d-flex justify-content-between align-items-center flex-wrap">
                             <div>
@@ -43,7 +43,7 @@
                             <ul class="list-group">
                                 @foreach ($order->items as $item)
                                     <li class="list-group-item bg-dark text-white service-category-card"
-                                        style="border: none">
+                                        style="border: none; background: linear-gradient(135deg, #372F48, #2A213B) !important;">
                                         {{ $item->service_name ?? $item->name }} - {{ $item->quantity }} x
                                         {{ number_format($item->price, 2) }} €
                                     </li>
