@@ -113,9 +113,8 @@
         <div class="mt-5">
             <h6 class="text-white">Service client</h6>
             <ul class="nav flex-column">
-                <li class="nav-item"><a class="nav-link text-white" href="#">Suivi de commande</a></li>
-                <li class="nav-item"><a class="nav-link text-white" href="#">Retours et remboursements</a></li>
                 <li class="nav-item"><a class="nav-link text-white" href="{{ route('faq') }}">FAQ</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="{{ route('tickets.index') }}">Tickets</a></li>
             </ul>
         </div>
 

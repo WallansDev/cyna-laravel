@@ -12,9 +12,8 @@
             <div class="col-lg-4">
                 <h5>Service client</h5>
                 <ul class="footer-links">
-                    <li><a href="#">Suivi de commande</a></li>
-                    <li><a href="#">Retours et remboursements</a></li>
                     <li><a href="{{ route('faq') }}">FAQ</a></li>
+                    <li><a href="{{ route('tickets.index') }}">Tickets</a></li>
                 </ul>
             </div>
             <div class="col-lg-4">
