@@ -85,6 +85,20 @@ class OrderController extends Controller
         $chartRevenueData = $days->map(fn($d) => $revenueByDay[$d] ?? 0)->values();
         $chartOrdersData = $days->map(fn($d) => $ordersCountByDay[$d] ?? 0)->values();
 
+        // Classement des produits les plus vendus
+        $topProducts = \App\Models\OrderItem::selectRaw('service_name, SUM(quantity) as quantity, SUM(quantity * price) as revenue')
+            ->groupBy('service_name')
+            ->orderByDesc('quantity')
+            ->limit(10)
+            ->get()
+            ->map(function($item) {
+                return [
+                    'name' => $item->service_name,
+                    'quantity' => $item->quantity,
+                    'revenue' => $item->revenue,
+                ];
+            });
+
         return view('admin.order.graph', [
             'days' => $days,
             'chartRevenueData' => $chartRevenueData,
@@ -93,6 +107,7 @@ class OrderController extends Controller
             'totalRevenue' => $totalRevenue,
             'totalOrders' => $totalOrders,
             'avgOrderValue' => $avgOrderValue,
+            'topProducts' => $topProducts,
         ]);
     }
 
