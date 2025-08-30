@@ -302,16 +302,78 @@
 
     // ===== MOBILE (offcanvas) =====
     document.querySelectorAll('.offcanvas .search-form').forEach(mForm => {
-        mForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-        const mInput = this.querySelector('input[type="text"]');
-        const q = (mInput && mInput.value || '').trim();
-        if (q.length < 2) return;
+        const mInput = mForm.querySelector('input[type="text"]');
+        let mFirstResultUrl = null;
 
-        fetch(`/search?q=${encodeURIComponent(q)}`)
-            .then r => r.json())
-            .then(data => { if (data.length) window.location.href = data[0].url; });
-        });
+        if (mInput) {
+            // Créer ou récupérer la zone de résultats pour mobile
+            let mResultsBox = mForm.querySelector('.mobile-search-results');
+            if (!mResultsBox) {
+                mResultsBox = document.createElement('ul');
+                mResultsBox.className = 'list-group position-absolute w-100 mobile-search-results';
+                mResultsBox.style.cssText = 'top:100%; z-index:999; max-height:300px; overflow-y:auto;';
+                mForm.appendChild(mResultsBox);
+            }
+
+            const doMobileFetch = (q) =>
+                fetch(`/search?q=${encodeURIComponent(q)}`).then(r => r.json());
+
+            const renderMobileResults = (data) => {
+                mResultsBox.innerHTML = '';
+                mFirstResultUrl = null;
+
+                if (Array.isArray(data) && data.length) {
+                    data.forEach((item, idx) => {
+                        const li = document.createElement('li');
+                        li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                        li.innerHTML = `
+                            <a href="${item.url}" class="text-decoration-none flex-grow-1 text-dark">${item.name}</a>
+                            <span class="badge bg-primary">${item.type}</span>
+                        `;
+                        mResultsBox.appendChild(li);
+                        if (idx === 0) mFirstResultUrl = item.url;
+                    });
+                } else {
+                    mResultsBox.innerHTML = '<li class="list-group-item">Aucun résultat</li>';
+                }
+            };
+
+            // Recherche en temps réel pour mobile
+            mInput.addEventListener('input', function () {
+                const q = this.value.trim();
+                if (q.length < 2) {
+                    mResultsBox.innerHTML = '';
+                    mFirstResultUrl = null;
+                    return;
+                }
+                doMobileFetch(q).then(renderMobileResults);
+            });
+
+            // Soumission du formulaire mobile
+            mForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const q = mInput.value.trim();
+
+                if (mFirstResultUrl) {
+                    window.location.href = mFirstResultUrl;
+                    return;
+                }
+
+                if (q.length >= 2) {
+                    doMobileFetch(q).then(data => {
+                        if (data.length) window.location.href = data[0].url;
+                        else mResultsBox.innerHTML = '<li class="list-group-item">Aucun résultat</li>';
+                    });
+                }
+            });
+
+            // Fermer les suggestions mobiles si clic ailleurs
+            document.addEventListener('click', function (e) {
+                if (!e.target.closest('.search-form')) {
+                    if (mResultsBox) mResultsBox.innerHTML = '';
+                }
+            });
+        }
     });
     });
 </script>
