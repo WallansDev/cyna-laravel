@@ -203,6 +203,12 @@ class ServiceController extends Controller
     public function update(UpdateServiceRequest $request, Service $service): RedirectResponse
     {
         $data = $request->validated();
+
+        // Si le champ yearly est vide, on fait x10 du monthly
+        if (empty($data['price_yearly'])) {
+            $data['price_yearly'] = $data['price_monthly'] * 10;
+        }
+
         $data['availbility'] = $request->boolean('availbility');
 
         // 🔹 Gestion de l'image principale
@@ -301,5 +307,19 @@ class ServiceController extends Controller
     public function cartItems()
     {
         return $this->hasMany(Cart::class, 'services_id');
+    }
+
+    public function updatePrice(Request $request, $id)
+    {
+        $service = Service::findOrFail($id);
+        $request->validate([
+            'price_monthly' => 'required|numeric|min:0',
+            'price_yearly' => 'required|numeric|min:0',
+        ]);
+        $service->price_monthly = $request->input('price_monthly');
+        $service->price_yearly = $request->input('price_yearly');
+        $service->save();
+
+        return redirect()->route('services.index')->with('success', 'Service mis à jour !');
     }
 }

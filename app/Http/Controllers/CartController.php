@@ -41,46 +41,19 @@ class CartController extends Controller
      */
     public function add(Request $request)
     {
-        $request->validate([
-            'services_id' => 'required|exists:services,id',
-            'quantity' => 'required|integer|min:1'
+        $service = Service::findOrFail($request->input('services_id'));
+        $priceType = $request->input('price_type', 'monthly');
+        $price = $priceType === 'yearly' ? $service->price_yearly : $service->price_monthly;
+
+        Cart::create([
+            'user_id' => Auth::id(),
+            'services_id' => $service->id,
+            'quantity' => $request->input('quantity', 1),
+            'price' => $price,
+            'price_type' => $priceType, // <-- doit être 'monthly' ou 'yearly' selon le select
         ]);
 
-        // $service = Service::findOrFail($request->services_id);
-        $userId = Auth::id();
-
-        // Vérifier si le service est déjà dans le panier
-        $cartItem = Cart::where('user_id', $userId)
-            ->where('services_id', $request->services_id)
-            ->first();
-
-        if ($cartItem) {
-            // Mettre à jour la quantité
-            $cartItem->quantity += $request->quantity;
-            $cartItem->save();
-            
-            $message = 'Quantité mise à jour dans le panier';
-        } else {
-            // Créer un nouvel élément dans le panier
-            Cart::create([
-                'user_id' => $userId,
-                'services_id' => $request->services_id,
-                'quantity' => $request->quantity,
-                'price' => '200'
-            ]);
-            
-            $message = 'Service ajouté au panier';
-        }
-
-        if ($request->expectsJson()) {
-            return response()->json([
-                'success' => true,
-                'message' => $message,
-                'cart_count' => Cart::getCartCount($userId)
-            ]);
-        }
-
-        return redirect()->back()->with('success', $message);
+        return redirect()->route('cart.index')->with('success', 'Service ajouté au panier !');
     }
 
     /**
@@ -242,14 +215,7 @@ class CartController extends Controller
             'total' => $total,
         ]);
 
-        foreach ($cartItems as $cartItem) {
-            OrderItem::create([
-                'order_id' => $order->id,
-                'service_name' => $cartItem->service->name,
-                'quantity' => $cartItem->quantity,
-                'price' => $cartItem->price,
-            ]);
-        }
+        OrderItem::createFromCartItems($cartItems, $order);
 
         Cart::where('user_id', Auth::id())->delete();
 

@@ -11,5 +11,19 @@ class OrderItem extends Model
         'service_name',
         'quantity',
         'price',
+        'price_type', // <-- doit être présent !
     ];
+
+    public static function createFromCartItems($cartItems, $order)
+    {
+        foreach ($cartItems as $cartItem) {
+            self::create([
+                'order_id'     => $order->id,
+                'service_name' => $cartItem->service->name,
+                'quantity'     => $cartItem->quantity,
+                'price'        => $cartItem->price,
+                'price_type'   => $cartItem->price_type,
+            ]);
+        }
+    }
 }
