@@ -309,7 +309,7 @@
         if (q.length < 2) return;
 
         fetch(`/search?q=${encodeURIComponent(q)}`)
-            .then r => r.json())
+            .then(r => r.json())
             .then(data => { if (data.length) window.location.href = data[0].url; });
         });
     });
