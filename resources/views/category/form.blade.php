@@ -23,8 +23,8 @@
         <br>
         <div class="form-group mb-2 mb20">
             <label for="description" class="form-label fw-bold">{{ __('Description') }}</label>
-            <input type="text" name="description" class="form-control @error('description') is-invalid @enderror"
-                value="{{ old('description', $category?->description) }}" id="description" placeholder="Description">
+            <textarea name="description" class="form-control" rows="4" @error('description') is-invalid @enderror"
+                id="description" placeholder="Description">{{ old('description', $category?->description) }}</textarea>
             {!! $errors->first('description', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>
         <br>
