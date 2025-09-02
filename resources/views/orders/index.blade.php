@@ -8,8 +8,7 @@
         @endif
         @forelse($orders as $order)
             <div class="d-flex justify-content-center">
-                <div class="row pb-3 pt-3 justify-content-center service-category-card"
-                    style="width: 70%;">
+                <div class="row pb-3 pt-3 justify-content-center service-category-card" style="width: 70%;">
                     <div class="col-md-12">
                         <div class="d-flex justify-content-between align-items-center flex-wrap">
                             <div>
@@ -30,9 +29,12 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="d-flex justify-content-center align-items-center w-100 mt-2 mt-md-0" style="max-width: 60px;">
-                                <button class="btn btn-sm action-btn view-btn d-flex justify-content-center align-items-center mx-auto" type="button"
-                                    data-bs-toggle="collapse" data-bs-target="#orderDetails{{ $order->id }}">
+                            <div class="d-flex justify-content-center align-items-center w-100 mt-2 mt-md-0"
+                                style="max-width: 60px;">
+                                <button
+                                    class="btn btn-sm action-btn view-btn d-flex justify-content-center align-items-center mx-auto"
+                                    type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#orderDetails{{ $order->id }}">
                                     <i class="bi bi-eye-fill text-white"></i>
                                 </button>
                             </div>
@@ -61,10 +63,10 @@
                     </div>
                 </div>
             </div>
+            <br>
+        @empty
+            <p class="text-white-50">Aucune commande passée.</p>
+        @endforelse
+    </div>
 
-    </div>
-@empty
-    <p class="text-white-50">Aucune commande passée.</p>
-    @endforelse
-    </div>
 @endsection
