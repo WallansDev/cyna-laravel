@@ -31,9 +31,9 @@
         <div class="form-group mb-2 mb20">
             <label for="technical_specifications"
                 class="form-label fw-bold">{{ __('Caractéristiques technique') }}</label>
-            <textarea type="text" name="technical_specifications"
-                class="form-control" rows="3" @error('technical_specifications') is-invalid @enderror"
-                id="technical_specifications" placeholder="24h/24 7j/7 - Protection multi-terminaux ...">{{ old('technical_specifications', $service?->technical_specifications) }}</textarea>
+            <textarea type="text" name="technical_specifications" class="form-control" rows="3"
+                @error('technical_specifications') is-invalid @enderror" id="technical_specifications"
+                placeholder="24h/24 7j/7 - Protection multi-terminaux ...">{{ old('technical_specifications', $service?->technical_specifications) }}</textarea>
             {!! $errors->first(
                 'technical_specifications',
                 '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>',
@@ -103,7 +103,7 @@
             <input type="number" step="0.01" min="0" name="price_yearly" id="price_yearly"
                 class="form-control" value="{{ old('price_yearly', $service->price_yearly) }}">
         </div>
-        <div class="mb-3">
+        {{-- <div class="mb-3">
             <label for="price_type" class="form-label">Type de prix</label>
             <select name="price_type" id="price_type" class="form-control">
                 <option value="monthly" @if (old('price_type', $service->price_type) == 'monthly') selected @endif>
@@ -113,7 +113,7 @@
                     Annuel
                 </option>
             </select>
-        </div>
+        </div> --}}
 
     </div>
     <div class="col-md-12 mt20 mt-2 text-center">
