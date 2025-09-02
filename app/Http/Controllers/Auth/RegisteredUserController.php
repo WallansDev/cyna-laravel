@@ -38,7 +38,7 @@ class RegisteredUserController extends Controller
                 'surname' => ['required', 'string', 'max:30'],
                 'phone' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'lowercase', 'email', 'max:319', 'unique:' . User::class],
-                'siret' => ['required', 'string', 'max:14'],
+                'siret' => ['required', 'string', 'max:17'],
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
             ],
             [
@@ -61,6 +61,7 @@ class RegisteredUserController extends Controller
                 'password.confirmed' => 'Les mots de passe ne correspondent pas.',
             ],
         );
+        $request->siret = str_replace(' ', '', $request->siret);
 
         if (!$this->verifySiretExists($request->siret)) {
             return back()
