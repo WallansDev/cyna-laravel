@@ -1,19 +1,52 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <title>Facture Commande #{{ $order->id }}</title>
     <style>
-        body { font-family: Arial, sans-serif; font-size: 14px; }
-        .header { margin-bottom: 30px; }
-        .title { font-size: 22px; font-weight: bold; }
-        .section { margin-bottom: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-        th { background: #eee; }
-        .total { font-size: 16px; font-weight: bold; }
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .title {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background: #eee;
+        }
+
+        .total {
+            font-size: 16px;
+            font-weight: bold;
+        }
     </style>
 </head>
+
 <body>
     <div class="header">
         <div class="title">Facture officielle</div>
@@ -23,12 +56,18 @@
     <div class="section">
         <strong>Client :</strong><br>
         {{ $order->user->name }}<br>
-        @if($order->billingAddress)
+        @if ($order->billingAddress)
             {{ $order->billingAddress->full_address }}<br>
         @endif
     </div>
     <div class="section">
         <strong>Détail de la commande :</strong>
+        @if ($order->stripePayment && $order->stripePayment->applied_coupon_code)
+            <p><b>Coupon :</b>
+                {{ $order->stripePayment->applied_coupon_code }}
+                (-{{ number_format($order->stripePayment->discount_amount ?? 0, 2) }} €)
+            </p>
+        @endif
         <table>
             <thead>
                 <tr>
@@ -39,7 +78,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($order->items as $item)
+                @foreach ($order->items as $item)
                     <tr>
                         <td>{{ $item->service_name ?? $item->name }}</td>
                         <td>{{ $item->quantity }}</td>
@@ -55,4 +94,5 @@
         <strong>Merci pour votre commande !</strong>
     </div>
 </body>
+
 </html>
