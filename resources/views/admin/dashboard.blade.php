@@ -57,6 +57,16 @@
                 </a>
             </div>
             <div class="col-6 col-md-3">
+                <a href="{{ route('admin.email') }}" style="text-decoration: none;">
+                    <div class="card text-center purple-header" style="border: none;">
+                        <div class="card-body py-4">
+                            <i class="fa-solid fa-envelope mb-3" style="font-size: 2.5rem;"></i>
+                            <h5 class="card-title">Email personnalisé</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
                 <a href="https://analytics.google.com/" target="_blank" style="text-decoration: none;">
                     <div class="card text-center purple-header" style="border: none;">
                         <div class="card-body py-4">

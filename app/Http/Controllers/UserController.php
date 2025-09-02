@@ -11,9 +11,16 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use App\Services\EmailService;
 
 class UserController extends Controller
 {
+    protected $emailService;
+
+    public function __construct(EmailService $emailService)
+    {
+        $this->emailService = $emailService;
+    }
     public function index()
     {
         $users = User::all();
@@ -35,6 +42,14 @@ class UserController extends Controller
 
         // Créer l'utilisateur - created_at sera automatiquement défini
         $newUser = User::create($user);
+        
+        // Envoyer un email de bienvenue
+        $this->emailService->sendWelcome(
+            $newUser,
+            'Bienvenue chez Cyna ! 🎉',
+            'Nous sommes ravis de vous accueillir dans notre communauté de cybersécurité.',
+            'Offre spéciale : 20% de réduction sur votre première commande avec le code BIENVENUE20'
+        );
         
         // Vous pouvez accéder aux timestamps comme ceci :
         // $newUser->created_at - Date de création

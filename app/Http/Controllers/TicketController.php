@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\TicketCreateMail;
+use App\Mail\TicketUpdateMail;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Mail;
 
 class TicketController extends Controller
 {
@@ -66,7 +69,7 @@ class TicketController extends Controller
         ]);
 
         // Optionnel : notification/email
-        // Mail::to('support@tonsite.com')->send(new SupportTicketSubmitted($ticket));
+        // Mail::to(Auth::user()->email)->send(new TicketUpdateMail($ticket, $ticket->messages()->first('content'), Auth::user()));
 
         return redirect()->route('tickets.form')->with('success', 'Votre demande a été envoyée.');
     }
@@ -107,8 +110,9 @@ class TicketController extends Controller
             'content' => $request->input('message'),
         ]);
 
+        // dd($ticket->messages()->first('content'));
         // Optionnel : notification/email
-        // Mail::to('support@tonsite.com')->send(new SupportTicketSubmitted($ticket));
+        Mail::to(Auth::user()->email)->send(new TicketCreateMail($ticket, $ticket->messages()->first('content'), Auth::user()));
 
         return redirect()->route('tickets.index')->with('success', 'Votre ticket a été créé et votre message ajouté.');
     }

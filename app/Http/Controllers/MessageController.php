@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\TicketUpdateMail;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Mail;
 
 class MessageController extends Controller
 {
@@ -38,10 +40,15 @@ class MessageController extends Controller
             'content' => 'required|string|max:5000',
         ]);
 
-        $ticket->messages()->create([
+        $message = $ticket->messages()->create([
             'user_id' => Auth::id(),
             'content' => $request->input('content'),
         ]);
+
+        // Envoyer un email de notification pour le nouveau message
+        if ($ticket->user && $ticket->user->email) {
+            Mail::to($ticket->user->email)->send(new TicketUpdateMail($ticket, $message, $ticket->user));
+        }
 
         return redirect()->back();
     }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\CarouselController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomMailController;
 use App\Http\Controllers\ImagesServicesController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\StripeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Admin\StripeCouponController;
 use App\Http\Controllers\UserStatsController;
+use App\Http\Controllers\EmailTestController;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Http\Middleware\TwoFactor;
 use Illuminate\Support\Facades\Route;
@@ -131,6 +133,10 @@ Route::middleware([EnsureUserIsAdmin::class, TwoFactor::class, 'verified'])
 
         // Admin Dashboard
         Route::get('/dashboard', fn() => view('admin.dashboard'))->name('admin.dashboard');
+
+        // Admin Email Test
+        Route::get('/custom-email', [CustomMailController::class, 'index'])->name('admin.email');
+        Route::post('/custom-email', [CustomMailController::class, 'sendCustomEmail'])->name('admin.email-test.custom');
 
         Route::get('/stripe/test', function () {
             return view('stripe.test');

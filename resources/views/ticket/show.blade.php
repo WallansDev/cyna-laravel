@@ -25,13 +25,18 @@
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item" href="#"
-                                                onclick="updateTicketStatus({{ $ticket->id }}, 0)">En cours</a></li>
+                                                onclick="updateTicketStatus({{ $ticket->id }}, 0)"
+                                                style="color:#2980b9">En
+                                                cours</a></li>
                                         <li><a class="dropdown-item" href="#"
-                                                onclick="updateTicketStatus({{ $ticket->id }}, 1)">Fermé</a></li>
+                                                onclick="updateTicketStatus({{ $ticket->id }}, 1)"
+                                                style="color:#e74c3c">Fermé</a></li>
                                         <li><a class="dropdown-item" href="#"
-                                                onclick="updateTicketStatus({{ $ticket->id }}, 2)">Gelé</a></li>
+                                                onclick="updateTicketStatus({{ $ticket->id }}, 2)"
+                                                style="color:#74b9ff;">Gelé</a></li>
                                         <li><a class="dropdown-item" href="#"
-                                                onclick="updateTicketStatus({{ $ticket->id }}, 3)">Nouveau</a></li>
+                                                onclick="updateTicketStatus({{ $ticket->id }}, 3)"
+                                                style="color:#e67e22;">Nouveau</a></li>
                                     </ul>
                                 </div>
                             @else
@@ -65,7 +70,8 @@
                     </div>
 
                     @if ($ticket->status !== 1 && $ticket->status !== 2)
-                        <form class="m-3 mt-1" action="{{ route('messages.store', $ticket) }}" method="POST" id="message-form">
+                        <form class="m-3 mt-1" action="{{ route('messages.store', $ticket) }}" method="POST"
+                            id="message-form">
                             @csrf
                             <div class="input-group">
                                 <input type="text" name="content" class="form-control" placeholder="Écrire un message..."

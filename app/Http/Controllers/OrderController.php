@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use App\Models\BillingAddress;
+use App\Services\EmailService;
 
 class OrderController extends Controller
 {
@@ -21,10 +22,12 @@ class OrderController extends Controller
     }
     
     protected $stripeController;
+    protected $emailService;
 
-    public function __construct(StripeController $stripeController)
+    public function __construct(StripeController $stripeController, EmailService $emailService)
     {
         $this->stripeController = $stripeController;
+        $this->emailService = $emailService;
     }
 
     /**
@@ -181,5 +184,33 @@ class OrderController extends Controller
         Session::put('selected_billing_address_id', $address->id);
 
         return redirect()->route('cart.checkout');
+    }
+
+    /**
+     * Envoyer un email de confirmation de commande
+     */
+    public function sendOrderConfirmationEmail(Order $order, $customSubject = null, $customMessage = null)
+    {
+        $user = $order->user;
+        return $this->emailService->sendOrderConfirmation($order, $user, $customSubject, $customMessage);
+    }
+
+    /**
+     * Envoyer un email de mise à jour de statut
+     */
+    public function sendOrderStatusUpdateEmail(Order $order, $newStatus, $customMessage = null)
+    {
+        $user = $order->user;
+        return $this->emailService->sendOrderStatusUpdate($order, $user, $newStatus, $customMessage);
+    }
+
+    /**
+     * Envoyer un email de confirmation de paiement
+     */
+    public function sendPaymentConfirmationEmail(Order $order, $customSubject = null, $customMessage = null, $includeReceipt = false)
+    {
+        $user = $order->user;
+        $payment = $order->stripePayment;
+        return $this->emailService->sendPaymentConfirmation($order, $user, $payment, $customSubject, $customMessage, $includeReceipt);
     }
 }

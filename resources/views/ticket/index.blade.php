@@ -10,9 +10,23 @@
     <div class="container-fluid" style="margin-top: 2em;">
 
         @if ($tickets->isEmpty())
-            <h4>Vous n'avez aucun ticket.</h4>
-            <div class="col-2 mb-2" style="float: right">
-                <a class="btn btn-primary" href="{{ route('tickets.create') }}">Créer un ticket</a>
+            <div class="row">
+                <div class="col-sm-12 d-flex justify-content-center">
+                    <div class="card purple-theme" style="width: 50%" data-bs-theme="dark">
+                        <div class="purple-header">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span id="card_title">Liste des tickets</span>
+                                <a href="{{ route('tickets.create') }}" class="btn btn-gold btn-sm">
+                                    {{ __('Créer un ticket') }}
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p>Vous n'avez aucun ticket</p>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         @else
             <div class="row">
@@ -22,7 +36,7 @@
                             <div style="display: flex; justify-content: space-between; align-items: center;">
                                 <span id="card_title">Liste des tickets</span>
                                 <a href="{{ route('tickets.create') }}" class="btn btn-gold btn-sm">
-                                    {{ __('Nouveau') }}
+                                    {{ __('Créer un ticket') }}
                                 </a>
                             </div>
                         </div>
