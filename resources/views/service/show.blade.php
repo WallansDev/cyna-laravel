@@ -20,34 +20,43 @@
                         </div>
                         <div class="mt-3">
                             <h5 class="category-title-inline" style="font-size: inherit;">Prix</h5>
-                            <form action="{{ route('cart.add') }}" method="POST" class="add-to-cart-form mt-4">
-                                @csrf
-                                <input type="hidden" name="services_id" value="{{ $service->id }}">
-                                <div class="d-flex flex-wrap justify-content-center align-items-center gap-2">
-                                    <select name="price_type" id="price_type" class="form-select d-inline-block me-2"
-                                        style="width: 180px; background: #2d2252; color: #fff; border: 1px solid #6c4bb6; border-radius: 8px; font-weight: bold;">
-                                        <option value="monthly" selected>
-                                            Mensuel : {{ number_format($service->price_monthly, 2, ',', ' ') }} €
-                                        </option>
-                                        <option value="yearly">
-                                            Annuel : {{ number_format($service->price_yearly, 2, ',', ' ') }} €
-                                        </option>
-                                    </select>
-                                    <label for="quantity" class="form-label mb-0" style="font-weight:bold">Quantité
-                                        :</label>
-                                    <input type="number" name="quantity" id="quantity" value="1" min="1"
-                                        class="form-control input-qty d-inline-block me-2" style="width: 80px;">
+                            @if ($service->availbility)
+                                <form action="{{ route('cart.add') }}" method="POST" class="add-to-cart-form mt-4">
+                            @endif
+                            @csrf
+                            <input type="hidden" name="services_id" value="{{ $service->id }}">
+                            <div class="d-flex flex-wrap justify-content-center align-items-center gap-2">
+                                <select name="price_type" id="price_type" class="form-select d-inline-block me-2"
+                                    style="width: 180px; background: #2d2252; color: #fff; border: 1px solid #6c4bb6; border-radius: 8px; font-weight: bold;">
+                                    <option value="monthly" selected>
+                                        Mensuel : {{ number_format($service->price_monthly, 2, ',', ' ') }} €
+                                    </option>
+                                    <option value="yearly">
+                                        Annuel : {{ number_format($service->price_yearly, 2, ',', ' ') }} €
+                                    </option>
+                                </select>
+                                <label for="quantity" class="form-label mb-0" style="font-weight:bold">Quantité
+                                    :</label>
+                                <input type="number" name="quantity" id="quantity" value="1" min="1"
+                                    class="form-control input-qty d-inline-block me-2" style="width: 80px;">
+                                @if (!$service->availbility)
+                                    <a class="btn btn-danger mx-2">Temporairement
+                                        indisponible</a>
+                                @else
                                     <button type="submit" class="btn btn-success mx-2">
                                         Ajouter au panier
                                     </button>
-                                </div>
+                                @endif
+                            </div>
                             </form>
                         </div>
                         @if ($service->categories && count($service->categories))
                             <div class="mt-3">
                                 @foreach ($service->categories as $category)
                                     <div class="mb-3">
-                                        <h5 class="category-title-inline" style="font-size: inherit;">{{ $category->name }}
+                                        <h5 class="category-title-inline" style="font-size: inherit;"><a
+                                                href="{{ route('categories.show', $category->id) }}"
+                                                style="color:white;text-decoration:none;">{{ $category->name }}</a>
                                         </h5>
                                         <p class="mb-0">{{ $category->description }}</p>
                                     </div>

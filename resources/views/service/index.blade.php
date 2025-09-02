@@ -16,8 +16,7 @@
                             <div class="row align-items-center mb-2">
                                 <div class="col-12 col-md-4 d-flex justify-content-center mb-2 mb-md-0">
                                     <img src="{{ asset('storage/services/' . $service->image_path) }}"
-                                        alt="{{ $service->name }}" class="img-fluid rounded"
-                                        style="max-width: 100px;">
+                                        alt="{{ $service->name }}" class="img-fluid rounded" style="max-width: 100px;">
                                 </div>
                                 <div class="col-12 col-md-8 d-flex flex-column justify-content-center h-100">
                                     <p class="card-text mb-0" style="color:white;">{{ $service->description }}</p>
